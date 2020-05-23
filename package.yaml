@@ -1,0 +1,84 @@
+# SPDX-FileCopyrightText: 2020 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+name: NaCl
+version: 0.0.1.0
+synopsis: Easy-and-safe-to-use library for cryptography
+description: |
+  This library uses <https://libsodium.org Sodium> under the hood,
+  but only exposes the primitives that are part of the “classic” NaCl
+  interface. We believe, it is better to be paranoid than sorry.
+
+  __Note: this package is experimental and WIP.__
+
+  = Secret-key cryptography
+
+    * Authenticated encryption: "Crypto.Secretbox"
+#    * Encryption: "Crypto.Stream"
+#    * Authentication: "Crypto.Auth"
+
+
+category: Cryptography
+
+author: Kirill Elagin <kirelagin@serokell.io>
+copyright: 2020 Serokell
+license-file: LICENSES/MPL-2.0.txt
+
+github: serokell/haskell-nacl
+
+extra-doc-files:
+  - CHANGELOG.md
+  - README.md
+
+ghc-options:
+  - -Wall
+  - -Wcompat
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wredundant-constraints
+
+default-extensions:
+  - DataKinds
+  - FlexibleContexts
+  - FlexibleInstances
+  - GeneralizedNewtypeDeriving
+  - KindSignatures
+  - MultiParamTypeClasses
+  - NumericUnderscores
+  - OverloadedStrings
+  - PolyKinds
+  - ScopedTypeVariables
+
+dependencies:
+  - base >= 4.10 && < 4.15
+  - bytestring >= 0.9 && < 0.11
+  - text >= 0.7 && < 1.3
+
+library:
+  source-dirs: lib
+
+  dependencies:
+    - gdp
+    - libsodium >= 1.0 && < 2
+    - memory
+    - safe-exceptions >= 0.1 && < 0.2
+
+tests:
+  test:
+    source-dirs: test
+    main: Test.hs
+
+    dependencies:
+      - NaCl
+
+      - hedgehog
+      - HUnit
+      - tasty
+      - tasty-hedgehog
+      - tasty-hunit
+
+      - libsodium
+
+    build-tools:
+      - tasty-discover:tasty-discover

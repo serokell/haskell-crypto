@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: 2020 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+resolver: lts-14.25
+packages: [.]
+
+extra-deps:
+  - libsodium-1.0.18.1
+
+nix:
+  packages: [ libsodium pkgconfig haskellPackages.c2hs ]
