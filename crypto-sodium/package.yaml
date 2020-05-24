@@ -114,13 +114,12 @@ tests:
     dependencies:
       - crypto-sodium
 
-      - hedgehog
       - HUnit
       - tasty
-      - tasty-hedgehog
       - tasty-hunit
 
       - libsodium
+      - memory
 
     build-tools:
       - tasty-discover:tasty-discover

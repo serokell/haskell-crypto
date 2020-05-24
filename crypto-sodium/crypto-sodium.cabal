@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4ce336abfb25c101b2b1e450f9fbfda68e4c01115001643a08a71a58199f2807
+-- hash: e0951a4dd4a51d14031f6ad6fbc1604dcedc7cf7e1c26bd9cbada65e4ab90514
 
 name:           crypto-sodium
 version:        0.0.0.0
@@ -97,6 +97,7 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
+      Test.Crypto.Random
       Paths_crypto_sodium
   hs-source-dirs:
       test
@@ -109,9 +110,8 @@ test-suite test
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , crypto-sodium
-    , hedgehog
     , libsodium
+    , memory
     , tasty
-    , tasty-hedgehog
     , tasty-hunit
   default-language: Haskell2010
