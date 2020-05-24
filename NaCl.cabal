@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: dd92ae924c555d3e70eeaacc6724115471fcf860620268dd958a7ce989cd8229
+-- hash: 28c3d87c93b09e680e8e9f415c4f5e4d29fc3615b2a0b82d4ac2c85f301d2c16
 
 name:           NaCl
 version:        0.0.1.0
@@ -50,11 +50,10 @@ library
   build-depends:
       base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
-    , gdp
+    , gdp >=0.0.0.1 && <0.1
     , libsodium >=1.0 && <2
-    , memory
+    , memory >=0.1 && <0.16
     , safe-exceptions >=0.1 && <0.2
-    , text >=0.7 && <1.3
   default-language: Haskell2010
 
 test-suite test
@@ -79,5 +78,4 @@ test-suite test
     , tasty
     , tasty-hedgehog
     , tasty-hunit
-    , text >=0.7 && <1.3
   default-language: Haskell2010
