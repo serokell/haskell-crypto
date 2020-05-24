@@ -5,6 +5,7 @@
 resolver: lts-14.25
 packages:
   - NaCl
+  - crypto-sodium
 
 extra-deps:
   - libsodium-1.0.18.1

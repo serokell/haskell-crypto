@@ -2,28 +2,25 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-name: NaCl
-version: 0.0.1.0
-synopsis: Easy-and-safe-to-use high-level Haskell bindings to NaCl
+name: crypto-sodium
+version: 0.0.0.0
+synopsis: Easy-and-safe-to-use high-level cryptography based on Sodium
 description: |
-  This library uses <https://libsodium.org Sodium> under the hood,
-  but only exposes the primitives that are part of the “classic” NaCl
-  interface. We believe, it is better to be paranoid than sorry.
+  This is a collection of high-level cryptographic primitives based on
+  <https://libsodium.io/ Sodium>, spiced up with extra type-safety
+  of the Haskell type system.
+
+  It is meant to be used together with <https://hackage.haskell.org/package/NaCl NaCl>.
+  @crypto-sodium@ augments @NaCl@ with additional primitives and utilities
+  that do not exist in the C API of NaCl.
 
   __Note: this package is experimental and WIP.__
 
   = Secret-key cryptography
 
     * Authenticated encryption: "Crypto.Secretbox"
-
-  = Additional primitives
-
-  Sodium provides useful algorithms, that are not part of Nacl,
-  for example key derivation or random number generation.
-  If you need them too (you probably do), you should use
-  <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
-  instead.
-# Note: please, keep the lists above in sync with the one in crypto-sodium.
+#    * Encryption: "Crypto.Stream"
+#    * Authentication: "Crypto.Auth"
 
 category: Cryptography
 
@@ -31,7 +28,7 @@ author: Kirill Elagin <kirelagin@serokell.io>
 copyright: 2020 Serokell
 license-file: LICENSES/MPL-2.0.txt
 
-github: serokell/haskell-crypto
+homepage: serokell/haskell-crypto
 
 extra-doc-files:
   - CHANGELOG.md
@@ -67,6 +64,7 @@ library:
     - gdp >= 0.0.0.1 && < 0.1
     - libsodium >= 1.0 && < 2
     - memory >= 0.1 && < 0.16
+    - NaCl >= 0.0.1.0 && < 0.1
     - safe-exceptions >= 0.1 && < 0.2
 
 tests:
@@ -75,7 +73,7 @@ tests:
     main: Test.hs
 
     dependencies:
-      - NaCl
+      - crypto-sodium
 
       - hedgehog
       - HUnit

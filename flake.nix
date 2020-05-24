@@ -30,10 +30,11 @@
           })
         ];
       };
-      inherit (project) NaCl;
+      inherit (project) NaCl crypto-sodium;
     in {
       packages = {
         NaCl = NaCl.components.library;
+        crypto-sodium = crypto-sodium.components.library;
       };
 
       checks = {
