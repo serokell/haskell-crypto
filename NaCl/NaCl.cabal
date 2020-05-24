@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cf751715fbc506a2f2b77b7b4593a753903e490bf146c4b9742fa2348c01786c
+-- hash: 2e4915d177d32d80dda57480f31977e1500f55d53decf1288b1cfa5e33f9ad56
 
 name:           NaCl
 version:        0.0.1.0
@@ -21,7 +21,13 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 .
                 = Additional primitives
                 .
-                Sodium provides useful algorithms, that are not part of Nacl,
+                Sodium is more portable, but some people prefer to stick to NaCl.
+                We agree that it is better to be paranoid than sorry.
+                That is why, even though this library uses
+                Sodium under the hood, it only exposes the primitives that
+                are part of the “classic” NaCl interface.
+                .
+                Sodium provides useful algorithms, that are not part of NaCl,
                 for example key derivation or random number generation.
                 If you need them too (you probably do), you should use
                 <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>

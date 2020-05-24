@@ -2,6 +2,18 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
+-- | Symmetric authenticated encryption.
+--
+-- It is best to import this module qualified:
+--
+-- @
+-- import qualified Crypto.Secretbox as Secretbox
+--
+-- encrypted = Secretbox.'create' key nonce message
+-- decrypted = Secretbox.'open' key nonce encrypted
+-- @
+--
+-- This is @crypto_secretbox_*@ from NaCl.
 module Crypto.Secretbox
   ( Key
   , toKey
@@ -23,31 +35,78 @@ import qualified Crypto.Secretbox.Internal as I
 
 -- | Encrypt a message.
 --
--- Note: This function is similar to the C++ API of NaCl.
--- That is, unlike @crypto_secretbox@ from the C API of NaCl,
--- it does not require any special padding.
+-- @
+-- encrypted = Secretbox.create key nonce message
+-- @
+--
+-- *   @key@ is the secret key used for encryption. There are two typical ways
+--     of creating it:
+--
+--     1. /Derive from a password/. If you want to protect a message with a password,
+--     you must use a
+--     <https://en.wikipedia.org/wiki/Key_derivation_function key derivation function>
+--     to turn this password into an encryption key.
+--     NaCl does not provide a key derivation function, however
+--     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> does.
+--
+--     2. /Generate a random one/. This can be useful in certain situations when
+--     you want to have an intermediate key that you will encrypt and share
+--     later. NaCl does not provide a cryptographically secure pseudo random
+--     generator, however
+--     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> does.
+--
+-- *   @nonce@ is an extra noise that ensures that if you encrypt the same
+--     message with the same key multiple times, you will get different ciphertexts,
+--     which is required for
+--     <https://en.wikipedia.org/wiki/Semantic_security semantic security>.
+--     There are two standard ways of getting it:
+--
+--     1. /Use a counter/. In this case you keep a counter of encrypted messages,
+--     which means that the nonce will be new for each new message.
+--
+--     2. /Random/. You generate a random nonce every time you encrypt a message.
+--     Since the nonce is large enough, the chances of you using the same
+--     nonce twice are negligible.
+--
+--     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> has
+--     useful helpers for both options.
+--
+-- *   @message@ is the data you are encrypting.
+--
+-- This function adds authentication data, so if anyone modifies the cyphertext,
+-- @open@ will refuse to decrypt it.
 create
-  ::  ( ByteArrayAccess key, ByteArrayAccess nonce
-      , ByteArrayAccess pt, ByteArray ct
+  ::  ( ByteArrayAccess keyBytes, ByteArrayAccess nonceBytes
+      , ByteArrayAccess ptBytes, ByteArray ctBytes
       )
-  => Key key  -- ^ Secret key
-  -> Nonce nonce  -- ^ Nonce
-  -> pt -- ^ Plaintext message
-  -> ct
-create key nonce msg = unsafeDupablePerformIO $ I.create key nonce msg
+  => Key keyBytes  -- ^ Secret key
+  -> Nonce nonceBytes  -- ^ Nonce
+  -> ptBytes -- ^ Plaintext message
+  -> ctBytes
+create key nonce msg =
+  -- This IO is safe, because it is pure.
+  unsafeDupablePerformIO $ I.create key nonce msg
 
 
 -- | Decrypt a message.
 --
--- Note: This function is similar to the C++ API of NaCl.
--- That is, unlike @crypto_secretbox_open@ from the C API of NaCl,
--- it does not require any special padding.
+-- @
+-- decrypted = Secretbox.open key nonce encrypted
+-- @
+--
+-- * @key@ and @nonce@ are the same that were used for encryption.
+-- * @encrypted@ is the output of 'create'.
+--
+-- This function will return @Nothing@ if the encrypted message was tampered
+-- with after it was encrypted.
 open
-  ::  ( ByteArrayAccess key, ByteArrayAccess nonce
-      , ByteArray pt, ByteArrayAccess ct
+  ::  ( ByteArrayAccess keyBytes, ByteArrayAccess nonceBytes
+      , ByteArray ptBytes, ByteArrayAccess ctBytes
       )
-  => Key key  -- ^ Secret key
-  -> Nonce nonce  -- ^ Nonce
-  -> ct -- ^ Cyphertext
-  -> Maybe pt
-open key nonce ct = unsafeDupablePerformIO $ I.open key nonce ct
+  => Key keyBytes  -- ^ Secret key
+  -> Nonce nonceBytes  -- ^ Nonce
+  -> ctBytes -- ^ Encrypted message (cyphertext)
+  -> Maybe ptBytes
+open key nonce ct =
+  -- This IO is safe, because it is pure.
+  unsafeDupablePerformIO $ I.open key nonce ct

@@ -10,17 +10,33 @@ description: |
   <https://libsodium.io/ Sodium>, spiced up with extra type-safety
   of the Haskell type system.
 
-  It is meant to be used together with <https://hackage.haskell.org/package/NaCl NaCl>.
-  @crypto-sodium@ augments @NaCl@ with additional primitives and utilities
-  that do not exist in the C API of NaCl.
-
   __Note: this package is experimental and WIP.__
 
-  = Secret-key cryptography
+  = Why
 
-    * Authenticated encryption: "Crypto.Secretbox"
-#    * Encryption: "Crypto.Stream"
-#    * Authentication: "Crypto.Auth"
+  Cryptography is hard to do right and you should never try to implement it
+  on your own, even if you have access to safe and secure cryptographic
+  primitives. Luckily, D. J. Bernstein created <https://nacl.cr.yp.to/ NaCl>.
+
+  NaCl was designed specifically to make it hard to use it incorrectly and
+  thus save you from a disaster. It exposes high-level cryptographic
+  algorithms with underlying implementations chosen for you, so you do not
+  get flexibility, but you get security, which is more important.
+
+  = What
+
+  <https://libsodium.org Sodium> is a reimplementation of NaCl
+  with the goal to make it more portable across different platforms.
+  With time, it started providing more than the same interface as NaCl.
+  Nowadays it implements additional primitives and utility functions.
+
+  = How
+
+  == Secret-key cryptography
+
+  * Authenticated encryption: "Crypto.Secretbox"
+#  * Encryption: "Crypto.Stream"
+#  * Authentication: "Crypto.Auth"
 
 category: Cryptography
 

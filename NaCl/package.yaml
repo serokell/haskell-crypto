@@ -18,7 +18,13 @@ description: |
 
   = Additional primitives
 
-  Sodium provides useful algorithms, that are not part of Nacl,
+  Sodium is more portable, but some people prefer to stick to NaCl.
+  We agree that it is better to be paranoid than sorry.
+  That is why, even though this library uses
+  Sodium under the hood, it only exposes the primitives that
+  are part of the “classic” NaCl interface.
+
+  Sodium provides useful algorithms, that are not part of NaCl,
   for example key derivation or random number generation.
   If you need them too (you probably do), you should use
   <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>

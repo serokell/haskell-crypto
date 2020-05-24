@@ -2,7 +2,11 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
--- | 'ByteArray' with length known at compile time. Internal module.
+-- | Internals of sized byte arrays.
+--
+-- This module exports the 'OfLength' constructor, which allows you
+-- to “postulate” that byte arrays you create have the right length.
+-- Use with care.
 module Data.ByteArray.Sized.Internal
   ( OfLength (..)
   , hasRightLength
@@ -24,7 +28,7 @@ import Data.ByteArray (ByteArray, ByteArrayAccess, length)
 import qualified Data.ByteArray
 
 
--- Type of byte arrays that have length @l@.
+-- | Type of byte arrays that have length @l@.
 newtype OfLength (l :: Nat) ba = OfLength ba
   deriving (ByteArrayAccess, Eq, Ord)
 

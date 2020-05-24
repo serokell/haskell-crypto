@@ -2,7 +2,7 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
--- | 'ByteArray' with length known at compile time.
+-- | Byte array with length known at compile time.
 module Data.ByteArray.Sized
   ( module M
   ) where
