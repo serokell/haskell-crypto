@@ -83,6 +83,10 @@ library:
     - NaCl >= 0.0.1.0 && < 0.1
     - safe-exceptions >= 0.1 && < 0.2
 
+  reexported-modules:
+    - NaCl:Crypto.Secretbox
+    - NaCl:Data.ByteArray.Sized
+
 tests:
   test:
     source-dirs: test

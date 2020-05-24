@@ -1,10 +1,10 @@
-cabal-version: 1.18
+cabal-version: 1.22
 
 -- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cab62dd78b4e4ef62b5440ed25fb815bf5d7bbeaba579fc740de6a28958cae54
+-- hash: d6c1c5c9af167980c8a5112825ff49d9b71e85a034e331b52c085786080bfe09
 
 name:           crypto-sodium
 version:        0.0.0.0
@@ -53,6 +53,9 @@ extra-doc-files:
 library
   other-modules:
       Paths_crypto_sodium
+  reexported-modules:
+      NaCl:Crypto.Secretbox
+    , NaCl:Data.ByteArray.Sized
   hs-source-dirs:
       lib
   default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
