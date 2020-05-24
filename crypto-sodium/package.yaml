@@ -35,8 +35,27 @@ description: |
   == Secret-key cryptography
 
   * Authenticated encryption: "Crypto.Secretbox"
-#  * Encryption: "Crypto.Stream"
-#  * Authentication: "Crypto.Auth"
+  * Encryption: "Crypto.Stream"
+  * Authentication: "Crypto.Auth"
+
+
+  = Thread-safety #threadSafety#
+
+  Some of the Sodium (and NaCl) functions (those that generate random data)
+  are not thread-safe. All these functions are explicitly marked as such
+  in their Haddock documentation.
+
+  Calling 'sodiumInit' before they are used makes them thread-safe, see
+  "Crypto.Init".
+
+  = Performance
+
+  Sodium contains multiple implementations of the primitives it provides.
+  There are generic implementations, that are used by default, and
+  multiple alternatives optimised for various platforms.
+
+  'sodiumInit' will quickly benchmark all available implementations and choose
+  the bests ones for each primitive, see "Crypto.Init".
 
 category: Cryptography
 
@@ -63,6 +82,7 @@ default-extensions:
   - FlexibleInstances
   - GeneralizedNewtypeDeriving
   - KindSignatures
+  - LambdaCase
   - MultiParamTypeClasses
   - NumericUnderscores
   - OverloadedStrings
@@ -78,7 +98,7 @@ library:
 
   dependencies:
     - gdp >= 0.0.0.1 && < 0.1
-    - libsodium >= 1.0 && < 2
+    - libsodium >= 1.0.11 && < 2
     - memory >= 0.1 && < 0.16
     - NaCl >= 0.0.1.0 && < 0.1
     - safe-exceptions >= 0.1 && < 0.2

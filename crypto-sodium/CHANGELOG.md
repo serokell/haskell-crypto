@@ -1,3 +1,7 @@
 # Changelog
 
 ## Unreleased
+
+### Added
+
+* `sodiumInit`

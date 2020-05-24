@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d6c1c5c9af167980c8a5112825ff49d9b71e85a034e331b52c085786080bfe09
+-- hash: d51ce0df84c2f0288faaab8c59f1668571194e64b70b262eab44774ecacd0fa0
 
 name:           crypto-sodium
 version:        0.0.0.0
@@ -38,6 +38,27 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Secret-key cryptography
                 .
                 * Authenticated encryption: "Crypto.Secretbox"
+                * Encryption: "Crypto.Stream"
+                * Authentication: "Crypto.Auth"
+                .
+                .
+                = Thread-safety #threadSafety#
+                .
+                Some of the Sodium (and NaCl) functions (those that generate random data)
+                are not thread-safe. All these functions are explicitly marked as such
+                in their Haddock documentation.
+                .
+                Calling 'sodiumInit' before they are used makes them thread-safe, see
+                "Crypto.Init".
+                .
+                = Performance
+                .
+                Sodium contains multiple implementations of the primitives it provides.
+                There are generic implementations, that are used by default, and
+                multiple alternatives optimised for various platforms.
+                .
+                'sodiumInit' will quickly benchmark all available implementations and choose
+                the bests ones for each primitive, see "Crypto.Init".
 category:       Cryptography
 homepage:       serokell/haskell-crypto
 author:         Kirill Elagin <kirelagin@serokell.io>
@@ -51,6 +72,8 @@ extra-doc-files:
     README.md
 
 library
+  exposed-modules:
+      Crypto.Init
   other-modules:
       Paths_crypto_sodium
   reexported-modules:
@@ -58,14 +81,14 @@ library
     , NaCl:Data.ByteArray.Sized
   hs-source-dirs:
       lib
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       NaCl >=0.0.1.0 && <0.1
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , gdp >=0.0.0.1 && <0.1
-    , libsodium >=1.0 && <2
+    , libsodium >=1.0.11 && <2
     , memory >=0.1 && <0.16
     , safe-exceptions >=0.1 && <0.2
   default-language: Haskell2010
@@ -77,7 +100,7 @@ test-suite test
       Paths_crypto_sodium
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
       tasty-discover:tasty-discover
