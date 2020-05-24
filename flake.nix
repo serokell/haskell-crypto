@@ -10,25 +10,35 @@
   outputs = { self, nixpkgs, haskell-nix }:
     let
       pkgs = nixpkgs {
-        overlays = haskell-nix.overlays;
+        inherit (haskell-nix) config overlays;
       };
 
       project = pkgs.haskell-nix.stackProject {
         src = pkgs.haskell-nix.haskellLib.cleanGit {
-          name = "nacl";
+          name = "haskell-crypto";
           src = ./.;
-          subDir = "NaCl";
         };
+        modules = [
+          ({ pkgs, ... }: {
+            packages = {
+              # TODO: https://github.com/k0001/hs-libsodium/issues/2
+              libsodium.components.library.build-tools = [ project.c2hs ];
+
+              # TODO: https://github.com/input-output-hk/haskell.nix/issues/626
+              NaCl.cabal-generator = pkgs.lib.mkForce null;
+            };
+          })
+        ];
       };
-      nacl = project.nacl;
+      inherit (project) NaCl;
     in {
       packages = {
-        nacl = nacl.components.library;
+        NaCl = NaCl.components.library;
       };
 
       checks = {
-        build = self.packages.nacl;
-        test = nacl.checks.test;
+        build = self.packages.NaCl;
+        test = NaCl.checks.test;
       };
     };
 }
