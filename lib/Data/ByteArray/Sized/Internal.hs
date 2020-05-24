@@ -26,7 +26,7 @@ import qualified Data.ByteArray
 
 -- Type of byte arrays that have length @l@.
 newtype OfLength (l :: Nat) ba = OfLength ba
-  deriving (ByteArrayAccess, Eq, Monoid, Ord, Semigroup)
+  deriving (ByteArrayAccess, Eq, Ord)
 
 instance The (OfLength l ba) ba
 
