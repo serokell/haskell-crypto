@@ -105,7 +105,6 @@ library:
 
   reexported-modules:
     - NaCl:Crypto.Secretbox
-    - NaCl:Data.ByteArray.Sized
 
 tests:
   test:

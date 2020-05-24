@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2e4915d177d32d80dda57480f31977e1500f55d53decf1288b1cfa5e33f9ad56
+-- hash: 3a4615939928da1878752db5f44654103a3f02bab932d04586f7a36f97aa72a7
 
 name:           NaCl
 version:        0.0.1.0
@@ -53,8 +53,6 @@ library
   exposed-modules:
       Crypto.Secretbox
       Crypto.Secretbox.Internal
-      Data.ByteArray.Sized
-      Data.ByteArray.Sized.Internal
   other-modules:
       Paths_NaCl
   hs-source-dirs:
@@ -66,7 +64,7 @@ library
     , bytestring >=0.9 && <0.11
     , gdp >=0.0.0.1 && <0.1
     , libsodium >=1.0 && <2
-    , memory >=0.1 && <0.16
+    , memory >=0.14.15 && <0.16
     , safe-exceptions >=0.1 && <0.2
   default-language: Haskell2010
 

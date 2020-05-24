@@ -72,7 +72,7 @@ library:
   dependencies:
     - gdp >= 0.0.0.1 && < 0.1
     - libsodium >= 1.0 && < 2
-    - memory >= 0.1 && < 0.16
+    - memory >= 0.14.15 && < 0.16
     - safe-exceptions >= 0.1 && < 0.2
 
 tests:

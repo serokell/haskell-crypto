@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 94b99067d6282afd41d8d8a87b638690f14b7e8116147fdc0e32e0ffe8ac895c
+-- hash: 4ce336abfb25c101b2b1e450f9fbfda68e4c01115001643a08a71a58199f2807
 
 name:           crypto-sodium
 version:        0.0.0.0
@@ -79,7 +79,6 @@ library
       Paths_crypto_sodium
   reexported-modules:
       NaCl:Crypto.Secretbox
-    , NaCl:Data.ByteArray.Sized
   hs-source-dirs:
       lib
   default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables

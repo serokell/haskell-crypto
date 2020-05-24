@@ -20,7 +20,7 @@ import Data.ByteArray (ByteArray, ByteArrayAccess, allocRet, length, withByteArr
 
 import qualified Libsodium as Na
 
-import Data.ByteArray.Sized (OfLength, hasRightLength)
+import Data.ByteArray.Sized (SizedByteArray, sizedByteArray)
 
 
 -- | Encryption key that can be used for Secretbox.
@@ -28,28 +28,28 @@ import Data.ByteArray.Sized (OfLength, hasRightLength)
 -- This type is parametrised by the actual data type that contains
 -- bytes. This can be, for example, a @ByteString@, but, since this
 -- is a secret key, it is better to use @ScrubbedBytes@.
-type Key a = OfLength Na.CRYPTO_SECRETBOX_KEYBYTES a
+type Key a = SizedByteArray Na.CRYPTO_SECRETBOX_KEYBYTES a
 
 -- | Make a 'Key' from an arbitrary byte array.
 --
 -- This function returns @Just@ if and only if the byte array has
 -- the right length to be used as a key with a Secretbox.
 toKey :: ByteArrayAccess ba => ba -> Maybe (Key ba)
-toKey = hasRightLength
+toKey = sizedByteArray
 
 
 -- | Nonce that can be used for Secretbox.
 --
 -- This type is parametrised by the actual data type that contains
 -- bytes. This can be, for example, a @ByteString@.
-type Nonce a = OfLength Na.CRYPTO_SECRETBOX_NONCEBYTES a
+type Nonce a = SizedByteArray Na.CRYPTO_SECRETBOX_NONCEBYTES a
 
 -- | Make a 'Nonce' from an arbitrary byte array.
 --
 -- This function returns @Just@ if and only if the byte array has
 -- the right length to be used as a nonce with a Secretbox.
 toNonce :: ByteArrayAccess ba => ba -> Maybe (Nonce ba)
-toNonce = hasRightLength
+toNonce = sizedByteArray
 
 
 -- | Encrypt a message.
