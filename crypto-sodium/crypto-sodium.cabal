@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d51ce0df84c2f0288faaab8c59f1668571194e64b70b262eab44774ecacd0fa0
+-- hash: 94b99067d6282afd41d8d8a87b638690f14b7e8116147fdc0e32e0ffe8ac895c
 
 name:           crypto-sodium
 version:        0.0.0.0
@@ -74,6 +74,7 @@ extra-doc-files:
 library
   exposed-modules:
       Crypto.Init
+      Crypto.Random
   other-modules:
       Paths_crypto_sodium
   reexported-modules:
