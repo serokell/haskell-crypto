@@ -5,7 +5,7 @@
 {
   edition = 201911;
 
-  description = "Easy-and-safe-to-use library for cryptography.";
+  description = "Easy-and-safe-to-use high-level cryptographic primitives.";
 
   outputs = { self, nixpkgs, haskell-nix }:
     let
@@ -17,6 +17,7 @@
         src = pkgs.haskell-nix.haskellLib.cleanGit {
           name = "nacl";
           src = ./.;
+          subDir = "NaCl";
         };
       };
       nacl = project.nacl;

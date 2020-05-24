@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: MPL-2.0
 
 resolver: lts-14.25
-packages: [.]
+packages:
+  - NaCl
 
 extra-deps:
   - libsodium-1.0.18.1

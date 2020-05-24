@@ -4,7 +4,7 @@
 
 name: NaCl
 version: 0.0.1.0
-synopsis: Easy-and-safe-to-use library for cryptography
+synopsis: Easy-and-safe-to-use high-level Haskell bindings to NaCl
 description: |
   This library uses <https://libsodium.org Sodium> under the hood,
   but only exposes the primitives that are part of the “classic” NaCl
