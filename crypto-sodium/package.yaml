@@ -38,25 +38,6 @@ description: |
   * Encryption: "Crypto.Stream"
   * Authentication: "Crypto.Auth"
 
-
-  = Thread-safety #threadSafety#
-
-  Some of the Sodium (and NaCl) functions (those that generate random data)
-  are not thread-safe. All these functions are explicitly marked as such
-  in their Haddock documentation.
-
-  Calling 'sodiumInit' before they are used makes them thread-safe, see
-  "Crypto.Init".
-
-  = Performance
-
-  Sodium contains multiple implementations of the primitives it provides.
-  There are generic implementations, that are used by default, and
-  multiple alternatives optimised for various platforms.
-
-  'sodiumInit' will quickly benchmark all available implementations and choose
-  the bests ones for each primitive, see "Crypto.Init".
-
 category: Cryptography
 
 author: Kirill Elagin <kirelagin@serokell.io>

@@ -78,5 +78,8 @@ fromPassword params passwd salt =
 --
 -- This is just a specialisation of @Crypto.Random.'generate'@ that stores
 -- it in a secure memory location.
+--
+-- Note: This function is not thread-safe until Sodium is initialised.
+-- See "Crypto.Init" for details.
 generate :: KnownNat n => IO (SizedByteArray n ScrubbedBytes)
 generate = Crypto.Random.generate

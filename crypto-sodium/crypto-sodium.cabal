@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9cb847229b52431f790683d86ed89bf593fa881d1caedfd3a96344524f7cbd80
+-- hash: 8ef76f8df1383e74ff3a6e1a04af034d61d3003ece8d534197cb3df17ec089ee
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -40,25 +40,6 @@ description:    This is a collection of high-level cryptographic primitives base
                 * Authenticated encryption: "Crypto.Secretbox"
                 * Encryption: "Crypto.Stream"
                 * Authentication: "Crypto.Auth"
-                .
-                .
-                = Thread-safety #threadSafety#
-                .
-                Some of the Sodium (and NaCl) functions (those that generate random data)
-                are not thread-safe. All these functions are explicitly marked as such
-                in their Haddock documentation.
-                .
-                Calling 'sodiumInit' before they are used makes them thread-safe, see
-                "Crypto.Init".
-                .
-                = Performance
-                .
-                Sodium contains multiple implementations of the primitives it provides.
-                There are generic implementations, that are used by default, and
-                multiple alternatives optimised for various platforms.
-                .
-                'sodiumInit' will quickly benchmark all available implementations and choose
-                the bests ones for each primitive, see "Crypto.Init".
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues

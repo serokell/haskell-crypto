@@ -3,6 +3,23 @@
 -- SPDX-License-Identifier: MPL-2.0
 
 -- | Libsodium initialisation.
+
+-- = Thread-safety #threadSafety#
+--
+-- Some of the Sodium (and NaCl) functions (those that generate random data)
+-- are not thread-safe. All these functions are explicitly marked as such
+-- in their Haddock documentation.
+--
+-- Calling 'sodiumInit' before they are used makes them thread-safe.
+--
+-- = Performance
+--
+-- Sodium contains multiple implementations of the primitives it provides.
+-- There are generic implementations, that are used by default, and
+-- multiple alternatives optimised for various platforms.
+--
+-- 'sodiumInit' will quickly benchmark all available implementations and choose
+-- the best ones for each primitive.
 module Crypto.Init
   ( sodiumInit
   , SodiumInitException (..)

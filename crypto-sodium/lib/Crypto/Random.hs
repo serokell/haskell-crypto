@@ -18,6 +18,9 @@ import qualified Libsodium as Na
 -- | Generate a sequence of cryptographically-secure renadom bytes.
 --
 -- The output of this function is suitable to generate secret keys.
+--
+-- Note: This function is not thread-safe until Sodium is initialised.
+-- See "Crypto.Init" for details.
 generate
   :: forall ba n. (ByteArray ba, KnownNat n)
   => IO (SizedByteArray n ba)
