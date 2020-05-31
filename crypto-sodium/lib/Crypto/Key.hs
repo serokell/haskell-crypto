@@ -10,12 +10,14 @@
 module Crypto.Key
   ( fromPassword
   , Params (..)
+  , type (!>=!)
 
   , generate
   ) where
 
 import Data.ByteArray (ByteArrayAccess, ScrubbedBytes)
 import Data.ByteArray.Sized (ByteArrayN, SizedByteArray)
+import Data.Kind (Constraint)
 import GHC.TypeLits (type (<=), KnownNat)
 import System.IO.Unsafe (unsafeDupablePerformIO)
 
@@ -25,6 +27,28 @@ import qualified Libsodium as Na
 
 import qualified Crypto.Random
 
+
+-- | “At least as secure as”.
+--
+-- @a !>=! b@ means that the storage behind a is not less secure than b.
+-- This is a little bit of an ad-hoc safety hack, which ensures that if
+-- @b@ is stored in a securely allocated memory, then @a@ is stored in
+-- memory allocated as securely, or more securely.
+--
+-- Here are our very ad-hoc rules:
+--
+-- * This relation is reflexive (@a@ is as secure as @a@ for any @a@).
+-- * 'ScrubbedBytes' is more secure than anything.
+-- * Everything else is equally (in)secure.
+--
+-- So, for example, if the original password is stored in @ScrubbedBytes@,
+-- you will not be able to put the derived from it key into a @ByteString@,
+-- because that would be less secure.
+type family a !>=! b :: Constraint where
+  a !>=! a = ()  -- reflexivity
+  a !>=! ScrubbedBytes = LessSecureStorage a ScrubbedBytes
+  a !>=! b = ()
+class LessSecureStorage a b
 
 -- | Derive an encryption key from a password using a secure KDF.
 --
@@ -38,7 +62,7 @@ import qualified Crypto.Random
 -- See @libsodium@ documentation for how to determine 'Params'.
 fromPassword
   ::  ( ByteArrayAccess passwd, ByteArrayAccess nonceBytes
-      , ByteArrayN n hash
+      , ByteArrayN n hash, hash !>=! passwd
       , Na.CRYPTO_PWHASH_BYTES_MIN <= n, n <= Na.CRYPTO_PWHASH_BYTES_MAX
       )
   => Params -- ^ Hashing parameters.
