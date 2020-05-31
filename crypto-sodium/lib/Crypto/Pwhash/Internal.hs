@@ -29,10 +29,12 @@ import qualified Libsodium as Na
 
 -- | Secure hashing algorithm.
 data Algorithm
-  = Argon2id_1_3 -- ^ Argon2id version 1.3
+  = Argon2i_1_3 -- ^ Argon2i version 1.3
+  | Argon2id_1_3 -- ^ Argon2id version 1.3
   deriving (Eq, Ord, Show)
 
 algorithmToInt :: Algorithm -> CInt
+algorithmToInt Argon2i_1_3 = Na.crypto_pwhash_alg_argon2i13
 algorithmToInt Argon2id_1_3 = Na.crypto_pwhash_alg_argon2id13
 
 
