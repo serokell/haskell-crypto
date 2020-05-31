@@ -4,10 +4,10 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e0951a4dd4a51d14031f6ad6fbc1604dcedc7cf7e1c26bd9cbada65e4ab90514
+-- hash: 745d63b84deb20c2dc71acc5006fea4028aa386b595bb6e1d9016deba28aeca5
 
 name:           crypto-sodium
-version:        0.0.0.0
+version:        0.0.2.0
 synopsis:       Easy-and-safe-to-use high-level cryptography based on Sodium
 description:    This is a collection of high-level cryptographic primitives based on
                 <https://libsodium.io/ Sodium>, spiced up with extra type-safety
@@ -60,7 +60,8 @@ description:    This is a collection of high-level cryptographic primitives base
                 'sodiumInit' will quickly benchmark all available implementations and choose
                 the bests ones for each primitive, see "Crypto.Init".
 category:       Cryptography
-homepage:       serokell/haskell-crypto
+homepage:       https://github.com/serokell/haskell-crypto#readme
+bug-reports:    https://github.com/serokell/haskell-crypto/issues
 author:         Kirill Elagin <kirelagin@serokell.io>
 maintainer:     Kirill Elagin <kirelagin@serokell.io>
 copyright:      2020 Serokell
@@ -70,6 +71,10 @@ build-type:     Simple
 extra-doc-files:
     CHANGELOG.md
     README.md
+
+source-repository head
+  type: git
+  location: https://github.com/serokell/haskell-crypto
 
 library
   exposed-modules:

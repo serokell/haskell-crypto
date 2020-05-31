@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
 name: NaCl
-version: 0.0.1.0
+version: 0.0.2.0
 synopsis: Easy-and-safe-to-use high-level Haskell bindings to NaCl
 description: |
   This library uses <https://libsodium.org Sodium> under the hood,

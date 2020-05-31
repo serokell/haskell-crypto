@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
 name: crypto-sodium
-version: 0.0.0.0
+version: 0.0.2.0
 synopsis: Easy-and-safe-to-use high-level cryptography based on Sodium
 description: |
   This is a collection of high-level cryptographic primitives based on
@@ -63,7 +63,7 @@ author: Kirill Elagin <kirelagin@serokell.io>
 copyright: 2020 Serokell
 license-file: LICENSES/MPL-2.0.txt
 
-homepage: serokell/haskell-crypto
+github: serokell/haskell-crypto
 
 extra-doc-files:
   - CHANGELOG.md

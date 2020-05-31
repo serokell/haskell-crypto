@@ -4,10 +4,10 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3a4615939928da1878752db5f44654103a3f02bab932d04586f7a36f97aa72a7
+-- hash: 03e840884f33f5935cba7897a47476ae30b4577c0d482ca7f4d75cdad144e7c1
 
 name:           NaCl
-version:        0.0.1.0
+version:        0.0.2.0
 synopsis:       Easy-and-safe-to-use high-level Haskell bindings to NaCl
 description:    This library uses <https://libsodium.org Sodium> under the hood,
                 but only exposes the primitives that are part of the “classic” NaCl
