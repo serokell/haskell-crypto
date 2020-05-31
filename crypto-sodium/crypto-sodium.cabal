@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 745d63b84deb20c2dc71acc5006fea4028aa386b595bb6e1d9016deba28aeca5
+-- hash: 7a749fdfb2a6ba9d10d20b418adcd9e678555645c6ec6add910151bd8820b614
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -79,6 +79,8 @@ source-repository head
 library
   exposed-modules:
       Crypto.Init
+      Crypto.Key
+      Crypto.Pwhash.Internal
       Crypto.Random
   other-modules:
       Paths_crypto_sodium
@@ -86,7 +88,7 @@ library
       NaCl:Crypto.Secretbox
   hs-source-dirs:
       lib
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       NaCl >=0.0.1.0 && <0.1
@@ -106,7 +108,7 @@ test-suite test
       Paths_crypto_sodium
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
       tasty-discover:tasty-discover
