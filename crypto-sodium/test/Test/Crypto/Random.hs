@@ -2,8 +2,6 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
-
 module Test.Crypto.Random where
 
 import Test.HUnit ((@?=), Assertion)
