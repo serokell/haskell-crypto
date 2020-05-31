@@ -46,14 +46,14 @@ import qualified Crypto.Secretbox.Internal as I
 --     you must use a
 --     <https://en.wikipedia.org/wiki/Key_derivation_function key derivation function>
 --     to turn this password into an encryption key.
---     NaCl does not provide a key derivation function, however
---     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> does.
 --
 --     2. /Generate a random one/. This can be useful in certain situations when
 --     you want to have an intermediate key that you will encrypt and share
---     later. NaCl does not provide a cryptographically secure pseudo random
---     generator, however
---     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> does.
+--     later.
+--
+--     The @Crypto.Key@ module in
+--     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
+--     has functions to help in either case.
 --
 -- *   @nonce@ is an extra noise that ensures that if you encrypt the same
 --     message with the same key multiple times, you will get different ciphertexts,
@@ -66,10 +66,8 @@ import qualified Crypto.Secretbox.Internal as I
 --
 --     2. /Random/. You generate a random nonce every time you encrypt a message.
 --     Since the nonce is large enough, the chances of you using the same
---     nonce twice are negligible.
---
---     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium> has
---     useful helpers for both options.
+--     nonce twice are negligible. For useful helpers, see @Crypto.Random@,
+--     in <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>.
 --
 -- *   @message@ is the data you are encrypting.
 --
