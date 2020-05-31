@@ -9,18 +9,21 @@
 -- | Utilities for working with secret keys.
 module Crypto.Key
   ( fromPassword
-
   , Params (..)
+
+  , generate
   ) where
 
-import Data.ByteArray (ByteArrayAccess)
-import Data.ByteArray.Sized (ByteArrayN)
-import GHC.TypeLits (type (<=))
+import Data.ByteArray (ByteArrayAccess, ScrubbedBytes)
+import Data.ByteArray.Sized (ByteArrayN, SizedByteArray)
+import GHC.TypeLits (type (<=), KnownNat)
 import System.IO.Unsafe (unsafeDupablePerformIO)
 
 import Crypto.Pwhash.Internal (Algorithm (Argon2id_1_3), Params (..), Salt, pwhash)
 
 import qualified Libsodium as Na
+
+import qualified Crypto.Random
 
 
 -- | Derive an encryption key from a password using a secure KDF.
@@ -45,3 +48,11 @@ fromPassword
 fromPassword params passwd salt =
   unsafeDupablePerformIO $ pwhash Argon2id_1_3 params passwd salt
   -- This IO is safe, because it is pure.
+
+
+-- | Generate a new secret key using a cryptographically-secure generator.
+--
+-- This is just a specialisation of @Crypto.Random.'generate'@ that stores
+-- it in a secure memory location.
+generate :: KnownNat n => IO (SizedByteArray n ScrubbedBytes)
+generate = Crypto.Random.generate
