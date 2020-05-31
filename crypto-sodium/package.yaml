@@ -89,6 +89,7 @@ default-extensions:
   - OverloadedStrings
   - PolyKinds
   - ScopedTypeVariables
+  - TypeApplications
 
 dependencies:
   - base >= 4.10 && < 4.15
@@ -115,10 +116,13 @@ tests:
     dependencies:
       - crypto-sodium
 
+      - hedgehog
       - HUnit
       - tasty
+      - tasty-hedgehog
       - tasty-hunit
 
+      - base16-bytestring
       - libsodium
       - memory
 

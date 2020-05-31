@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7a749fdfb2a6ba9d10d20b418adcd9e678555645c6ec6add910151bd8820b614
+-- hash: 9cb847229b52431f790683d86ed89bf593fa881d1caedfd3a96344524f7cbd80
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -88,7 +88,7 @@ library
       NaCl:Crypto.Secretbox
   hs-source-dirs:
       lib
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       NaCl >=0.0.1.0 && <0.1
@@ -104,21 +104,26 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
+      Test.Crypto.Pwhash
       Test.Crypto.Random
+      Test.Crypto.Secretbox
       Paths_crypto_sodium
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
       tasty-discover:tasty-discover
   build-depends:
       HUnit
     , base >=4.10 && <4.15
+    , base16-bytestring
     , bytestring >=0.9 && <0.11
     , crypto-sodium
+    , hedgehog
     , libsodium
     , memory
     , tasty
+    , tasty-hedgehog
     , tasty-hunit
   default-language: Haskell2010
