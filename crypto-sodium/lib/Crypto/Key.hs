@@ -52,7 +52,11 @@ class LessSecureStorage a b
 
 -- | Derive an encryption key from a password using a secure KDF.
 --
--- The purpose of the nonce is to protect against the user using a weak
+-- __Warning: this function is can be tricky to use and therefore it is
+-- likely to change in the future versions of the library. In the meantime,
+-- carefully read and closely follow the recommendations below.__
+--
+-- The purpose of the nonce is to protect against the user choosing a weak
 -- password and the attacker being able to precompute the derived secret key.
 -- For this reason, the recommended strategy is to generate a new random
 -- nonce when deriving the encryption key for the first time and then store
@@ -60,6 +64,8 @@ class LessSecureStorage a b
 -- The nonce is not secret and can be stored as plaintext.
 --
 -- See @libsodium@ documentation for how to determine 'Params'.
+-- It is strongly recommended to store the 'Params' used for derivation
+-- alongside the encrypted data instead of relying on code constants.
 fromPassword
   ::  ( ByteArrayAccess passwd, ByteArrayAccess nonceBytes
       , ByteArrayN n hash, hash !>=! passwd
