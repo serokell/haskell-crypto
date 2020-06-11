@@ -6,3 +6,4 @@
 
 * `Sized` byte arrays
 * `Secretbox`
+* `Box`

@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8ef76f8df1383e74ff3a6e1a04af034d61d3003ece8d534197cb3df17ec089ee
+-- hash: c7c5424f2e0e60fc564ab8e40a3c62ee7904bc82c859854b2bd02ffba396bc20
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -38,8 +38,10 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Secret-key cryptography
                 .
                 * Authenticated encryption: "Crypto.Secretbox"
-                * Encryption: "Crypto.Stream"
-                * Authentication: "Crypto.Auth"
+                .
+                == Public-key cryptography
+                .
+                * Authenticated encryption: "Crypto.Box"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
@@ -66,7 +68,8 @@ library
   other-modules:
       Paths_crypto_sodium
   reexported-modules:
-      NaCl:Crypto.Secretbox
+      NaCl:Crypto.Box
+    , NaCl:Crypto.Secretbox
   hs-source-dirs:
       lib
   default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications

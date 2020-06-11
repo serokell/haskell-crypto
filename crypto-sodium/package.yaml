@@ -35,8 +35,10 @@ description: |
   == Secret-key cryptography
 
   * Authenticated encryption: "Crypto.Secretbox"
-  * Encryption: "Crypto.Stream"
-  * Authentication: "Crypto.Auth"
+
+  == Public-key cryptography
+
+  * Authenticated encryption: "Crypto.Box"
 
 category: Cryptography
 
@@ -87,6 +89,7 @@ library:
     - safe-exceptions >= 0.1 && < 0.2
 
   reexported-modules:
+    - NaCl:Crypto.Box
     - NaCl:Crypto.Secretbox
 
 tests:

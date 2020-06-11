@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 03e840884f33f5935cba7897a47476ae30b4577c0d482ca7f4d75cdad144e7c1
+-- hash: 7c0aae74ccbff27c793d5c19b912933679271ee9c3ad1c39551e0ab9552768c5
 
 name:           NaCl
 version:        0.0.2.0
@@ -18,6 +18,10 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 = Secret-key cryptography
                 .
                   * Authenticated encryption: "Crypto.Secretbox"
+                .
+                = Public-key cryptography
+                .
+                  * Authenticated encryption: "Crypto.Box"
                 .
                 = Additional primitives
                 .
@@ -51,6 +55,8 @@ source-repository head
 
 library
   exposed-modules:
+      Crypto.Box
+      Crypto.Box.Internal
       Crypto.Secretbox
       Crypto.Secretbox.Internal
   other-modules:
@@ -72,6 +78,7 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
+      Test.Crypto.Box
       Test.Crypto.Secretbox
       Paths_NaCl
   hs-source-dirs:
@@ -87,6 +94,7 @@ test-suite test
     , bytestring >=0.9 && <0.11
     , hedgehog
     , libsodium
+    , memory
     , tasty
     , tasty-hedgehog
     , tasty-hunit

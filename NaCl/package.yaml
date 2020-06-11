@@ -16,6 +16,10 @@ description: |
 
     * Authenticated encryption: "Crypto.Secretbox"
 
+  = Public-key cryptography
+
+    * Authenticated encryption: "Crypto.Box"
+
   = Additional primitives
 
   Sodium is more portable, but some people prefer to stick to NaCl.
@@ -90,6 +94,7 @@ tests:
       - tasty-hunit
 
       - libsodium
+      - memory
 
     build-tools:
       - tasty-discover:tasty-discover
