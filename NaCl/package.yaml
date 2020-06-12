@@ -21,8 +21,7 @@ description: |
   Sodium provides useful algorithms, that are not part of NaCl,
   for example key derivation or random number generation.
   If you need them too (you probably do), you should use
-  <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
-  instead.
+  </package/crypto-sodium crypto-sodium> instead.
 
   = Secret-key cryptography
 

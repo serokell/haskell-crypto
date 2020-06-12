@@ -38,11 +38,11 @@ description: |
 
   == Secret-key cryptography
 
-  * Authenticated encryption: "Crypto.Secretbox"
+  * Authenticated symmetric-key encryption: "Crypto.Encrypt.Secretbox"
 
   == Public-key cryptography
 
-  * Authenticated encryption: "Crypto.Box"
+  * Authenticated public-key encryption: "Crypto.Encrypt.Box"
 
   == Additional primitives
 
@@ -97,10 +97,6 @@ library:
     - memory >= 0.1 && < 0.16
     - NaCl >= 0.0.1.0 && < 0.1
     - safe-exceptions >= 0.1 && < 0.2
-
-  reexported-modules:
-    - NaCl:Crypto.Box
-    - NaCl:Crypto.Secretbox
 
 tests:
   test:

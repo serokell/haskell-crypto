@@ -1,10 +1,10 @@
-cabal-version: 1.22
+cabal-version: 1.18
 
 -- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c31d183c6024b017efcf61c3c70f165f8174649fed594276bdbc33b3606ff2bc
+-- hash: 70511215680a4f53ed68e88ec8816661dd183e98f7e6e5d6cff8b67fb38c6f2f
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -41,11 +41,11 @@ description:    This is a collection of high-level cryptographic primitives base
                 .
                 == Secret-key cryptography
                 .
-                * Authenticated encryption: "Crypto.Secretbox"
+                * Authenticated symmetric-key encryption: "Crypto.Encrypt.Secretbox"
                 .
                 == Public-key cryptography
                 .
-                * Authenticated encryption: "Crypto.Box"
+                * Authenticated public-key encryption: "Crypto.Encrypt.Box"
                 .
                 == Additional primitives
                 .
@@ -70,6 +70,8 @@ source-repository head
 
 library
   exposed-modules:
+      Crypto.Encrypt.Box
+      Crypto.Encrypt.Secretbox
       Crypto.Init
       Crypto.Key
       Crypto.Key.Internal
@@ -77,9 +79,6 @@ library
       Crypto.Random
   other-modules:
       Paths_crypto_sodium
-  reexported-modules:
-      NaCl:Crypto.Box
-    , NaCl:Crypto.Secretbox
   hs-source-dirs:
       lib
   default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications

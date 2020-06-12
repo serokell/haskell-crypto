@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b46faad490376512bb02db4b2c008fd5ca027f27b19d1203f48d0efc82b0f257
+-- hash: 8ab106e89ebcba7c0f13eebea8c15b775ad761464881fe784dc9fa0e2d84fb5b
 
 name:           NaCl
 version:        0.0.2.0
@@ -24,8 +24,7 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 Sodium provides useful algorithms, that are not part of NaCl,
                 for example key derivation or random number generation.
                 If you need them too (you probably do), you should use
-                <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
-                instead.
+                </package/crypto-sodium crypto-sodium> instead.
                 .
                 = Secret-key cryptography
                 .

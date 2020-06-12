@@ -14,7 +14,7 @@ import qualified Libsodium as Na
 
 import Crypto.Random (generate)
 
-import qualified Crypto.Secretbox as Secretbox
+import qualified Crypto.Encrypt.Secretbox as Secretbox
 
 
 -- Well, this is kinda stupid, because we merely generate one random sequence,

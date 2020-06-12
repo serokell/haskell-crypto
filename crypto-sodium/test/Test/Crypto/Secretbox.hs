@@ -17,7 +17,7 @@ import qualified Hedgehog.Range as R
 import qualified Crypto.Key as Key (generate)
 import qualified Crypto.Random (generate)
 
-import qualified Crypto.Secretbox as Secretbox
+import qualified Crypto.Encrypt.Secretbox as Secretbox
 
 
 hprop_encode_decode :: Property
