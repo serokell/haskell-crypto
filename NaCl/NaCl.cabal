@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8ab106e89ebcba7c0f13eebea8c15b775ad761464881fe784dc9fa0e2d84fb5b
+-- hash: a06a30bdec553d633d9abcf27a25d70803d3bb187b4e909c30eb3d22009f5972
 
 name:           NaCl
 version:        0.0.2.0
@@ -60,13 +60,13 @@ library
       Paths_NaCl
   hs-source-dirs:
       lib
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , gdp >=0.0.0.1 && <0.1
-    , libsodium >=1.0 && <2
+    , libsodium >=1.0.11 && <2
     , memory >=0.14.15 && <0.16
     , safe-exceptions >=0.1 && <0.2
   default-language: Haskell2010
@@ -80,7 +80,7 @@ test-suite test
       Paths_NaCl
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures MultiParamTypeClasses NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
       tasty-discover:tasty-discover
@@ -90,8 +90,9 @@ test-suite test
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , hedgehog
-    , libsodium
-    , memory
+    , libsodium >=1.0.11 && <2
+    , memory >=0.14.15 && <0.16
+    , safe-exceptions >=0.1 && <0.2
     , tasty
     , tasty-hedgehog
     , tasty-hunit

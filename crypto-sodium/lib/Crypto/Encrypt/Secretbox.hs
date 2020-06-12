@@ -23,12 +23,16 @@
 -- (it is just a sequence of bytes), and when you need it in the
 -- future, you 'open' it using the same secret key.
 module Crypto.Encrypt.Secretbox
-  ( Key
+  (
+  -- * Keys
+    Key
   , toKey
 
+  -- * Nonce
   , Nonce
   , toNonce
 
+  -- * Encryption/decryption
   , create
   , open
   ) where

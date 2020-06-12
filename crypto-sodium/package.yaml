@@ -2,8 +2,10 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
+_common: !include "../hpack/common.yaml"
+
 name: crypto-sodium
-version: 0.0.2.0
+<<: *version
 synopsis: Easy-and-safe-to-use high-level cryptography based on Sodium
 description: |
   This is a collection of high-level cryptographic primitives based on
@@ -51,57 +53,24 @@ description: |
 
 category: Cryptography
 
-author: Kirill Elagin <kirelagin@serokell.io>
-copyright: 2020 Serokell
-license-file: LICENSES/MPL-2.0.txt
-
-github: serokell/haskell-crypto
+<<: *author
 
 extra-doc-files:
   - CHANGELOG.md
   - README.md
 
-ghc-options:
-  - -Wall
-  - -Wcompat
-  - -Wincomplete-record-updates
-  - -Wincomplete-uni-patterns
-  - -Wredundant-constraints
-
-default-extensions:
-  - DataKinds
-  - FlexibleContexts
-  - FlexibleInstances
-  - GeneralizedNewtypeDeriving
-  - KindSignatures
-  - LambdaCase
-  - MultiParamTypeClasses
-  - NamedFieldPuns
-  - NumericUnderscores
-  - OverloadedStrings
-  - PolyKinds
-  - ScopedTypeVariables
-  - TypeApplications
-
-dependencies:
-  - base >= 4.10 && < 4.15
-  - bytestring >= 0.9 && < 0.11
+<<: *defaults
 
 library:
-  source-dirs: lib
+  <<: *lib
 
   dependencies:
-    - gdp >= 0.0.0.1 && < 0.1
-    - cereal
-    - libsodium >= 1.0.11 && < 2
-    - memory >= 0.1 && < 0.16
+    - cereal >= 0.1 && < 0.6
     - NaCl >= 0.0.1.0 && < 0.1
-    - safe-exceptions >= 0.1 && < 0.2
 
 tests:
   test:
-    source-dirs: test
-    main: Test.hs
+    <<: *test
 
     dependencies:
       - crypto-sodium
@@ -113,8 +82,6 @@ tests:
       - tasty-hunit
 
       - base16-bytestring
-      - libsodium
-      - memory
 
     build-tools:
       - tasty-discover:tasty-discover

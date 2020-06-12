@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 70511215680a4f53ed68e88ec8816661dd183e98f7e6e5d6cff8b67fb38c6f2f
+-- hash: 2065a4753b421d92aed47e734304a53d436519d45dc6ae6b5b01ff16aa62182f
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -87,10 +87,9 @@ library
       NaCl >=0.0.1.0 && <0.1
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
-    , cereal
-    , gdp >=0.0.0.1 && <0.1
+    , cereal >=0.1 && <0.6
     , libsodium >=1.0.11 && <2
-    , memory >=0.1 && <0.16
+    , memory >=0.14.15 && <0.16
     , safe-exceptions >=0.1 && <0.2
   default-language: Haskell2010
 
@@ -117,8 +116,9 @@ test-suite test
     , bytestring >=0.9 && <0.11
     , crypto-sodium
     , hedgehog
-    , libsodium
-    , memory
+    , libsodium >=1.0.11 && <2
+    , memory >=0.14.15 && <0.16
+    , safe-exceptions >=0.1 && <0.2
     , tasty
     , tasty-hedgehog
     , tasty-hunit
