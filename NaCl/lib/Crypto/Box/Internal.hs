@@ -30,17 +30,24 @@ import qualified Libsodium as Na
 
 
 -- | Secret key that can be used for Box.
-type SecretKey = SizedByteArray Na.CRYPTO_BOX_SECRETKEYBYTES ScrubbedBytes
+--
+-- This type is parametrised by the actual data type that contains
+-- bytes. This can be, for example, a @ByteString@, but, since this
+-- is a secret key, it is better to use @ScrubbedBytes@.
+type SecretKey a = SizedByteArray Na.CRYPTO_BOX_SECRETKEYBYTES a
 
 -- | Convert bytes to a secret key.
-toSecretKey :: ScrubbedBytes -> Maybe SecretKey
+toSecretKey :: ByteArrayAccess bytes => bytes -> Maybe (SecretKey bytes)
 toSecretKey = sizedByteArray
 
 -- | Public key that can be used for Box.
-type PublicKey = SizedByteArray Na.CRYPTO_BOX_PUBLICKEYBYTES ByteString
+--
+-- This type is parametrised by the actual data type that contains
+-- bytes. This can be, for example, a @ByteString@.
+type PublicKey a = SizedByteArray Na.CRYPTO_BOX_PUBLICKEYBYTES a
 
 -- | Convert bytes to a public key.
-toPublicKey :: ByteString -> Maybe PublicKey
+toPublicKey :: ByteArrayAccess bytes => bytes -> Maybe (PublicKey bytes)
 toPublicKey = sizedByteArray
 
 -- | Generate a new 'SecretKey' together with its 'PublicKey'.
@@ -51,7 +58,7 @@ toPublicKey = sizedByteArray
 -- @Crypto.Init@ in
 -- <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
 -- to learn how to make this function thread-safe.
-keypair :: IO (PublicKey, SecretKey)
+keypair :: IO (PublicKey ByteString, SecretKey ScrubbedBytes)
 keypair = do
   (pk, sk) <-
     Sized.allocRet Proxy $ \skPtr ->
@@ -77,11 +84,12 @@ toNonce = sizedByteArray
 
 -- | Encrypt a message.
 create
-  ::  ( ByteArrayAccess nonce
+  ::  ( ByteArrayAccess pkBytes, ByteArrayAccess skBytes
+      , ByteArrayAccess nonce
       , ByteArrayAccess pt, ByteArray ct
       )
-  => PublicKey  -- ^ Receiver’s public key
-  -> SecretKey  -- ^ Sender’s secret key
+  => PublicKey pkBytes  -- ^ Receiver’s public key
+  -> SecretKey skBytes  -- ^ Sender’s secret key
   -> Nonce nonce  -- ^ Nonce
   -> pt -- ^ Plaintext message
   -> IO ct
@@ -109,11 +117,12 @@ create pk sk nonce msg = do
 
 -- | Decrypt a message.
 open
-  ::  ( ByteArrayAccess nonce
+  ::  ( ByteArrayAccess skBytes, ByteArrayAccess pkBytes
+      , ByteArrayAccess nonce
       , ByteArray pt, ByteArrayAccess ct
       )
-  => SecretKey  -- ^ Receiver’s secret key
-  -> PublicKey  -- ^ Sender’s public key
+  => SecretKey skBytes  -- ^ Receiver’s secret key
+  -> PublicKey pkBytes  -- ^ Sender’s public key
   -> Nonce nonce  -- ^ Nonce
   -> ct -- ^ Cyphertext
   -> IO (Maybe pt)

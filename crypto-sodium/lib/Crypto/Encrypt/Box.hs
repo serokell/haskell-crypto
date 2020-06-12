@@ -75,11 +75,12 @@ import qualified Crypto.Box as NaCl.Box
 -- This function adds authentication data, so if anyone modifies the cyphertext,
 -- @open@ will refuse to decrypt it.
 create
-  ::  ( ByteArrayAccess nonceBytes
+  ::  ( ByteArrayAccess pkBytes, ByteArrayAccess skBytes
+      , ByteArrayAccess nonceBytes
       , ByteArrayAccess ptBytes, ByteArray ctBytes
       )
-  => PublicKey  -- ^ Receiver’s public key
-  -> SecretKey  -- ^ Sender’s secret key
+  => PublicKey pkBytes  -- ^ Receiver’s public key
+  -> SecretKey skBytes  -- ^ Sender’s secret key
   -> Nonce nonceBytes  -- ^ Nonce
   -> ptBytes -- ^ Plaintext message
   -> ctBytes
