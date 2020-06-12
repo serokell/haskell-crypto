@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c7c5424f2e0e60fc564ab8e40a3c62ee7904bc82c859854b2bd02ffba396bc20
+-- hash: 2eaef8c5f85afdfc3c8629d4a1f6cce73a1f07a22449363d1aae18487c8d1ebd
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -63,6 +63,7 @@ library
   exposed-modules:
       Crypto.Init
       Crypto.Key
+      Crypto.Key.Internal
       Crypto.Pwhash.Internal
       Crypto.Random
   other-modules:
@@ -78,6 +79,7 @@ library
       NaCl >=0.0.1.0 && <0.1
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
+    , cereal
     , gdp >=0.0.0.1 && <0.1
     , libsodium >=1.0.11 && <2
     , memory >=0.1 && <0.16
@@ -88,6 +90,8 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
+      Test.Crypto.Gen
+      Test.Crypto.Key.Derivation
       Test.Crypto.Pwhash
       Test.Crypto.Random
       Test.Crypto.Secretbox
