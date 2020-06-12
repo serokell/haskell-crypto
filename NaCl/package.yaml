@@ -12,16 +12,6 @@ description: |
 
   __Note: this package is experimental and WIP.__
 
-  = Secret-key cryptography
-
-    * Authenticated encryption: "Crypto.Secretbox"
-
-  = Public-key cryptography
-
-    * Authenticated encryption: "Crypto.Box"
-
-  = Additional primitives
-
   Sodium is more portable, but some people prefer to stick to NaCl.
   We agree that it is better to be paranoid than sorry.
   That is why, even though this library uses
@@ -33,6 +23,14 @@ description: |
   If you need them too (you probably do), you should use
   <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
   instead.
+
+  = Secret-key cryptography
+
+    * Authenticated encryption: "Crypto.Secretbox"
+
+  = Public-key cryptography
+
+    * Authenticated encryption: "Crypto.Box"
 # Note: please, keep the lists above in sync with the one in crypto-sodium.
 
 category: Cryptography

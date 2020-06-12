@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7c0aae74ccbff27c793d5c19b912933679271ee9c3ad1c39551e0ab9552768c5
+-- hash: b46faad490376512bb02db4b2c008fd5ca027f27b19d1203f48d0efc82b0f257
 
 name:           NaCl
 version:        0.0.2.0
@@ -14,16 +14,6 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 interface. We believe, it is better to be paranoid than sorry.
                 .
                 __Note: this package is experimental and WIP.__
-                .
-                = Secret-key cryptography
-                .
-                  * Authenticated encryption: "Crypto.Secretbox"
-                .
-                = Public-key cryptography
-                .
-                  * Authenticated encryption: "Crypto.Box"
-                .
-                = Additional primitives
                 .
                 Sodium is more portable, but some people prefer to stick to NaCl.
                 We agree that it is better to be paranoid than sorry.
@@ -36,6 +26,14 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 If you need them too (you probably do), you should use
                 <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
                 instead.
+                .
+                = Secret-key cryptography
+                .
+                  * Authenticated encryption: "Crypto.Secretbox"
+                .
+                = Public-key cryptography
+                .
+                  * Authenticated encryption: "Crypto.Box"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues

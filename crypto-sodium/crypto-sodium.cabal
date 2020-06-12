@@ -4,7 +4,7 @@ cabal-version: 1.22
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2eaef8c5f85afdfc3c8629d4a1f6cce73a1f07a22449363d1aae18487c8d1ebd
+-- hash: c31d183c6024b017efcf61c3c70f165f8174649fed594276bdbc33b3606ff2bc
 
 name:           crypto-sodium
 version:        0.0.2.0
@@ -35,6 +35,10 @@ description:    This is a collection of high-level cryptographic primitives base
                 .
                 = How
                 .
+                == Library initialisation
+                .
+                * "Crypto.Init"
+                .
                 == Secret-key cryptography
                 .
                 * Authenticated encryption: "Crypto.Secretbox"
@@ -42,6 +46,11 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Public-key cryptography
                 .
                 * Authenticated encryption: "Crypto.Box"
+                .
+                == Additional primitives
+                .
+                * Key derivation and generation: "Crypto.Key"
+                * Cryptographically-secure random: "Crypto.Random"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues

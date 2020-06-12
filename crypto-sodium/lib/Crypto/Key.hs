@@ -29,8 +29,9 @@
 -- * mix extra “noise” into the derivation process to make it harder
 --   to pre-compute derived values in advance.
 --
--- A construction that satisfies both requirements is called a /key derivation
--- function (KDF)/. This module provides a convenient interface for deriving
+-- A construction that satisfies both requirements is called a
+-- /key derivation function (KDF)/.
+-- This module provides a convenient interface for deriving
 -- secure keys from passwords by the way of one such KDF.
 --
 -- == Use

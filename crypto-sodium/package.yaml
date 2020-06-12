@@ -32,6 +32,10 @@ description: |
 
   = How
 
+  == Library initialisation
+
+  * "Crypto.Init"
+
   == Secret-key cryptography
 
   * Authenticated encryption: "Crypto.Secretbox"
@@ -39,6 +43,11 @@ description: |
   == Public-key cryptography
 
   * Authenticated encryption: "Crypto.Box"
+
+  == Additional primitives
+
+  * Key derivation and generation: "Crypto.Key"
+  * Cryptographically-secure random: "Crypto.Random"
 
 category: Cryptography
 
