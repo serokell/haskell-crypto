@@ -6,6 +6,7 @@
 module Test.Crypto.Secretbox where
 
 import Hedgehog (Property, forAll, property, tripping)
+import Hedgehog.Internal.Property (forAllT)
 
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
@@ -21,8 +22,8 @@ import qualified Crypto.Secretbox as Secretbox
 
 hprop_encode_decode :: Property
 hprop_encode_decode = property $ do
-    key <- liftIO $ Key.generate
-    nonce <- liftIO $ Crypto.Random.generate @ByteString
+    key <- forAllT $ liftIO Key.generate
+    nonce <- forAllT $ liftIO $ Crypto.Random.generate @ByteString
     msg <- forAll $ G.bytes (R.linear 0 1_000)
     tripping msg (encodeBs key nonce) (decodeBs key nonce)
   where

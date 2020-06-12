@@ -7,6 +7,7 @@
 module Test.Crypto.Box where
 
 import Hedgehog (Property, forAll, property, tripping)
+import Hedgehog.Internal.Property (forAllT)
 import Test.HUnit ((@?=), Assertion)
 
 import Data.ByteArray (ScrubbedBytes, convert)
@@ -28,8 +29,8 @@ nonceSize = R.singleton $ fromIntegral Na.crypto_box_noncebytes
 
 hprop_encode_decode :: Property
 hprop_encode_decode = property $ do
-    (pkS, skS) <- liftIO $ Box.keypair
-    (pkR, skR) <- liftIO $ Box.keypair
+    (pkS, skS) <- forAllT $ liftIO $ Box.keypair
+    (pkR, skR) <- forAllT $ liftIO $ Box.keypair
     nonceBytes <- forAll $ G.bytes nonceSize
     let Just nonce = Box.toNonce nonceBytes
     msg <- forAll $ G.bytes (R.linear 0 1_000)
