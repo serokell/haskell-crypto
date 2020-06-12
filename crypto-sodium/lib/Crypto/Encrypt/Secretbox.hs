@@ -2,6 +2,8 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
+{-# OPTIONS_HADDOCK not-home #-}
+
 -- ! This module merely re-exports definitions from the corresponding
 -- ! module in NaCl and alters the Haddock to make it more specific
 -- ! to crypto-sodium. So, the docs should be kept more-or-less in sync.

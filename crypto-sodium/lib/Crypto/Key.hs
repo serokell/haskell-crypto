@@ -76,7 +76,7 @@
 --
 -- = Random key generation
 --
--- The 'random' function is great at generating new secure secret keys.
+-- The 'generate' function is great at generating new secure secret keys.
 module Crypto.Key
   ( type (!>=!)
 

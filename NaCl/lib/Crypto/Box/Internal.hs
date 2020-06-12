@@ -39,6 +39,7 @@ toSecretKey = sizedByteArray
 -- | Public key that can be used for Box.
 type PublicKey = SizedByteArray Na.CRYPTO_BOX_PUBLICKEYBYTES ByteString
 
+-- | Convert bytes to a public key.
 toPublicKey :: ByteString -> Maybe PublicKey
 toPublicKey = sizedByteArray
 
