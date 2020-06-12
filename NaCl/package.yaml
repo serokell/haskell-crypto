@@ -47,8 +47,7 @@ extra-doc-files:
 library:
   source-dirs: lib
 
-  dependencies:
-    - gdp >= 0.0.0.1 && < 0.1
+  dependencies: []
 
 tests:
   test:
