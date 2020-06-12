@@ -4,10 +4,10 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2065a4753b421d92aed47e734304a53d436519d45dc6ae6b5b01ff16aa62182f
+-- hash: 2d2774b6f1a9692b774ae9bb3b592030db69473bc4e1ee2aa080184a78ce4a10
 
 name:           crypto-sodium
-version:        0.0.2.0
+version:        0.0.3.0
 synopsis:       Easy-and-safe-to-use high-level cryptography based on Sodium
 description:    This is a collection of high-level cryptographic primitives based on
                 <https://libsodium.io/ Sodium>, spiced up with extra type-safety
