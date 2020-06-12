@@ -26,6 +26,7 @@ packages:
 
 ## Use
 
+See Haddock documentation at <https://hackage.haskell.org/package/crypto-sodium>.
 
 ## Contributing
 
