@@ -26,6 +26,7 @@
 
               # TODO: https://github.com/input-output-hk/haskell.nix/issues/626
               NaCl.cabal-generator = pkgs.lib.mkForce null;
+              crypto-sodium.cabal-generator = pkgs.lib.mkForce null;
             };
           })
         ];
