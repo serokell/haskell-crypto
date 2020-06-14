@@ -7,14 +7,14 @@
 -- It is best to import this module qualified:
 --
 -- @
--- import qualified Crypto.Box as Box
+-- import qualified NaCl.Box as Box
 --
 -- encrypted = Box.'create' pk sk nonce message
 -- decrypted = Box.'open' pk sk nonce encrypted
 -- @
 --
 -- This is @crypto_box_*@ from NaCl.
-module Crypto.Box
+module NaCl.Box
   ( PublicKey
   , toPublicKey
   , SecretKey
@@ -31,9 +31,9 @@ module Crypto.Box
 import Data.ByteArray (ByteArray, ByteArrayAccess)
 import System.IO.Unsafe (unsafeDupablePerformIO)
 
-import Crypto.Box.Internal (Nonce, PublicKey, SecretKey, keypair, toNonce, toPublicKey, toSecretKey)
+import NaCl.Box.Internal (Nonce, PublicKey, SecretKey, keypair, toNonce, toPublicKey, toSecretKey)
 
-import qualified Crypto.Box.Internal as I
+import qualified NaCl.Box.Internal as I
 
 
 -- | Encrypt a message.

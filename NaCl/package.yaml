@@ -27,11 +27,11 @@ description: |
 
   = Secret-key cryptography
 
-    * Authenticated encryption: "Crypto.Secretbox"
+    * Authenticated encryption: "NaCl.Secretbox"
 
   = Public-key cryptography
 
-    * Authenticated encryption: "Crypto.Box"
+    * Authenticated encryption: "NaCl.Box"
 # Note: please, keep the lists above in sync with the one in crypto-sodium.
 
 category: Cryptography

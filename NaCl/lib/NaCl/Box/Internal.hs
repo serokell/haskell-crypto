@@ -3,7 +3,7 @@
 -- SPDX-License-Identifier: MPL-2.0
 
 -- | Internals of @crypto_box@.
-module Crypto.Box.Internal
+module NaCl.Box.Internal
   ( SecretKey
   , toSecretKey
   , PublicKey

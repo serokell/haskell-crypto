@@ -49,9 +49,9 @@ module Crypto.Encrypt.Box
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import Crypto.Box (Nonce, PublicKey, SecretKey, keypair, open, toNonce, toPublicKey, toSecretKey)
+import NaCl.Box (Nonce, PublicKey, SecretKey, keypair, open, toNonce, toPublicKey, toSecretKey)
 
-import qualified Crypto.Box as NaCl.Box
+import qualified NaCl.Box as NaCl.Box
 
 
 -- | Encrypt a message.

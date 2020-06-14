@@ -4,15 +4,12 @@
 
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 
-module Test.Crypto.Box where
+module Test.NaCl.Secretbox where
 
 import Hedgehog (Property, forAll, property, tripping)
-import Hedgehog.Internal.Property (forAllT)
 import Test.HUnit ((@?=), Assertion)
 
-import Data.ByteArray (ScrubbedBytes, convert)
 import Data.ByteString (ByteString)
-import Control.Monad.IO.Class (liftIO)
 
 import qualified Data.ByteString as BS
 import qualified Libsodium as Na
@@ -20,42 +17,40 @@ import qualified Libsodium as Na
 import qualified Hedgehog.Gen as G
 import qualified Hedgehog.Range as R
 
-import qualified Crypto.Box as Box
+import qualified NaCl.Secretbox as Secretbox
 
+
+keySize :: R.Range Int
+keySize = R.singleton $ fromIntegral Na.crypto_secretbox_keybytes
 
 nonceSize :: R.Range Int
-nonceSize = R.singleton $ fromIntegral Na.crypto_box_noncebytes
+nonceSize = R.singleton $ fromIntegral Na.crypto_secretbox_noncebytes
 
 
 hprop_encode_decode :: Property
 hprop_encode_decode = property $ do
-    (pkS, skS) <- forAllT $ liftIO $ Box.keypair
-    (pkR, skR) <- forAllT $ liftIO $ Box.keypair
+    keyBytes <- forAll $ G.bytes keySize
+    let Just key = Secretbox.toKey keyBytes
     nonceBytes <- forAll $ G.bytes nonceSize
-    let Just nonce = Box.toNonce nonceBytes
+    let Just nonce = Secretbox.toNonce nonceBytes
     msg <- forAll $ G.bytes (R.linear 0 1_000)
-    tripping msg (encodeBs pkR skS nonce) (decodeBs skR pkS nonce)
+    tripping msg (encodeBs key nonce) (decodeBs key nonce)
   where
     -- We need to specify the type of the cyphertext as it is polymorphic
-    encodeBs pkR skS nonce msg = Box.create pkR skS nonce msg :: ByteString
-    decodeBs skR pkS nonce ct = Box.open skR pkS nonce ct :: Maybe ByteString
+    encodeBs key nonce msg = Secretbox.create key nonce msg :: ByteString
+    decodeBs key nonce ct = Secretbox.open key nonce ct :: Maybe ByteString
 
 
 -- Test vector from
--- https://github.com/jedisct1/libsodium/blob/f911b56650b680ecfc5d32b11b090849fc2b5f92/test/default/box.c
+-- https://github.com/jedisct1/libsodium/blob/f911b56650b680ecfc5d32b11b090849fc2b5f92/test/default/secretbox.c
 
-exampleSk :: ScrubbedBytes
-exampleSk = convert $ BS.pack $
-  [ 0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d, 0x3c, 0x16, 0xc1
-  , 0x72, 0x51, 0xb2, 0x66, 0x45, 0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0
-  , 0x99, 0x2a, 0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a
-  ]
-
-examplePk :: ByteString
-examplePk = BS.pack $
-  [ 0xde, 0x9e, 0xdb, 0x7d, 0x7b, 0x7d, 0xc1, 0xb4, 0xd3, 0x5b, 0x61
-  , 0xc2, 0xec, 0xe4, 0x35, 0x37, 0x3f, 0x83, 0x43, 0xc8, 0x5b, 0x78
-  , 0x67, 0x4d, 0xad, 0xfc, 0x7e, 0x14, 0x6f, 0x88, 0x2b, 0x4f
+exampleKey :: ByteString
+exampleKey = BS.pack $
+  [ 0x1b, 0x27, 0x55, 0x64, 0x73, 0xe9, 0x85
+  , 0xd4, 0x62, 0xcd, 0x51, 0x19, 0x7a, 0x9a
+  , 0x46, 0xc7, 0x60, 0x09, 0x54, 0x9e, 0xac
+  , 0x64, 0x74, 0xf2, 0x06, 0xc4, 0xee, 0x08
+  , 0x44, 0xf6, 0x83, 0x89
   ]
 
 exampleNonce :: ByteString
@@ -107,7 +102,12 @@ exampleCt = BS.pack $
 
 unit_example_create :: Assertion
 unit_example_create = do
-  let Just sk = Box.toSecretKey exampleSk
-  let Just pk = Box.toPublicKey examplePk
-  let Just nonce = Box.toNonce exampleNonce
-  Box.create pk sk nonce exampleMsg @?= exampleCt
+  let Just key = Secretbox.toKey exampleKey
+  let Just nonce = Secretbox.toNonce exampleNonce
+  Secretbox.create key nonce exampleMsg @?= exampleCt
+
+unit_example_open :: Assertion
+unit_example_open = do
+  let Just key = Secretbox.toKey exampleKey
+  let Just nonce = Secretbox.toNonce exampleNonce
+  Secretbox.open key nonce exampleCt @?= Just exampleMsg

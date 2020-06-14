@@ -39,10 +39,10 @@ module Crypto.Encrypt.Secretbox
   , open
   ) where
 
-import Crypto.Secretbox (Key, Nonce, open, toKey, toNonce)
+import NaCl.Secretbox (Key, Nonce, open, toKey, toNonce)
 import Data.ByteArray (ByteArray, ByteArrayAccess)
 
-import qualified Crypto.Secretbox as NaCl.Secretbox
+import qualified NaCl.Secretbox as NaCl.Secretbox
 
 
 -- | Encrypt a message.
