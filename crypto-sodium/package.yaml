@@ -41,6 +41,7 @@ description: |
   == Secret-key cryptography
 
   * Authenticated symmetric-key encryption: "Crypto.Encrypt.Secretbox"
+  * Message authentication codes: "Crypto.Mac" and "Crypto.Mac.Lazy"
 
   == Public-key cryptography
 

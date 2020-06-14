@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8f2d927fece7ed762df312f2f4393f5e471fe0068b66c7aa76c07a7ca34e220f
+-- hash: a4f0590ef9225d80b82dd24a96b981be9c2e677fe19637189b84f9356aaba660
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -42,6 +42,7 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Secret-key cryptography
                 .
                 * Authenticated symmetric-key encryption: "Crypto.Encrypt.Secretbox"
+                * Message authentication codes: "Crypto.Mac" and "Crypto.Mac.Lazy"
                 .
                 == Public-key cryptography
                 .
@@ -73,8 +74,11 @@ library
       Crypto.Encrypt.Box
       Crypto.Encrypt.Secretbox
       Crypto.Init
+      Crypto.Internal.Verify
       Crypto.Key
       Crypto.Key.Internal
+      Crypto.Mac
+      Crypto.Mac.Lazy
       Crypto.Pwhash.Internal
       Crypto.Random
   other-modules:
@@ -99,6 +103,7 @@ test-suite test
   other-modules:
       Test.Crypto.Gen
       Test.Crypto.Key.Derivation
+      Test.Crypto.Mac.Lazy
       Test.Crypto.Pwhash
       Test.Crypto.Random
       Test.Crypto.Secretbox

@@ -35,7 +35,7 @@ import NaCl.Auth.Internal (Key, Authenticator, toAuthenticator, toKey)
 import qualified NaCl.Auth.Internal as I
 
 
--- | Create an authenticator for a message
+-- | Create an authenticator for a message.
 --
 -- @
 -- authenticator = Auth.create key message
