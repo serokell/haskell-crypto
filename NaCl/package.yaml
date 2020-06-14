@@ -28,6 +28,7 @@ description: |
   = Secret-key cryptography
 
     * Authenticated encryption: "NaCl.Secretbox"
+    * Authentication: "NaCl.Auth"
 
   = Public-key cryptography
 
