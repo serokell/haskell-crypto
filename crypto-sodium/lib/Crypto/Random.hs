@@ -15,7 +15,7 @@ import GHC.TypeLits (KnownNat, natVal)
 import qualified Libsodium as Na
 
 
--- | Generate a sequence of cryptographically-secure renadom bytes.
+-- | Generate a sequence of cryptographically-secure random bytes.
 --
 -- The output of this function is suitable to generate secret keys.
 --

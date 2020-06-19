@@ -68,6 +68,7 @@ library:
   dependencies:
     - cereal >= 0.1 && < 0.6
     - NaCl >= 0.0.1.0 && < 0.1
+    - random >= 1.0 && < 1.2
 
 tests:
   test:
@@ -83,6 +84,7 @@ tests:
       - tasty-hunit
 
       - base16-bytestring
+      - deepseq
 
     build-tools:
       - tasty-discover:tasty-discover

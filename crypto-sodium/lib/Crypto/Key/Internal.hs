@@ -28,8 +28,8 @@ import GHC.TypeLits (type (<=))
 
 import qualified Libsodium as Na
 
+import Crypto.Nonce (generate)
 import Crypto.Pwhash.Internal (Algorithm (Argon2id_1_3), Params (..), Salt, pwhash)
-import Crypto.Random (generate)
 
 
 -- | Opaque bytes that contain the nonce and pwhash params.

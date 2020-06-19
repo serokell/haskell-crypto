@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 237aac56e65047b9d4d4a44892fbdd5c72a80c969bde9e2a757d1f92861e17c7
+-- hash: 28ef3f9ab55da139c99ad5302b63bc83963c90ee9ae195ac4c95941273e30db0
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -74,12 +74,14 @@ library
       Crypto.Encrypt.Box
       Crypto.Encrypt.Secretbox
       Crypto.Init
+      Crypto.Internal.Random
       Crypto.Internal.Verify
       Crypto.Key
       Crypto.Key.Internal
       Crypto.Mac
       Crypto.Mac.Lazy
       Crypto.Mac.Stream
+      Crypto.Nonce
       Crypto.Pwhash.Internal
       Crypto.Random
   other-modules:
@@ -95,6 +97,7 @@ library
     , cereal >=0.1 && <0.6
     , libsodium >=1.0.11 && <2
     , memory >=0.14.15 && <0.16
+    , random >=1.0 && <1.2
     , safe-exceptions >=0.1 && <0.2
   default-language: Haskell2010
 
@@ -105,6 +108,7 @@ test-suite test
       Test.Crypto.Gen
       Test.Crypto.Key.Derivation
       Test.Crypto.Mac.Lazy
+      Test.Crypto.Nonce
       Test.Crypto.Pwhash
       Test.Crypto.Random
       Test.Crypto.Secretbox
@@ -121,6 +125,7 @@ test-suite test
     , base16-bytestring
     , bytestring >=0.9 && <0.11
     , crypto-sodium
+    , deepseq
     , hedgehog
     , libsodium >=1.0.11 && <2
     , memory >=0.14.15 && <0.16
