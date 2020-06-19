@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: 2020 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+_common: !include "../hpack/common.yaml"
+
+name: crypto-sodium-streamly
+<<: *version
+synopsis: Streaming for crypto-sodium
+description: |
+  __Note: this package is experimental and WIP.__
+
+  @crypto-sodium@ provides a high-level cryptography API.
+  Some of the functions that it implements work with data that can be large.
+  In order to work with it efficiently, it provides versions of those functions
+  that can work on lazy byte strings.
+
+  This library expand support for lazy data further by providing a streaming
+  interface. We chose @streamly@ as the streaming library for this purpose, as
+  we found it to be the most advanced and well-thought one of all. The good news
+  is that most other streams can be easily converted to @streamly@, so you don’t
+  miss out, no matter which library you decide to use in your project.
+
+category: Cryptography, Streaming
+
+<<: *author
+
+extra-doc-files:
+  - CHANGELOG.md
+  - README.md
+
+<<: *defaults
+
+library:
+  <<: *lib
+
+  dependencies:
+    - crypto-sodium >= 0.0.1.0 && < 0.1
+    - streamly >= 0.1 && < 0.8
+
+tests:
+  test:
+    <<: *test
+
+    dependencies:
+      - crypto-sodium
+      - crypto-sodium-streamly
+
+      - hedgehog
+      - tasty
+      - tasty-hedgehog
+
+      - streamly >= 0.2 && < 0.8
+
+    build-tools:
+      - tasty-discover:tasty-discover

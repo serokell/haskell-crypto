@@ -3,19 +3,20 @@
 -- SPDX-License-Identifier: MPL-2.0
 
 {-# OPTIONS_HADDOCK not-home #-}
+{-# LANGUAGE TypeFamilies #-}
 
 -- ! This module has the same API as the corresponding strict module.
 -- ! So, the docs should be kept more-or-less in sync.
 
--- | Message authentication codes for lazy @ByteString@.
+-- | Message authentication codes for @streamly@ streams.
 --
 -- It is best to import this module qualified:
 --
 -- @
--- import qualified Crypto.Mac.Lazy as Mac
+-- import qualified Crypto.Mac.Streamly as Mac
 --
--- authenticator = Mac.'create' key message
--- if Secretbox.'verify' key message authenticator
+-- authenticator = Mac.'create' key messageStream
+-- if Secretbox.'verify' key messageStream authenticator
 -- then {- Ok! -}
 -- else {- Fail! -}
 -- @
@@ -25,9 +26,11 @@
 -- but its integrity needs to be guaranteed.
 --
 -- Functions in this module are similar to the ones in "Crypto.Mac",
--- but work with /lazy/ @ByteString@s, so they are suitable for stream-like
--- processing of data, as they consume the byte string in chunks.
-module Crypto.Mac.Lazy
+-- but work with @streamly@ streams. See @streamly@ documentation for
+-- how to convert other streams to @streamly@ streams or use
+-- "Crypto.Mac.Stream" from @crypto-sodium@ to easily implement first-class
+-- support for your favourite streaming library.
+module Crypto.Mac.Streamly
   (
   -- * Keys
     Key
@@ -42,15 +45,12 @@ module Crypto.Mac.Lazy
   , verify
   ) where
 
-import Control.Monad (forM_)
+import Control.Monad.IO.Class (MonadIO)
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import Data.ByteString.Lazy (ByteString)
-import NaCl.Auth (Authenticator, Key, toAuthenticator, toKey)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import Crypto.Mac.Stream (Authenticator, Key, createStreaming, toAuthenticator, toKey, verifyStreaming)
+import Streamly (SerialT)
 
-import qualified Data.ByteString.Lazy as BSL
-
-import Crypto.Mac.Stream (createStreaming, verifyStreaming)
+import qualified Streamly.Prelude as S
 
 
 -- | Create an authenticator for a message.
@@ -62,21 +62,20 @@ import Crypto.Mac.Stream (createStreaming, verifyStreaming)
 -- *   @key@ is the secret key used for authentication. See "Crypto.Key" for how
 --     to get one.
 --
--- *   @message@ is the data you are authenticating.
+-- *   @messageStream@ is the data you are authenticating.
 --
 -- This function produces authentication data, so if anyone modifies the message,
 -- @verify@ will return @False@.
 create
   ::  ( ByteArray authBytes
       , ByteArrayAccess keyBytes
+      , ByteArrayAccess msg
+      , MonadIO m, m ~ IO
       )
   => Key keyBytes  -- ^ Secret key.
-  -> ByteString  -- ^ Message to authenticate.
-  -> Authenticator authBytes
-create key msg = unsafeDupablePerformIO $
-  -- Our “stream” is actually a pure list, so the computation is pure
-  createStreaming key (forM_ $ BSL.toChunks msg)
-
+  -> SerialT m msg  -- ^ Message to authenticate.
+  -> m (Authenticator authBytes)
+create key stream = createStreaming key (flip S.mapM_ stream)
 
 -- | Verify an authenticator for a message.
 --
@@ -84,7 +83,7 @@ create key msg = unsafeDupablePerformIO $
 -- isValid = Auth.verify key message authenticator
 -- @
 --
--- * @key@ and @message@ are the same as when creating the authenticator.
+-- * @key@ and @messageStream@ are the same as when creating the authenticator.
 -- * @authenticator@ is the output of 'create'.
 --
 -- This function will return @False@ if the message is not exactly the same
@@ -92,11 +91,11 @@ create key msg = unsafeDupablePerformIO $
 verify
   ::  ( ByteArrayAccess authBytes
       , ByteArrayAccess keyBytes
+      , ByteArrayAccess msg
+      , MonadIO m, m ~ IO
       )
   => Key keyBytes  -- ^ Secret key.
-  -> ByteString  -- ^ Authenticated message.
+  -> SerialT m msg  -- ^ Authenticated message.
   -> Authenticator authBytes  -- ^ Authenticator tag.
-  -> Bool
-verify key msg auth = unsafeDupablePerformIO $
-  -- Our “stream” is actually a pure list, so the computation is pure
-  verifyStreaming key (forM_ $ BSL.toChunks msg) auth
+  -> m Bool
+verify key stream = verifyStreaming key (flip S.mapM_ stream)

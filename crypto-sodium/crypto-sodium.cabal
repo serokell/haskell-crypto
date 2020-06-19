@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a4f0590ef9225d80b82dd24a96b981be9c2e677fe19637189b84f9356aaba660
+-- hash: 237aac56e65047b9d4d4a44892fbdd5c72a80c969bde9e2a757d1f92861e17c7
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -79,6 +79,7 @@ library
       Crypto.Key.Internal
       Crypto.Mac
       Crypto.Mac.Lazy
+      Crypto.Mac.Stream
       Crypto.Pwhash.Internal
       Crypto.Random
   other-modules:

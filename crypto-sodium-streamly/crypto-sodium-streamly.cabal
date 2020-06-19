@@ -1,0 +1,84 @@
+cabal-version: 1.18
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 98d97ddc44ba02d0f4f0733e6d56abc60e764dc4987611e1b90fe38b522d35e9
+
+name:           crypto-sodium-streamly
+version:        0.0.3.1
+synopsis:       Streaming for crypto-sodium
+description:    __Note: this package is experimental and WIP.__
+                .
+                @crypto-sodium@ provides a high-level cryptography API.
+                Some of the functions that it implements work with data that can be large.
+                In order to work with it efficiently, it provides versions of those functions
+                that can work on lazy byte strings.
+                .
+                This library expand support for lazy data further by providing a streaming
+                interface. We chose @streamly@ as the streaming library for this purpose, as
+                we found it to be the most advanced and well-thought one of all. The good news
+                is that most other streams can be easily converted to @streamly@, so you don’t
+                miss out, no matter which library you decide to use in your project.
+category:       Cryptography, Streaming
+homepage:       https://github.com/serokell/haskell-crypto#readme
+bug-reports:    https://github.com/serokell/haskell-crypto/issues
+author:         Kirill Elagin <kirelagin@serokell.io>
+maintainer:     Kirill Elagin <kirelagin@serokell.io>
+copyright:      2020 Serokell
+license:        MPL-2.0
+license-file:   LICENSES/MPL-2.0.txt
+build-type:     Simple
+extra-doc-files:
+    CHANGELOG.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/serokell/haskell-crypto
+
+library
+  exposed-modules:
+      Crypto.Mac.Streamly
+  other-modules:
+      Paths_crypto_sodium_streamly
+  hs-source-dirs:
+      lib
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      base >=4.10 && <4.15
+    , bytestring >=0.9 && <0.11
+    , crypto-sodium >=0.0.1.0 && <0.1
+    , libsodium >=1.0.11 && <2
+    , memory >=0.14.15 && <0.16
+    , safe-exceptions >=0.1 && <0.2
+    , streamly >=0.1 && <0.8
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Test.hs
+  other-modules:
+      Test.Crypto.Mac.Streamly
+      Paths_crypto_sodium_streamly
+  hs-source-dirs:
+      test
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-tool-depends:
+      tasty-discover:tasty-discover
+  build-depends:
+      base >=4.10 && <4.15
+    , bytestring >=0.9 && <0.11
+    , crypto-sodium
+    , crypto-sodium-streamly
+    , hedgehog
+    , libsodium >=1.0.11 && <2
+    , memory >=0.14.15 && <0.16
+    , safe-exceptions >=0.1 && <0.2
+    , streamly >=0.2 && <0.8
+    , tasty
+    , tasty-hedgehog
+  default-language: Haskell2010
