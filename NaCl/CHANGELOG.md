@@ -8,3 +8,4 @@
 * `Secretbox`
 * `Box`
 * `Auth`
+* `Sign`
