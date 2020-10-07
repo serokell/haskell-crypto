@@ -33,6 +33,7 @@ description: |
   = Public-key cryptography
 
     * Authenticated encryption: "NaCl.Box"
+    * Public-key signatures: "NaCl.Sign"
 # Note: please, keep the lists above in sync with the one in crypto-sodium.
 
 category: Cryptography
@@ -62,6 +63,8 @@ tests:
       - tasty
       - tasty-hedgehog
       - tasty-hunit
+
+      - base16-bytestring
 
     build-tools:
       - tasty-discover:tasty-discover

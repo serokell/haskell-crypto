@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f50b2ea4bc57d1e5ad431b3804731ada8b0c9d9f7c797558ec091be5042401f4
+-- hash: 8d218c46a4afc02bf263ba1ca23caa560af0968c6a82cbf6e67d1815e1093593
 
 name:           NaCl
 version:        0.0.3.1
@@ -34,6 +34,7 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 = Public-key cryptography
                 .
                   * Authenticated encryption: "NaCl.Box"
+                  * Public-key signatures: "NaCl.Sign"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
@@ -59,6 +60,8 @@ library
       NaCl.Box.Internal
       NaCl.Secretbox
       NaCl.Secretbox.Internal
+      NaCl.Sign
+      NaCl.Sign.Internal
   other-modules:
       Paths_NaCl
   hs-source-dirs:
@@ -80,6 +83,7 @@ test-suite test
       Test.NaCl.Auth
       Test.NaCl.Box
       Test.NaCl.Secretbox
+      Test.NaCl.Sign
       Paths_NaCl
   hs-source-dirs:
       test
@@ -91,6 +95,7 @@ test-suite test
       HUnit
     , NaCl
     , base >=4.10 && <4.15
+    , base16-bytestring
     , bytestring >=0.9 && <0.11
     , hedgehog
     , libsodium >=1.0.11 && <2

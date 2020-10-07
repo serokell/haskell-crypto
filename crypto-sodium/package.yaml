@@ -46,6 +46,7 @@ description: |
   == Public-key cryptography
 
   * Authenticated public-key encryption: "Crypto.Encrypt.Box"
+  * Public-key signatures: "Crypto.Sign"
 
   == Additional primitives
 

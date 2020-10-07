@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 28ef3f9ab55da139c99ad5302b63bc83963c90ee9ae195ac4c95941273e30db0
+-- hash: 9f8ea181e97c657781ac56b728997d7ef444d83405ab7ec54fe804976ff8402c
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -47,6 +47,7 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Public-key cryptography
                 .
                 * Authenticated public-key encryption: "Crypto.Encrypt.Box"
+                * Public-key signatures: "Crypto.Sign"
                 .
                 == Additional primitives
                 .
@@ -84,6 +85,7 @@ library
       Crypto.Nonce
       Crypto.Pwhash.Internal
       Crypto.Random
+      Crypto.Sign
   other-modules:
       Paths_crypto_sodium
   hs-source-dirs:
