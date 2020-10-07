@@ -72,7 +72,7 @@ import qualified NaCl.Secretbox.Internal as I
 -- *   @message@ is the data you are encrypting.
 --
 -- This function adds authentication data, so if anyone modifies the cyphertext,
--- @open@ will refuse to decrypt it.
+-- 'open' will refuse to decrypt it.
 create
   ::  ( ByteArrayAccess keyBytes, ByteArrayAccess nonceBytes
       , ByteArrayAccess ptBytes, ByteArray ctBytes

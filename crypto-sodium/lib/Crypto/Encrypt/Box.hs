@@ -61,7 +61,7 @@ import qualified NaCl.Box as NaCl.Box
 -- @
 --
 -- *   @pk@ is the receiver’s public key, used for encryption.
---     @sk@ is the sender’s public key, used for authentication.
+--     @sk@ is the sender’s secret key, used for authentication.
 --
 --     These are generated using 'keypair' and are supposed to be exchanged
 --     in advance. Both parties need to know their own secret key and the other’s
@@ -73,7 +73,7 @@ import qualified NaCl.Box as NaCl.Box
 -- *   @message@ is the data you are encrypting.
 --
 -- This function adds authentication data, so if anyone modifies the cyphertext,
--- @open@ will refuse to decrypt it.
+-- 'open' will refuse to decrypt it.
 create
   ::  ( ByteArrayAccess pkBytes, ByteArrayAccess skBytes
       , ByteArrayAccess nonceBytes
