@@ -17,10 +17,9 @@ module NaCl.Secretbox.Internal
 import Prelude hiding (length)
 
 import Data.ByteArray (ByteArray, ByteArrayAccess, allocRet, length, withByteArray)
+import Data.ByteArray.Sized (SizedByteArray, sizedByteArray)
 
 import qualified Libsodium as Na
-
-import Data.ByteArray.Sized (SizedByteArray, sizedByteArray)
 
 
 -- | Encryption key that can be used for Secretbox.

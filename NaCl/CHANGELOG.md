@@ -9,3 +9,4 @@
 * `Box`
 * `Auth`
 * `Sign`
+* `Stream`
