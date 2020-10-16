@@ -41,7 +41,7 @@ import qualified NaCl.Stream.Internal as I
 
 -- | Generate a stream of pseudo-random bytes.
 generate
-  ::  forall key nonce n ct.
+  ::  forall n key nonce ct.
       ( ByteArrayAccess key, ByteArrayAccess nonce
       , ByteArrayN n ct
       , n <= MaxStreamSize
