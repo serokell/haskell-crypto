@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6a3b58021734c9a788836bd32566e1e7183f3a242f48b1a10041c3498a1c3dd4
+-- hash: 2826fcf31a8184928ec2cf5d009b859757794cef4f0d6a9fe6c79195f33ee3fc
 
 name:           NaCl
 version:        0.0.3.1
@@ -58,6 +58,8 @@ library
       NaCl.Auth.Internal
       NaCl.Box
       NaCl.Box.Internal
+      NaCl.Hash
+      NaCl.Hash.Internal
       NaCl.Secretbox
       NaCl.Secretbox.Internal
       NaCl.Sign
@@ -84,6 +86,7 @@ test-suite test
   other-modules:
       Test.NaCl.Auth
       Test.NaCl.Box
+      Test.NaCl.Hash
       Test.NaCl.Secretbox
       Test.NaCl.Sign
       Test.NaCl.Stream

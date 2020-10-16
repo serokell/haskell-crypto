@@ -10,3 +10,4 @@
 * `Auth`
 * `Sign`
 * `Stream`
+* `Hash`
