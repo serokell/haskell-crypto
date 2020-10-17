@@ -32,7 +32,7 @@ module NaCl.Stream
 import Data.ByteArray (ByteArray, ByteArrayAccess)
 import Data.ByteArray.Sized (ByteArrayN)
 import GHC.TypeLits (type (<=))
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import NaCl.Stream.Internal (Nonce, Key, MaxStreamSize, toNonce, toKey)
 
@@ -51,7 +51,7 @@ generate
   -> ct
 generate key nonce =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.generate key nonce
+  unsafePerformIO $ I.generate key nonce
 
 
 -- | Encrypt/decrypt a message.
@@ -65,4 +65,4 @@ xor
   -> ct
 xor key nonce msg =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.xor key nonce msg
+  unsafePerformIO $ I.xor key nonce msg

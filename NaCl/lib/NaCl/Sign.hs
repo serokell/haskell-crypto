@@ -26,7 +26,7 @@ module NaCl.Sign
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import NaCl.Sign.Internal (PublicKey, SecretKey, keypair, toPublicKey, toSecretKey)
 
@@ -57,7 +57,7 @@ create
   -> ctBytes
 create sk msg =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.create sk msg
+  unsafePerformIO $ I.create sk msg
 
 
 -- | Verify a signature.
@@ -80,4 +80,4 @@ open
   -> Maybe ptBytes
 open pk ct =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.open pk ct
+  unsafePerformIO $ I.open pk ct

@@ -28,7 +28,7 @@ module NaCl.Auth
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import NaCl.Auth.Internal (Key, Authenticator, toAuthenticator, toKey)
 
@@ -58,7 +58,7 @@ create
   -> Authenticator authBytes
 create key msg = do
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.create key msg
+  unsafePerformIO $ I.create key msg
 
 
 -- | Verify an authenticator for a message.
@@ -83,4 +83,4 @@ verify
   -> Bool
 verify key msg auth = do
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.verify key msg auth
+  unsafePerformIO $ I.verify key msg auth

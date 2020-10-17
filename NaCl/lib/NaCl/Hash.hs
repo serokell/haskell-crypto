@@ -23,7 +23,7 @@ module NaCl.Hash
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import NaCl.Hash.Internal (HashSha256, HashSha512)
 
@@ -45,7 +45,7 @@ sha256
   -> HashSha256 hashBytes
 sha256 msg =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.sha256 msg
+  unsafePerformIO $ I.sha256 msg
 
 -- | Hash a message using SHA-512.
 --
@@ -62,4 +62,4 @@ sha512
   -> HashSha512 hashBytes
 sha512 msg =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.sha512 msg
+  unsafePerformIO $ I.sha512 msg

@@ -46,7 +46,7 @@ import Control.Monad (forM_)
 import Data.ByteArray (ByteArray, ByteArrayAccess)
 import Data.ByteString.Lazy (ByteString)
 import NaCl.Auth (Authenticator, Key, toAuthenticator, toKey)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Data.ByteString.Lazy as BSL
 
@@ -73,7 +73,7 @@ create
   => Key keyBytes  -- ^ Secret key.
   -> ByteString  -- ^ Message to authenticate.
   -> Authenticator authBytes
-create key msg = unsafeDupablePerformIO $
+create key msg = unsafePerformIO $
   -- Our “stream” is actually a pure list, so the computation is pure
   createStreaming key (forM_ $ BSL.toChunks msg)
 
@@ -97,6 +97,6 @@ verify
   -> ByteString  -- ^ Authenticated message.
   -> Authenticator authBytes  -- ^ Authenticator tag.
   -> Bool
-verify key msg auth = unsafeDupablePerformIO $
+verify key msg auth = unsafePerformIO $
   -- Our “stream” is actually a pure list, so the computation is pure
   verifyStreaming key (forM_ $ BSL.toChunks msg) auth

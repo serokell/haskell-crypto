@@ -26,7 +26,7 @@ module NaCl.Secretbox
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import NaCl.Secretbox.Internal (Key, Nonce, toKey, toNonce)
 
@@ -83,7 +83,7 @@ create
   -> ctBytes
 create key nonce msg =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.create key nonce msg
+  unsafePerformIO $ I.create key nonce msg
 
 
 -- | Decrypt a message.
@@ -107,4 +107,4 @@ open
   -> Maybe ptBytes
 open key nonce ct =
   -- This IO is safe, because it is pure.
-  unsafeDupablePerformIO $ I.open key nonce ct
+  unsafePerformIO $ I.open key nonce ct

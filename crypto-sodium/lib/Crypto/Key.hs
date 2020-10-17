@@ -94,7 +94,7 @@ import Data.ByteArray (ByteArrayAccess, ScrubbedBytes)
 import Data.ByteArray.Sized (ByteArrayN, SizedByteArray)
 import Data.Kind (Constraint)
 import GHC.TypeLits (type (<=), KnownNat)
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Libsodium as Na
 
@@ -183,7 +183,7 @@ rederive
   -> passwd  -- ^ Password to rederive from.
   -> Maybe key
 rederive slip passwd =
-  unsafeDupablePerformIO $ I.rederive slip passwd
+  unsafePerformIO $ I.rederive slip passwd
   -- This IO is safe, because it is pure.
 
 
