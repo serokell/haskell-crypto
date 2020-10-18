@@ -4,4 +4,4 @@
 
 ### Added
 
-* MAC: `Crypto.Mac.Streamly`
+* Symmetric encryption: `Crypto.Encryption.Symmetric.Streamly`

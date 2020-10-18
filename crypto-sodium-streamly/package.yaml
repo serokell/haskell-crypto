@@ -36,7 +36,10 @@ library:
 
   dependencies:
     - crypto-sodium >= 0.0.1.0 && < 0.1
-    - streamly >= 0.1 && < 0.8
+    - safe-exceptions >= 0.1 && < 0.2
+    # - streamly > 0.7.2
+    - streamly == 0.7.2 # FIXME: `bracket` is fixed in master and unreleased yet
+    - transformers >= 0.2 && < 0.6
 
 tests:
   test:
@@ -46,11 +49,13 @@ tests:
       - crypto-sodium
       - crypto-sodium-streamly
 
+      - HUnit
       - hedgehog
       - tasty
       - tasty-hedgehog
+      - tasty-hunit
 
-      - streamly >= 0.2 && < 0.8
+      - streamly
 
     build-tools:
       - tasty-discover:tasty-discover

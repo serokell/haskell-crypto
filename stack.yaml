@@ -11,5 +11,18 @@ packages:
 extra-deps:
   - libsodium-1.0.18.1
 
+  # dev version of streamly
+  - git: https://github.com/composewell/streamly.git
+    commit: 4223969ab5e20d2f8c20b9403032b9eb56951cbb
+  - fusion-plugin-types-0.1.0@sha256:0f11bbc445ab8ae3dbbb3d5d2ea198bdb1ac020518b7f4f7579035dc89182438,1506
+
 nix:
-  packages: [ libsodium pkgconfig haskellPackages.c2hs ]
+  packages:
+    - pkgconfig
+    - libsodium
+
+    # new streamly wants this
+    - darwin.apple_sdk.frameworks.Cocoa
+
+    # libsodium does not declare this dep
+    - haskellPackages.c2hs
