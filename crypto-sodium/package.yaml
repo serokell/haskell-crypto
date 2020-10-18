@@ -40,12 +40,12 @@ description: |
 
   == Secret-key cryptography
 
-  * Authenticated symmetric-key encryption: "Crypto.Encrypt.Secretbox"
+  * Authenticated symmetric-key encryption: "Crypto.Encrypt.Symmetric"
   * Message authentication codes: "Crypto.Mac" and "Crypto.Mac.Lazy"
 
   == Public-key cryptography
 
-  * Authenticated public-key encryption: "Crypto.Encrypt.Box"
+  * Authenticated public-key encryption: "Crypto.Encrypt.Public"
   * Public-key signatures: "Crypto.Sign"
 
   == Additional primitives

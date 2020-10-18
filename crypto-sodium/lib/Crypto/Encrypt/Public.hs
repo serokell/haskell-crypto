@@ -13,10 +13,10 @@
 -- It is best to import this module qualified:
 --
 -- @
--- import qualified Crypto.Encrypt.Box as Box
+-- import qualified Crypto.Encrypt.Public as Public
 --
--- encrypted = Box.'create' pk sk nonce message
--- decrypted = Box.'open' pk sk nonce encrypted
+-- encrypted = Public.'encrypt' pk sk nonce message
+-- decrypted = Public.'decrypt' pk sk nonce encrypted
 -- @
 --
 -- A box is an abstraction from NaCl. One way to think about it
@@ -30,7 +30,7 @@
 -- needs to know your public key too, but this is actually very important
 -- as otherwise the receiver would not be able to have any guarantees
 -- regarding the source or the integrity of the data.
-module Crypto.Encrypt.Box
+module Crypto.Encrypt.Public
   (
   -- * Keys
     PublicKey
@@ -44,12 +44,12 @@ module Crypto.Encrypt.Box
   , toNonce
 
   -- * Encryption/decryption
-  , create
-  , open
+  , encrypt
+  , decrypt
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess)
-import NaCl.Box (Nonce, PublicKey, SecretKey, keypair, open, toNonce, toPublicKey, toSecretKey)
+import NaCl.Box (Nonce, PublicKey, SecretKey, keypair, toNonce, toPublicKey, toSecretKey)
 
 import qualified NaCl.Box as NaCl.Box
 
@@ -57,7 +57,7 @@ import qualified NaCl.Box as NaCl.Box
 -- | Encrypt a message.
 --
 -- @
--- encrypted = Box.create pk sk nonce message
+-- encrypted = Public.encrypt pk sk nonce message
 -- @
 --
 -- *   @pk@ is the receiver’s public key, used for encryption.
@@ -73,8 +73,8 @@ import qualified NaCl.Box as NaCl.Box
 -- *   @message@ is the data you are encrypting.
 --
 -- This function adds authentication data, so if anyone modifies the cyphertext,
--- 'open' will refuse to decrypt it.
-create
+-- 'decrypt' will refuse to decrypt it.
+encrypt
   ::  ( ByteArrayAccess pkBytes, ByteArrayAccess skBytes
       , ByteArrayAccess nonceBytes
       , ByteArrayAccess ptBytes, ByteArray ctBytes
@@ -84,4 +84,30 @@ create
   -> Nonce nonceBytes  -- ^ Nonce
   -> ptBytes -- ^ Plaintext message
   -> ctBytes
-create = NaCl.Box.create
+encrypt = NaCl.Box.create
+
+
+-- | Decrypt a message.
+--
+-- @
+-- decrypted = Public.decrypt sk pk nonce encrypted
+-- @
+--
+-- * @sk@ is the receiver’s secret key, used for decription.
+-- * @pk@ is the sender’s public key, used for authentication.
+-- * @nonce@ is the same that was used for encryption.
+-- * @encrypted@ is the output of 'encrypt'.
+--
+-- This function will return @Nothing@ if the encrypted message was tampered
+-- with after it was encrypted.
+decrypt
+  ::  ( ByteArrayAccess skBytes, ByteArrayAccess pkBytes
+      , ByteArrayAccess nonceBytes
+      , ByteArray ptBytes, ByteArrayAccess ctBytes
+      )
+  => SecretKey skBytes  -- ^ Receiver’s secret key
+  -> PublicKey pkBytes  -- ^ Sender’s public key
+  -> Nonce nonceBytes  -- ^ Nonce
+  -> ctBytes -- ^ Encrypted message (cyphertext)
+  -> Maybe ptBytes
+decrypt = NaCl.Box.open

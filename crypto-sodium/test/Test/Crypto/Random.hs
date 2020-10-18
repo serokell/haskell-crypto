@@ -14,7 +14,7 @@ import qualified Libsodium as Na
 
 import Crypto.Random (generate)
 
-import qualified Crypto.Encrypt.Secretbox as Secretbox
+import qualified Crypto.Encrypt.Symmetric as Symmetric
 
 
 -- Well, this is kinda stupid, because we merely generate one random sequence,
@@ -23,14 +23,14 @@ import qualified Crypto.Encrypt.Secretbox as Secretbox
 --
 -- Also it is not thread-safe, since we don’t call @sodiumInit@...
 
-unit_generate_Secretbox_key :: Assertion
-unit_generate_Secretbox_key = do
-  key <- generate :: IO (Secretbox.Key ByteString)
+unit_generate_Symmetric_key :: Assertion
+unit_generate_Symmetric_key = do
+  key <- generate :: IO (Symmetric.Key ByteString)
   let bs = unSizedByteArray key
   BS.length bs @?= fromIntegral Na.crypto_secretbox_keybytes
 
-unit_generate_Secretbox_nonce :: Assertion
-unit_generate_Secretbox_nonce = do
-  nonce <- generate :: IO (Secretbox.Nonce ByteString)
+unit_generate_Symmetric_nonce :: Assertion
+unit_generate_Symmetric_nonce = do
+  nonce <- generate :: IO (Symmetric.Nonce ByteString)
   let bs = unSizedByteArray nonce
   BS.length bs @?= fromIntegral Na.crypto_secretbox_noncebytes

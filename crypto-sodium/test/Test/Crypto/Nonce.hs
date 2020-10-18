@@ -17,7 +17,7 @@ import qualified Libsodium as Na
 
 import Crypto.Nonce (generate)
 
-import qualified Crypto.Encrypt.Secretbox as Secretbox
+import qualified Crypto.Encrypt.Symmetric as Symmetric
 import qualified Crypto.Nonce as Nonce (generate)
 import qualified Crypto.Pwhash.Internal as Pwhash
 import qualified Crypto.Random as Random (generate)
@@ -27,9 +27,9 @@ import qualified Crypto.Random as Random (generate)
 -- but this is just to check that the lengths are correctly propagated
 -- through types. So, good enough.
 
-unit_generate_Secretbox_nonce :: Assertion
-unit_generate_Secretbox_nonce = do
-  nonce <- generate :: IO (Secretbox.Nonce ByteString)
+unit_generate_Symmetric_nonce :: Assertion
+unit_generate_Symmetric_nonce = do
+  nonce <- generate :: IO (Symmetric.Nonce ByteString)
   let bs = unSizedByteArray nonce
   BS.length bs @?= fromIntegral Na.crypto_secretbox_noncebytes
 
