@@ -25,16 +25,22 @@ description: |
   If you need them too (you probably do), you should use
   </package/crypto-sodium crypto-sodium> instead.
 
-  = Secret-key cryptography
-
-    * Authenticated encryption: "NaCl.Secretbox"
-    * Authentication: "NaCl.Auth"
-
   = Public-key cryptography
 
     * Authenticated encryption: "NaCl.Box"
+    * Scalar pultiplication: TBD
     * Public-key signatures: "NaCl.Sign"
-# Note: please, keep the lists above in sync with the one in crypto-sodium.
+
+  = Secret-key cryptography
+
+    * Authenticated encryption: "NaCl.Secretbox"
+    * Unauthenticated streaming encryption: "NaCl.Stream"
+    * Authentication: "NaCl.Auth"
+
+  = Low-level functions
+
+    * Hashing: "NaCl.Hash"
+    * String comparison: TBD
 
 category: Cryptography
 
