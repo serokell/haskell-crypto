@@ -55,10 +55,7 @@ import qualified NaCl.Secretbox.Internal as I
 --     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
 --     has functions to help in either case.
 --
--- *   @nonce@ is an extra noise that ensures that if you encrypt the same
---     message with the same key multiple times, you will get different ciphertexts,
---     which is required for
---     <https://en.wikipedia.org/wiki/Semantic_security semantic security>.
+-- *   @nonce@ is an extra noise that is required for security.
 --     There are two standard ways of getting it:
 --
 --     1. /Use a counter/. In this case you keep a counter of encrypted messages,
@@ -68,6 +65,11 @@ import qualified NaCl.Secretbox.Internal as I
 --     Since the nonce is large enough, the chances of you using the same
 --     nonce twice are negligible. For useful helpers, see @Crypto.Random@,
 --     in <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>.
+--
+--     In either case, you need to be able to provide the same nonce when decrypting,
+--     so you should be able to recover it by computation (e.g. in the case of
+--     a counter) or you should store it alongside the encrypted data. The nonce
+--     is not secret, so it is perfectly ok to store it in plaintext.
 --
 -- *   @message@ is the data you are encrypting.
 --

@@ -15,7 +15,7 @@
 -- import qualified Crypto.Mac.Lazy as Mac
 --
 -- authenticator = Mac.'create' key message
--- if Secretbox.'verify' key message authenticator
+-- if Mac.'verify' key message authenticator
 -- then {- Ok! -}
 -- else {- Fail! -}
 -- @

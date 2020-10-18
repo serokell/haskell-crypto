@@ -63,6 +63,11 @@ import qualified NaCl.Box.Internal as I
 --     nonce twice are negligible. For useful helpers, see @Crypto.Random@,
 --     in <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>.
 --
+--     In either case, you need to be able to provide the same nonce when decrypting,
+--     so you should be able to recover it by computation (e.g. in the case of
+--     a counter) or you should store it alongside the encrypted data. The nonce
+--     is not secret, so it is perfectly ok to store it in plaintext.
+--
 -- *   @message@ is the data you are encrypting.
 --
 -- This function adds authentication data, so if anyone modifies the cyphertext,

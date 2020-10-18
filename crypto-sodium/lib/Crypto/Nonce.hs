@@ -8,7 +8,19 @@
 
 -- | This module gives different ways of obtaining nonces.
 --
+-- A “nonce” is additional input provided to an encryption algorithm.
+-- The most important rule is that you cannot use the same nonce to encrypt
+-- more than one message. What will happen if you reuse a nonce depends
+-- on the details of the cryptographic algorithm, but, in general, expect
+-- the cryptography to fail completely in this case.
+--
 -- = Random nonce generation
+--
+-- The easiest way to guarantee that nonces do not repeat is to use a
+-- random nonce every time. If the nonce is large enough, then the
+-- probably of a random nonce repeating will be negligible.
+-- All cryptographic functions provided by this library can be
+-- safely used with random nonces.
 --
 -- The 'generate' function is great at generating new random nonces.
 -- The nonces are produced using the standard @random@ package, so
