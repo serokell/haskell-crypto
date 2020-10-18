@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b6393bd474d005fbfe0cee4361b6b806ccbe592631881200d8de5ee67d0a6c8f
+-- hash: 9c51312c4bc8b403f0bb43eb183f23b2d5b07f59d4b0e59d3b352a46e71bed1a
 
 name:           NaCl
 version:        0.0.3.1
@@ -41,7 +41,7 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 = Low-level functions
                 .
                   * Hashing: "NaCl.Hash"
-                  * String comparison: TBD
+                  * String comparison: "NaCl.Verify"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
@@ -73,6 +73,7 @@ library
       NaCl.Sign.Internal
       NaCl.Stream
       NaCl.Stream.Internal
+      NaCl.Verify
   other-modules:
       Paths_NaCl
   hs-source-dirs:
@@ -97,6 +98,7 @@ test-suite test
       Test.NaCl.Secretbox
       Test.NaCl.Sign
       Test.NaCl.Stream
+      Test.NaCl.Verify
       Paths_NaCl
   hs-source-dirs:
       test

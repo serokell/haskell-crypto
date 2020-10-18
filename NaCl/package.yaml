@@ -40,7 +40,7 @@ description: |
   = Low-level functions
 
     * Hashing: "NaCl.Hash"
-    * String comparison: TBD
+    * String comparison: "NaCl.Verify"
 
 category: Cryptography
 
