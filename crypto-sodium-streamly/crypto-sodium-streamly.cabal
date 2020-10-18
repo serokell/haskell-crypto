@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 98d97ddc44ba02d0f4f0733e6d56abc60e764dc4987611e1b90fe38b522d35e9
+-- hash: 93e3002e38b15b28e99bd04004b2cab0fd03e8ccb68ceea295e6f3ccb062ed00
 
 name:           crypto-sodium-streamly
 version:        0.0.3.1
@@ -39,8 +39,6 @@ source-repository head
   location: https://github.com/serokell/haskell-crypto
 
 library
-  exposed-modules:
-      Crypto.Mac.Streamly
   other-modules:
       Paths_crypto_sodium_streamly
   hs-source-dirs:
@@ -61,7 +59,6 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
-      Test.Crypto.Mac.Streamly
       Paths_crypto_sodium_streamly
   hs-source-dirs:
       test
