@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9c51312c4bc8b403f0bb43eb183f23b2d5b07f59d4b0e59d3b352a46e71bed1a
+-- hash: 02d75a760d155808f06d2882b374e181cf39e91ddf3f347f59ab2950a451b91e
 
 name:           NaCl
 version:        0.0.3.1
@@ -29,7 +29,7 @@ description:    This library uses <https://libsodium.org Sodium> under the hood,
                 = Public-key cryptography
                 .
                   * Authenticated encryption: "NaCl.Box"
-                  * Scalar pultiplication: TBD
+                  * Scalar multiplication: "NaCl.Scalarmult"
                   * Public-key signatures: "NaCl.Sign"
                 .
                 = Secret-key cryptography
@@ -67,6 +67,7 @@ library
       NaCl.Box.Internal
       NaCl.Hash
       NaCl.Hash.Internal
+      NaCl.Scalarmult
       NaCl.Secretbox
       NaCl.Secretbox.Internal
       NaCl.Sign
@@ -95,6 +96,7 @@ test-suite test
       Test.NaCl.Auth
       Test.NaCl.Box
       Test.NaCl.Hash
+      Test.NaCl.Scalarmult
       Test.NaCl.Secretbox
       Test.NaCl.Sign
       Test.NaCl.Stream

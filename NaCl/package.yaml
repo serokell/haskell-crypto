@@ -28,7 +28,7 @@ description: |
   = Public-key cryptography
 
     * Authenticated encryption: "NaCl.Box"
-    * Scalar pultiplication: TBD
+    * Scalar multiplication: "NaCl.Scalarmult"
     * Public-key signatures: "NaCl.Sign"
 
   = Secret-key cryptography

@@ -12,3 +12,4 @@
 * `Stream`
 * `Hash`
 * `Verify`
+* `Scalarmult`
