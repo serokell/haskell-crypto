@@ -32,7 +32,7 @@ import Crypto.Nonce (generate)
 import Crypto.Pwhash.Internal (Algorithm (Argon2id_1_3), Params (..), Salt, pwhash)
 
 
--- | Opaque bytes that contain the nonce and pwhash params.
+-- | Opaque bytes that contain the salt and pwhash params.
 type DerivationSlip = ByteString
 
 -- | Data contained in a derivation slip.
@@ -45,23 +45,23 @@ type DerivationSlip = ByteString
 -- used (for forward-compatibility).
 data DerivationSlipData = DerivationSlipData
   { params :: !Params
-  , nonce :: !(Salt ByteString)
+  , salt :: !(Salt ByteString)
   }
   deriving (Eq, Show)
 
 instance Serialize DerivationSlipData where
-  put (DerivationSlipData Params{opsLimit, memLimit} nonce) = do
+  put (DerivationSlipData Params{opsLimit, memLimit} salt) = do
     put (1 :: Word8)  -- algorithm marker for forward-compatibility
     put opsLimit >> put memLimit
-    put (unSizedByteArray nonce)
+    put (unSizedByteArray salt)
   get = do
     tag <- get @Word8
     when (tag /= 1) $ fail "Wrong algorithm parameters encoding tag"
     params <- Params <$> get <*> get
-    mnonce <- sizedByteArray <$> get @ByteString
-    case mnonce of
-      Nothing -> fail "Unexpected nonce size"
-      Just nonce -> pure $ DerivationSlipData params nonce
+    msalt <- sizedByteArray <$> get @ByteString
+    case msalt of
+      Nothing -> fail "Unexpected salt size"
+      Just salt -> pure $ DerivationSlipData params salt
 
 
 -- | Encode derivation slip data into bytes.
@@ -85,9 +85,9 @@ derive
   -> passwd
   -> IO (Maybe (key, DerivationSlip))
 derive params passwd = do
-  nonce <- generate
-  mkey <- pwhash Argon2id_1_3 params passwd nonce
-  let slip = DerivationSlipData params nonce
+  salt <- generate
+  mkey <- pwhash Argon2id_1_3 params passwd salt
+  let slip = DerivationSlipData params salt
   pure $ fmap (, derivationSlipEncode slip) mkey
 
 -- | Derive the same key form the same password again.
@@ -102,5 +102,5 @@ rederive
 rederive slip passwd =
   case derivationSlipDecode slip of
     Nothing -> pure Nothing
-    Just (DerivationSlipData{params, nonce}) ->
-      pwhash Argon2id_1_3 params passwd nonce
+    Just (DerivationSlipData{params, salt}) ->
+      pwhash Argon2id_1_3 params passwd salt
