@@ -22,7 +22,7 @@ nix:
     - libsodium
 
     # new streamly wants this
-    - darwin.apple_sdk.frameworks.Cocoa
+    # - darwin.apple_sdk.frameworks.Cocoa
 
     # libsodium does not declare this dep
     - haskellPackages.c2hs
