@@ -36,10 +36,33 @@ module Crypto.Sign
   , SecretKey
   , toSecretKey
   , keypair
+  , keypairFromSeed
 
   -- * Signing/verifying
   , create
   , open
   ) where
 
-import NaCl.Sign (PublicKey, SecretKey, create, keypair, open, toPublicKey, toSecretKey)
+import Data.ByteArray (ByteArrayAccess, ScrubbedBytes, withByteArray)
+import Data.ByteString (ByteString)
+import Data.ByteArray.Sized (alloc, allocRet)
+import Data.Functor (void)
+import Data.Proxy (Proxy(..))
+
+import qualified Libsodium as Na
+
+import NaCl.Sign
+  (PublicKey, SecretKey, create, keypair, open, toPublicKey, toSecretKey)
+
+-- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed.
+keypairFromSeed
+  :: ByteArrayAccess seed
+  => seed
+  -> IO (PublicKey ByteString, SecretKey ScrubbedBytes)
+keypairFromSeed seed = do
+  allocRet Proxy $ \skPtr ->
+    alloc $ \pkPtr ->
+    withByteArray seed $ \sdPtr ->
+    -- always returns 0, so we don’t check it
+    void $ Na.crypto_sign_seed_keypair pkPtr skPtr sdPtr
+

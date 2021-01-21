@@ -38,6 +38,7 @@ module Crypto.Encrypt.Public
   , SecretKey
   , toSecretKey
   , keypair
+  , keypairFromSeed
 
   -- * Nonce
   , Nonce
@@ -48,8 +49,15 @@ module Crypto.Encrypt.Public
   , decrypt
   ) where
 
-import Data.ByteArray (ByteArray, ByteArrayAccess)
-import NaCl.Box (Nonce, PublicKey, SecretKey, keypair, toNonce, toPublicKey, toSecretKey)
+import Data.ByteArray (ByteArray, ByteArrayAccess, ScrubbedBytes, withByteArray)
+import Data.ByteArray.Sized as Sized (alloc, allocRet)
+import Data.ByteString (ByteString)
+import Data.Functor (void)
+import Data.Proxy (Proxy(..))
+import NaCl.Box
+  (Nonce, PublicKey, SecretKey, keypair, toNonce, toPublicKey, toSecretKey)
+
+import qualified Libsodium as Na
 
 import qualified NaCl.Box as NaCl.Box
 
@@ -111,3 +119,16 @@ decrypt
   -> ctBytes -- ^ Encrypted message (cyphertext)
   -> Maybe ptBytes
 decrypt = NaCl.Box.open
+
+
+-- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed.
+keypairFromSeed
+  :: ByteArrayAccess seed
+  => seed
+  -> IO (PublicKey ByteString, SecretKey ScrubbedBytes)
+keypairFromSeed seed = do
+  allocRet Proxy $ \skPtr ->
+    alloc $ \pkPtr ->
+    withByteArray seed $ \sdPtr ->
+    -- always returns 0, so we don’t check it
+    void $ Na.crypto_box_seed_keypair pkPtr skPtr sdPtr
