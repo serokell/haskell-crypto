@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* Keypair generation from seed: `Crypto.Sign` and `Crypto.Encrypt.Public`
+
 ### Added
 
 * `sodiumInit`

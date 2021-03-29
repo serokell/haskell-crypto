@@ -9,6 +9,7 @@ import Hedgehog (Property, forAll, property, tripping)
 import Hedgehog.Internal.Property (forAllT)
 
 import Control.Monad.IO.Class (liftIO)
+import Data.ByteArray.Sized (unsafeSizedByteArray)
 import Data.ByteString (ByteString)
 
 import qualified Hedgehog.Gen as G
@@ -25,7 +26,7 @@ seedSize = R.singleton $ fromIntegral Na.crypto_box_seedbytes
 
 hprop_encode_decode_seed :: Property
 hprop_encode_decode_seed = property $ do
-    seed <- forAll $ G.bytes seedSize
+    seed <- fmap unsafeSizedByteArray . forAll $ G.bytes seedSize
     (pk, sk) <- forAllT . liftIO $ Sign.keypairFromSeed seed
     msg <- forAll $ G.bytes (R.linear 0 1_000)
     tripping msg (encodeBs sk) (decodeBs pk)
