@@ -36,10 +36,52 @@ module Crypto.Sign
   , SecretKey
   , toSecretKey
   , keypair
+  , keypairFromSeed
+  , unsafeKeypairFromSeed
 
   -- * Signing/verifying
   , create
   , open
   ) where
 
-import NaCl.Sign (PublicKey, SecretKey, create, keypair, open, toPublicKey, toSecretKey)
+import Data.ByteArray (ByteArrayAccess, ScrubbedBytes, withByteArray)
+import Data.ByteString (ByteString)
+import Data.ByteArray.Sized (SizedByteArray, alloc, allocRet)
+import Data.Functor (void)
+import Data.Proxy (Proxy(..))
+import System.IO.Unsafe (unsafePerformIO)
+
+import qualified Libsodium as Na
+
+import NaCl.Sign
+  (PublicKey, SecretKey, create, keypair, open, toPublicKey, toSecretKey)
+
+-- | Seed for deterministically generating a keypair.
+--
+-- In accordance with Libsodium's documentation, the seed must be of size
+-- @Na.CRYPTO_SIGN_SEEDBYTES@.
+--
+-- This type is parametrised by the actual data type that contains
+-- bytes. This can be, for example, a @ByteString@.
+type Seed a = SizedByteArray Na.CRYPTO_SIGN_SEEDBYTES a
+
+
+-- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed.
+keypairFromSeed
+  :: ByteArrayAccess seed
+  => Seed seed
+  -> IO (PublicKey ByteString, SecretKey ScrubbedBytes)
+keypairFromSeed seed = do
+  allocRet Proxy $ \skPtr ->
+    alloc $ \pkPtr ->
+    withByteArray seed $ \sdPtr ->
+    -- always returns 0, so we don’t check it
+    void $ Na.crypto_sign_seed_keypair pkPtr skPtr sdPtr
+
+-- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed,
+-- in a pure context.
+unsafeKeypairFromSeed
+  :: ByteArrayAccess seed
+  => Seed seed
+  -> (PublicKey ByteString, SecretKey ScrubbedBytes)
+unsafeKeypairFromSeed = unsafePerformIO . keypairFromSeed

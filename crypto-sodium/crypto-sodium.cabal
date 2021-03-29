@@ -1,10 +1,10 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.3.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 18904259dc25423e15ecf6c62de6ccea4fedf93e3ebab101001b8ef38c63b169
+-- hash: b6b0de8198a9a37175769ca414c31672ff13aebc9184ed123a6e3715e7677462
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -106,12 +106,14 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
+      Test.Crypto.Encrypt.Public
       Test.Crypto.Encrypt.Symmetric
       Test.Crypto.Gen
       Test.Crypto.Key.Derivation
       Test.Crypto.Nonce
       Test.Crypto.Pwhash
       Test.Crypto.Random
+      Test.Crypto.Sign
       Paths_crypto_sodium
   hs-source-dirs:
       test

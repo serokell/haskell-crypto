@@ -12,9 +12,6 @@ packages:
   original:
     hackage: libsodium-1.0.18.1
 - completed:
-    cabal-file:
-      size: 35273
-      sha256: da6a45807355e43f85ff8aef99e9e9e1ab291d31a82bb7f1a62ec7406950301b
     name: streamly
     version: 0.7.2
     git: https://github.com/composewell/streamly.git
@@ -34,7 +31,7 @@ packages:
     hackage: fusion-plugin-types-0.1.0@sha256:0f11bbc445ab8ae3dbbb3d5d2ea198bdb1ac020518b7f4f7579035dc89182438,1506
 snapshots:
 - completed:
-    size: 524163
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/14/25.yaml
-    sha256: 97548b4e927a8a862d4a203687ca18a3f5d2ae75b4b72c946fb29c17df1a5082
-  original: lts-14.25
+    size: 563099
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/2.yaml
+    sha256: 92b1a17e31d0a978fca4bf270305d4d1dd8092271bf60eafbc9349c890854026
+  original: lts-17.2
