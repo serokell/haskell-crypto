@@ -49,7 +49,7 @@ import Data.ByteString (ByteString)
 import Data.ByteArray.Sized (SizedByteArray, alloc, allocRet)
 import Data.Functor (void)
 import Data.Proxy (Proxy(..))
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Libsodium as Na
 
@@ -59,16 +59,14 @@ import NaCl.Sign
 -- | Seed for deterministically generating a keypair.
 --
 -- In accordance with Libsodium's documentation, the seed must be of size
--- @Na.CRYPTO_BOX_SEEDBYTES@.
+-- @Na.CRYPTO_SIGN_SEEDBYTES@.
 --
 -- This type is parametrised by the actual data type that contains
 -- bytes. This can be, for example, a @ByteString@.
-type Seed a = SizedByteArray Na.CRYPTO_BOX_SEEDBYTES a
+type Seed a = SizedByteArray Na.CRYPTO_SIGN_SEEDBYTES a
 
 
 -- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed.
---
--- The given seed must be @Na.CRYPTO_BOX_SEEDBYTES@ bytes long.
 keypairFromSeed
   :: ByteArrayAccess seed
   => Seed seed
@@ -82,10 +80,8 @@ keypairFromSeed seed = do
 
 -- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed,
 -- in a pure context.
---
--- The given seed must be @Na.CRYPTO_BOX_SEEDBYTES@ bytes long.
 unsafeKeypairFromSeed
   :: ByteArrayAccess seed
   => Seed seed
   -> (PublicKey ByteString, SecretKey ScrubbedBytes)
-unsafeKeypairFromSeed = unsafeDupablePerformIO . keypairFromSeed
+unsafeKeypairFromSeed = unsafePerformIO . keypairFromSeed

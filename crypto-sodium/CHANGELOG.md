@@ -2,8 +2,6 @@
 
 ## Unreleased
 
-* Keypair generation from seed: `Crypto.Sign` and `Crypto.Encrypt.Public`
-
 ### Added
 
 * `sodiumInit`
@@ -12,3 +10,4 @@
 * MAC: `Crypto.Mac`, `Crypto.Mac.Lazy`
 * Random nonce generation: `Crypto.Nonce`
 * Public-key signatures: `Crypto.Sign`
+* Keypair generation from seed: `Crypto.Sign` and `Crypto.Encrypt.Public`

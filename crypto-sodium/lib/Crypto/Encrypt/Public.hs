@@ -55,7 +55,7 @@ import Data.ByteArray.Sized as Sized (SizedByteArray, alloc, allocRet)
 import Data.ByteString (ByteString)
 import Data.Functor (void)
 import Data.Proxy (Proxy(..))
-import System.IO.Unsafe (unsafeDupablePerformIO)
+import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Libsodium as Na
 
@@ -134,8 +134,6 @@ type Seed a = SizedByteArray Na.CRYPTO_BOX_SEEDBYTES a
 
 
 -- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed.
---
--- The given seed must be @Na.CRYPTO_BOX_SEEDBYTES@ bytes long.
 keypairFromSeed
   :: ByteArrayAccess seed
   => Seed seed
@@ -149,10 +147,8 @@ keypairFromSeed seed = do
 
 -- | Generate a new 'SecretKey' together with its 'PublicKey' from a given seed,
 -- in a pure context.
---
--- The given seed must be @Na.CRYPTO_BOX_SEEDBYTES@ bytes long.
 unsafeKeypairFromSeed
   :: ByteArrayAccess seed
   => Seed seed
   -> (PublicKey ByteString, SecretKey ScrubbedBytes)
-unsafeKeypairFromSeed = unsafeDupablePerformIO . keypairFromSeed
+unsafeKeypairFromSeed = unsafePerformIO . keypairFromSeed

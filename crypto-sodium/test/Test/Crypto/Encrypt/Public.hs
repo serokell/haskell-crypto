@@ -5,11 +5,11 @@
 -- | “Integration” tests: using Public with our helpers.
 module Test.Crypto.Encrypt.Public where
 
-import Hedgehog (Property, forAll, property, tripping)
+import Hedgehog (Property, evalMaybe, forAll, property, tripping)
 import Hedgehog.Internal.Property (forAllT)
 
 import Control.Monad.IO.Class (liftIO)
-import Data.ByteArray.Sized (unsafeSizedByteArray)
+import Data.ByteArray.Sized (sizedByteArray)
 import Data.ByteString (ByteString)
 
 import qualified Libsodium as Na
@@ -29,8 +29,8 @@ seedSize = R.singleton $ fromIntegral Na.crypto_box_seedbytes
 
 hprop_encode_decode_seed :: Property
 hprop_encode_decode_seed = property $ do
-    seed1 <- fmap unsafeSizedByteArray . forAll $ G.bytes seedSize
-    seed2 <- fmap unsafeSizedByteArray . forAll $ G.bytes seedSize
+    seed1 <- evalMaybe . sizedByteArray =<< forAll (G.bytes seedSize)
+    seed2 <- evalMaybe . sizedByteArray =<< forAll (G.bytes seedSize)
     (pkS, skS) <- forAllT . liftIO $ Public.keypairFromSeed seed1
     (pkR, skR) <- forAllT . liftIO $ Public.keypairFromSeed seed2
     nonceBytes <- forAll $ G.bytes nonceSize
