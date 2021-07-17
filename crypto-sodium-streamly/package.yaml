@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-_common: !include "../hpack/common.yaml"
+_common: !include "../hpack/package.yaml"
 
 name: crypto-sodium-streamly
 <<: *version
