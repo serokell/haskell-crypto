@@ -80,6 +80,12 @@
       } //
       (mapAttrs' (n: p: { name = "build-" + n; value = p; }) packages) //
       (mapAttrs' (n: p: { name = "test-" + n; value = p.checks.test; }) local);
+
+      devShell = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          nixFlakes
+        ];
+      };
     }
   );
 }

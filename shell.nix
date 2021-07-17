@@ -14,4 +14,4 @@
   )
   {
     src = ./.;
-  }).defaultNix
+  }).shellNix
