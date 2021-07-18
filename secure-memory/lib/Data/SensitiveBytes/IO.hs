@@ -13,9 +13,10 @@ import Control.Exception.Safe (MonadMask)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
+import System.IO (stdin, stdout)
 
-import Data.SensitiveBytes (SensitiveBytes, WithSecureMemory)
-import Data.SensitiveBytes.Internal (resized, withSensitiveBytes)
+import Data.SensitiveBytes (WithSecureMemory)
+import Data.SensitiveBytes.Internal (SensitiveBytes (..), resized, withSensitiveBytes)
 import Data.SensitiveBytes.IO.Internal.Password (readPassword)
 
 -- | Ask the user to enter their password and read it securely.
@@ -50,8 +51,8 @@ withUserPassword
   -> (SensitiveBytes s -> m r)  -- ^ Action to perform with the password.
   -> m r
 withUserPassword maxLength mprompt act =
-    withSensitiveBytes allocSize $ \sb -> do
-      size <- liftIO $ readPassword prompt sb
+    withSensitiveBytes allocSize $ \sb@SensitiveBytes{ bufPtr } -> do
+      size <- liftIO $ readPassword stdin stdout prompt bufPtr allocSize
       act (resized size sb)
   where
     defaultPrompt = "Password: "

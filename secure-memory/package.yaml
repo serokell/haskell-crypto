@@ -59,8 +59,15 @@ tests:
       - tasty-hedgehog
       - tasty-hunit
 
+      - async
+      - unix
+
     build-tools:
       - tasty-discover:tasty-discover
+
+    ghc-options:
+      - -threaded
+      - '"-with-rtsopts=-N -A64m -AL256m"'
 
 executables:
   checkpw:

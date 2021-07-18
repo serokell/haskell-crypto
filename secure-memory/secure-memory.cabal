@@ -114,6 +114,7 @@ test-suite test
   main-is: Test.hs
   other-modules:
       Test.Data.SensitiveBytes
+      Test.Data.SensitiveBytes.IO.Password
       Paths_secure_memory
   hs-source-dirs:
       test
@@ -131,11 +132,12 @@ test-suite test
       PolyKinds
       ScopedTypeVariables
       TypeApplications
-  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -threaded "-with-rtsopts=-N -A64m -AL256m"
   build-tool-depends:
       tasty-discover:tasty-discover
   build-depends:
       HUnit
+    , async
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , hedgehog
@@ -146,4 +148,5 @@ test-suite test
     , tasty
     , tasty-hedgehog
     , tasty-hunit
+    , unix
   default-language: Haskell2010

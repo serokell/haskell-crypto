@@ -2,7 +2,16 @@
 //
 // SPDX-License-Identifier: MPL-2.0
 
-/* Read a newline-terminated string into `buf` from stdin respecting the locale encoding.
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <wchar.h>
+
+
+/* Read a newline-terminated string into `buf`
+ * from `fin` respecting the locale encoding.
  *
  * If the text that the user enters before ending the line does not fit
  * into the buffer, the extra characters will be silently discarded
@@ -25,14 +34,14 @@
  * Would be cool to do it right here, but this is C :).
  * (Note that this means that the resulting byte strings can _still_
  * turn out different if the user’s input fits into the buffer on one
- * system, but does not fin on another, so allocate generously.)
+ * system, but does not fit on another, so allocate generously.)
  *
  * The resulting string is not null-terminated.
  *
  * Returns the size (in bytes) of the string read or a negative
  * number if an error occurred.
  *
- * -1 = there was an error when reading (see getwchar/fgetwc).
+ * -1 = there was an error when reading (see fgetwc).
  * -2 = something is off with the locale (see wctomb). This is actually impossible.
  * In either case, `errno` will contain information on the actual error.
  *
@@ -41,23 +50,7 @@
  * in their configured system locale encoding, so their setup is messed up
  * and there is absolutely no way for us to interpret their input. Too bad.
  */
-int readline_max(char *buf, int buf_size);
-
-#if defined(mingw32_HOST_OS) /* windows */
-
-// TODO: implement a version for Windows
-//       (honestly, the one below should probably work, but someone needs to try)
-
-#else /* not windows => unix */
-
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <wchar.h>
-
-int readline_max(char *buf, int buf_size) {
-  const int fin = STDIN_FILENO;
+int readline_max(FILE* fin, char *buf, int buf_size) {
   char *p = (char*)buf;
   int  no_more_space = 0;
 
@@ -65,7 +58,7 @@ int readline_max(char *buf, int buf_size) {
 
   wint_t wc;
   char encoded[MB_CUR_MAX];
-  while ((wc = getwchar()) != WEOF) {
+  while ((wc = fgetwc(fin)) != WEOF) {
     // Read a unicode codepoint and see if it is a line terminator
     // (note: we only accept these two, not what Unicode defines)
     if (wc == L'\n' || wc == L'\r') {
@@ -97,6 +90,29 @@ int readline_max(char *buf, int buf_size) {
   } else {
     return p - buf;
   }
+}
+
+
+///
+// The functions below are simple wrappers that convert
+// from the OS-specific handle/fd that we can get from Haskell
+// to FILE*.
+
+#if defined(mingw32_HOST_OS) /* windows */
+
+#include <io.h>
+
+int readline_max_windows(HANDLE hin, char *buf, int buf_size) {
+  int fd = _open_osfhandle((intptr_t)fin, _O_RDONLY);
+  FILE* fin = _fdopen(fd, "rt");
+  return readline_max(fin, buf, buf_size);
+}
+
+#else /* not windows => unix */
+
+int readline_max_unix(int fd, char *buf, int buf_size) {
+  FILE* fin = fdopen(fd, "rt");
+  return readline_max(fin, buf, buf_size);
 }
 
 #endif

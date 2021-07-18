@@ -16,52 +16,79 @@ import qualified Data.Text.IO as T
 import Foreign.C.Error (eILSEQ, getErrno)
 import Foreign.C.Types (CInt (..))
 import Foreign.Ptr (Ptr)
-import System.IO (hFlush, stdout)
+import System.IO (Handle, hFlush)
 
 #if defined(mingw32_HOST_OS)
+import System.Win32.Types (HANDLE)
 #else
-import System.Posix.IO (stdInput)
+import Data.Coerce (coerce)
+import System.Posix.IO (handleToFd)
+import System.Posix.Types (Fd (Fd))
 import qualified System.Posix.Terminal as Term
 #endif
 
 import Data.SensitiveBytes.Internal (SensitiveBytes (..))
 
 
-foreign import ccall unsafe "readline_max"
-  c_readLineMax :: Ptr () -> CInt -> IO CInt
+-- | A quick wrapper around the C function that turns the Haskell IO
+-- 'Handle' into a system-dependent handle/fd.
+readLineMax :: Handle -> Ptr () -> CInt -> IO CInt
+
+#if defined(mingw32_HOST_OS)
+foreign import ccall unsafe "readline_max_windows"
+  c_readLineMax :: HANDLE -> Ptr () -> CInt -> IO CInt
+
+readLineMax hIn bufPtr maxLength =
+  withHandleToHANDLE hIn $ \winHandleIn ->
+    c_readLineMax winHandleIn bufPtr maxLength
+#else
+foreign import ccall unsafe "readline_max_unix"
+  c_readLineMax :: CInt -> Ptr () -> CInt -> IO CInt
+
+readLineMax hIn bufPtr maxLength = do
+  fdIn <- handleToFd hIn
+  c_readLineMax (coerce fdIn) bufPtr maxLength
+#endif
+
 
 
 -- | Flush stdout, disable echo, and read user input from stdin.
 readPassword
   :: forall s. ()
-  => Text  -- ^ Prompt.
-  -> SensitiveBytes s  -- ^ Target buffer.
+  => Handle  -- ^ Input file handle.
+  -> Handle  -- ^ Output file handle.
+  -> Text  -- ^ Prompt.
+  -> Ptr ()  -- ^ Target buffer.
+  -> Int  -- ^ Target buffer size.
   -> IO Int
-readPassword prompt SensitiveBytes{ allocSize, bufPtr } = do
-  T.hPutStr stdout prompt
-  withEchoDisabled $ do
-    hFlush stdout  -- need to flush _after_ echo is disabled
+readPassword hIn hOut prompt bufPtr allocSize = do
+  T.hPutStr hOut prompt
+  withEchoDisabled hIn $ do
+    hFlush hOut  -- need to flush _after_ echo is disabled
     -- TODO: Do we also want to install signal handlers?
-    res <- c_readLineMax bufPtr (fromIntegral allocSize)
-    case res of
+    res <- readLineMax hIn bufPtr (fromIntegral allocSize)
+    if res >= 0
+    then do
+      T.hPutStrLn hOut ""
+      pure $ fromIntegral res
+    else do
+      errno <- getErrno
       -- TODO: Maybe return a Maybe or throw a proper exception?
-      -1 -> do
-        errno <- getErrno
-        if errno == eILSEQ
-        then error "readPassword: locale/terminal misconfiguration"
-        else error "readPassword: read error"
-      _
-        | res > 0 -> do
-          T.hPutStrLn stdout ""
-          pure $ fromIntegral res
-        | otherwise -> error "readPassword: impossible error happened"
+      case res of
+        -1 -> do
+          if errno == eILSEQ
+          then error "readPassword: locale/terminal misconfiguration"
+          else error "readPassword: read error"
+        _ -> error $ "readPassword: impossible error happened: " <> show res
 
 -- | Run an action with terminal echo off (and then restore it).
-withEchoDisabled :: (MonadIO m, MonadMask m) => m r -> m r
+withEchoDisabled :: (MonadIO m, MonadMask m) => Handle -> m r -> m r
 #if defined(mingw32_HOST_OS)
-withEchoDisable = id  -- on Windows our @c_readLineMax@ does not echo anyway
+withEchoDisabled _ = id  -- on Windows our @c_readLineMax@ does not echo anyway
 #else
-withEchoDisabled act = liftIO (Term.queryTerminal fin) >>= \case
+withEchoDisabled hIn act = do
+  fin <- liftIO $ handleToFd hIn
+  liftIO (Term.queryTerminal fin) >>= \case
     False -> act
     True -> do
       attrs <- liftIO $ Term.getTerminalAttributes fin
@@ -70,6 +97,4 @@ withEchoDisabled act = liftIO (Term.queryTerminal fin) >>= \case
         (liftIO $ Term.setTerminalAttributes fin attrsNoEcho Term.WhenFlushed)
         (\_ -> liftIO $ Term.setTerminalAttributes fin attrs Term.Immediately)
         (\_ -> act)
-  where
-    fin = stdInput
 #endif
