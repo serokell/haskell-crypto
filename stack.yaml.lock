@@ -5,12 +5,18 @@
 
 packages:
 - completed:
-    hackage: libsodium-1.0.18.1@sha256:718a99126c2ffc292da602a3da570e6772c94d5240ff120f6a17fe623db3ca8e,1020
+    subdir: libsodium
+    name: libsodium
+    version: 1.0.18.1
+    git: https://github.com/serokell/hs-libsodium
     pantry-tree:
-      size: 387
-      sha256: de3b8b57d48e5ff53db4ec5d742f1b56e4979f709a59582798b979b32b222a80
+      size: 433
+      sha256: 2bb30e86893b3024debb8c036e87541b9576d8ad3b28622c16995c0306ab724f
+    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
   original:
-    hackage: libsodium-1.0.18.1
+    subdir: libsodium
+    git: https://github.com/serokell/hs-libsodium
+    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
 - completed:
     name: streamly
     version: 0.7.2
