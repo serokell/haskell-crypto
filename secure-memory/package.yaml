@@ -1,0 +1,71 @@
+# SPDX-FileCopyrightText: 2021 Serokell <https://serokell.io/>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+_common: !include "../hpack/package.yaml"
+
+name: secure-memory
+version: 0.0.0.1
+synopsis: Securely allocated and deallocated memory.
+description: |
+  Securely allocated and deallocated memory.
+
+  When handling sensitive data in your program, you want to be extra
+  careful and make sure that it is gone as soon as you are done working
+  with it. In a garbage-collected language like Haskell this is not so easy,
+  since the garbage collector can move your bytes around and create copies
+  of it. In addition to that, even if the memory gets eventually deallocated,
+  it is not guaranteed that the data will actually be zeroed-out or overriden.
+
+  To make matters even worse, if the operating system runs out of RAM while
+  your sensitive data remains in the memory, the page that contains your data
+  can get swapped out and, thus, end up on the disk, which you, of course,
+  absolutely want to never happen.
+
+  This library provides a (relatively) easy to use interface for working
+  with data allocated in a secure memory location that is guaranteed to never
+  end up on the disk and that will be zeroed-out as soon as you finish using it.
+
+category: Cryptography, Memory
+
+<<: *author
+
+extra-doc-files:
+  - CHANGELOG.md
+  - README.md
+
+<<: *defaults
+
+library:
+  <<: *lib
+
+  c-sources: ./cbits/readline_max.c
+
+  dependencies:
+    - reflection
+    - text
+    - unix  # TODO: this should be conditional to support Win32
+
+tests:
+  test:
+    <<: *test
+
+    dependencies:
+      - secure-memory
+
+      - hedgehog
+      - HUnit
+      - tasty
+      - tasty-hedgehog
+      - tasty-hunit
+
+    build-tools:
+      - tasty-discover:tasty-discover
+
+executables:
+  checkpw:
+    source-dirs: app/checkpw
+    main: Main.hs
+
+    dependencies:
+      - secure-memory

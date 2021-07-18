@@ -4,12 +4,17 @@
 
 resolver: lts-17.2
 packages:
+  - secure-memory
   - NaCl
   - crypto-sodium
   - crypto-sodium-streamly
 
 extra-deps:
-  - libsodium-1.0.18.1
+  #- libsodium-1.0.18.1
+  # upstream missing sodium_free
+  - git: https://github.com/serokell/hs-libsodium
+    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
+    subdirs: [libsodium]
 
   # dev version of streamly
   - git: https://github.com/composewell/streamly.git

@@ -58,6 +58,7 @@
 
               # TODO: https://github.com/input-output-hk/haskell.nix/issues/626
               # (also, it gets cleaned away for some reason)
+              secure-memory.cabal-generator = pkgs.lib.mkForce null;
               NaCl.cabal-generator = pkgs.lib.mkForce null;
               crypto-sodium.cabal-generator = pkgs.lib.mkForce null;
               # TODO: rename ./hpack/package.yaml back to ./hpack/common.yaml
@@ -68,7 +69,7 @@
       };
 
       local = {
-        inherit (project) NaCl crypto-sodium;
+        inherit (project) secure-memory NaCl crypto-sodium;
       };
     in rec {
       packages = mapAttrs (_: p: p.components.library) local;
