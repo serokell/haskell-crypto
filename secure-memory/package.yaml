@@ -44,7 +44,15 @@ library:
   dependencies:
     - reflection
     - text
-    - unix  # TODO: this should be conditional to support Win32
+
+  when:
+    - condition: os(windows)
+      then:
+        dependencies:
+          - Win32
+      else:
+        dependencies:
+          - unix
 
 tests:
   test:
@@ -60,7 +68,11 @@ tests:
       - tasty-hunit
 
       - async
-      - unix
+
+    when:
+      - condition: "!os(windows)"
+        dependencies:
+          - unix
 
     build-tools:
       - tasty-discover:tasty-discover
