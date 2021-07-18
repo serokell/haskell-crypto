@@ -13,6 +13,7 @@ import Control.Exception.Safe (MonadMask, bracket)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Data.Text (Text)
 import qualified Data.Text.IO as T
+import Foreign.C.Error (eILSEQ, getErrno)
 import Foreign.C.Types (CInt (..))
 import Foreign.Ptr (Ptr)
 import System.IO (hFlush, stdout)
@@ -27,7 +28,7 @@ import Data.SensitiveBytes.Internal (SensitiveBytes (..))
 
 
 foreign import ccall unsafe "readline_max"
-  c_readLineMax :: CInt -> Ptr () -> IO CInt
+  c_readLineMax :: Ptr () -> CInt -> IO CInt
 
 
 -- | Flush stdout, disable echo, and read user input from stdin.
@@ -41,14 +42,19 @@ readPassword prompt SensitiveBytes{ allocSize, bufPtr } = do
   withEchoDisabled $ do
     hFlush stdout  -- need to flush _after_ echo is disabled
     -- TODO: Do we also want to install signal handlers?
-    res <- c_readLineMax (fromIntegral allocSize) bufPtr
-    if res < 0
-    then
+    res <- c_readLineMax bufPtr (fromIntegral allocSize)
+    case res of
       -- TODO: Maybe return a Maybe or throw a proper exception?
-      error "Unexpected error reading the password"
-    else do
-      T.hPutStrLn stdout ""
-      pure $ fromIntegral res
+      -1 -> do
+        errno <- getErrno
+        if errno == eILSEQ
+        then error "readPassword: locale/terminal misconfiguration"
+        else error "readPassword: read error"
+      _
+        | res > 0 -> do
+          T.hPutStrLn stdout ""
+          pure $ fromIntegral res
+        | otherwise -> error "readPassword: impossible error happened"
 
 -- | Run an action with terminal echo off (and then restore it).
 withEchoDisabled :: (MonadIO m, MonadMask m) => m r -> m r

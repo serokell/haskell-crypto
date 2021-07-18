@@ -45,7 +45,7 @@ import Data.SensitiveBytes.IO.Internal.Password (readPassword)
 -- @
 withUserPassword
   :: forall m s r. (MonadIO m, MonadMask m, WithSecureMemory)
-  => Int  -- ^ Maximum possible length of the password to read.
+  => Int  -- ^ Maximum possible length of the password to read (in bytes).
   -> Maybe Text  -- ^ Prompt (defaults to "Password: ").
   -> (SensitiveBytes s -> m r)  -- ^ Action to perform with the password.
   -> m r
