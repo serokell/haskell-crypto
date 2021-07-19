@@ -105,6 +105,7 @@ int readline_max(FILE* fin, char *buf, int buf_size) {
 int readline_max_windows(HANDLE hin, char *buf, int buf_size) {
   int fd = _open_osfhandle((intptr_t)fin, _O_RDONLY);
   FILE* fin = _fdopen(fd, "rt");
+  setvbuf(fin, 0, _IONBF, 0);
   return readline_max(fin, buf, buf_size);
 }
 
@@ -112,6 +113,7 @@ int readline_max_windows(HANDLE hin, char *buf, int buf_size) {
 
 int readline_max_unix(int fd, char *buf, int buf_size) {
   FILE* fin = fdopen(fd, "rt");
+  setvbuf(fin, 0, _IONBF, 0);
   return readline_max(fin, buf, buf_size);
 }
 
