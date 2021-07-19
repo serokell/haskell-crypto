@@ -28,8 +28,6 @@ import System.Posix.Types (Fd (Fd))
 import qualified System.Posix.Terminal as Term
 #endif
 
-import Data.SensitiveBytes.Internal (SensitiveBytes (..))
-
 
 -- | A quick wrapper around the C function that turns the Haskell IO
 -- 'Handle' into a system-dependent handle/fd.
@@ -55,8 +53,7 @@ readLineMax hIn bufPtr maxLength = do
 
 -- | Flush stdout, disable echo, and read user input from stdin.
 readPassword
-  :: forall s. ()
-  => Handle  -- ^ Input file handle.
+  :: Handle  -- ^ Input file handle.
   -> Handle  -- ^ Output file handle.
   -> Text  -- ^ Prompt.
   -> Ptr ()  -- ^ Target buffer.
