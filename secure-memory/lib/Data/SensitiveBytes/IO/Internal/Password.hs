@@ -3,6 +3,7 @@
 -- SPDX-License-Identifier: MPL-2.0
 
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE InterruptibleFFI #-}
 
 -- | Internal utilities for reading passwords.
 module Data.SensitiveBytes.IO.Internal.Password
@@ -35,14 +36,14 @@ import Data.SensitiveBytes.Internal (SensitiveBytes (..))
 readLineMax :: Handle -> Ptr () -> CInt -> IO CInt
 
 #if defined(mingw32_HOST_OS)
-foreign import ccall unsafe "readline_max_windows"
+foreign import ccall interruptible "readline_max_windows"
   c_readLineMax :: HANDLE -> Ptr () -> CInt -> IO CInt
 
 readLineMax hIn bufPtr maxLength =
   withHandleToHANDLE hIn $ \winHandleIn ->
     c_readLineMax winHandleIn bufPtr maxLength
 #else
-foreign import ccall unsafe "readline_max_unix"
+foreign import ccall interruptible "readline_max_unix"
   c_readLineMax :: CInt -> Ptr () -> CInt -> IO CInt
 
 readLineMax hIn bufPtr maxLength = do

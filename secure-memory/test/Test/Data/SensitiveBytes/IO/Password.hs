@@ -8,6 +8,7 @@
 module Test.Data.SensitiveBytes.IO.Password where
 
 import Control.Concurrent.Async (waitBoth, withAsync)
+import Control.Exception.Safe (bracket)
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteArray (allocRet)
 import Data.ByteString (ByteString)
@@ -15,10 +16,12 @@ import qualified Data.ByteString as BS
 import System.IO (Handle, hClose)
 
 #if !defined(mingw32_HOST_OS)
-import System.Posix.IO (createPipe, fdToHandle)
+import Data.Maybe (fromMaybe)
+import System.Posix.IO (closeFd, createPipe, fdToHandle)
+import System.Timeout (timeout)
 #endif
 
-import Hedgehog (MonadGen, Property, (===), forAll, property)
+import Hedgehog (MonadGen, Property, (===), forAll, property, withTests)
 import qualified Hedgehog.Gen as G
 import qualified Hedgehog.Range as R
 import Test.Tasty.HUnit ((@?=))
@@ -45,31 +48,38 @@ unsafeReadPassword hIn hOut maxLength = do
 --
 -- This requires a threaded runtime due to the use of async.
 unsafeReadPasswordFrom :: ByteString -> Int -> IO (ByteString, ByteString)
-unsafeReadPasswordFrom input maxLength = do
+unsafeReadPasswordFrom input maxLength = fmap orDie $ timeout one_second $
     -- Create two pipes: one for stdin, one for stdout.
-    (hInRead, hInWrite) <- createPipeHandles
-    (hOutRead, hOutWrite) <- createPipeHandles
-
-    -- This thread will capture the stdout.
-    withAsync (readHandle hOutRead) $ \aStdoutReader -> do
-      -- This thread will read the password.
-      withAsync (readPassword' hInRead hOutWrite) $ \aPasswordReader -> do
-        -- Feed password to stdin.
-        BS.hPutStr hInWrite (input <> "\n")
-        hClose hInWrite
-        -- Now we wait for everyone else to finish.
-        waitBoth aStdoutReader aPasswordReader
+    withPipeHandles $ \(hInRead, hInWrite) ->
+     withPipeHandles $ \(hOutRead, hOutWrite) -> do
+      -- Feed password to stdin.
+      BS.hPutStr hInWrite (input <> "\n")
+      hClose hInWrite
+      -- This thread will capture the stdout.
+      withAsync (readHandle hOutRead) $ \aStdoutReader -> do
+        -- This thread will read the password.
+        withAsync (readPassword' hInRead hOutWrite) $ \aPasswordReader -> do
+          -- Now we wait for everyone else to finish.
+          waitBoth aStdoutReader aPasswordReader
   where
-    createPipeHandles = do
-      (fdRead, fdWrite) <- createPipe
-      hRead <- fdToHandle fdRead
-      hWrite <- fdToHandle fdWrite
-      pure (hRead, hWrite)
+    one_second = 1000000
+    orDie = fromMaybe (error "timeout")
 
-    readHandle = BS.hGetContents
+    withPipeHandles act =
+        bracket createPipe closePipe $ \(fdRead, fdWrite) ->
+          bracket (fdToHandle fdRead) hClose $ \hRead ->
+            bracket (fdToHandle fdWrite) hClose $ \hWrite ->
+              act (hRead, hWrite)
+      where
+        closePipe (fdRead, fdWrite) = do
+          -- closeFd fdWrite
+          -- closeFd fdRead
+          pure ()
+
+    readHandle h = BS.hGetContents h <* hClose h
 
     readPassword' hIn hOut =
-      unsafeReadPassword hIn hOut maxLength <* hClose hOut
+      unsafeReadPassword hIn hOut maxLength <* hClose hOut <* hClose hIn
 
 -----------------------------------------
 
@@ -84,6 +94,13 @@ unit_test_unsafe_read = do
   (stdoutBs, pass) <- unsafeReadPasswordFrom "hello" 16
   stdoutBs @?= "Password: \n"
   pass @?= "hello"
+
+-- | Test for the test itself (there seems to be a race condition).
+hprop_test_test :: Property
+hprop_test_test = property $ do
+  (stdoutBs, pass) <- liftIO $ unsafeReadPasswordFrom "hello" 16
+  stdoutBs === "Password: \n"
+  pass === "hello"
 
 hprop_ascii :: Property
 hprop_ascii = property $ do
