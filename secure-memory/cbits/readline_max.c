@@ -54,10 +54,12 @@ int readline_max(int fd, char *buf, int buf_size) {
   // On Windows ignore `fd` and always read from `stdin`.
   #if defined(_WIN32) /* windows */
     #define READWCHAR() _getwch()
+    #define CLOSE() {}
   #else /* not windows => unix */
     FILE* fin = fdopen(fd, "rt");
     setvbuf(fin, 0, _IONBF, 0);  // disable buffering
     #define READWCHAR() fgetwc(fin)
+    #define CLOSE() fclose(fin)
   #endif
 
   char *p = (char*)buf;
@@ -81,7 +83,7 @@ int readline_max(int fd, char *buf, int buf_size) {
       // actually works there. All I know is POSIX says it has to :/.
       int size = wctomb(encoded, (wchar_t)wc);
       if (size < 0) {
-        fclose(fin);
+        CLOSE();
         return -2;
       }
       if (p + size <= buf + buf_size) {
@@ -95,7 +97,7 @@ int readline_max(int fd, char *buf, int buf_size) {
     }
   }
 
-  fclose(fin);
+  CLOSE();
   if (errno != 0) {
     return -1;
   } else {
