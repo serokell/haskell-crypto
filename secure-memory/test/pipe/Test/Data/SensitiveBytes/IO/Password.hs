@@ -2,8 +2,6 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# LANGUAGE CPP #-}
-
 -- | Tests for reading passwords.
 module Test.Data.SensitiveBytes.IO.Password where
 
@@ -15,11 +13,9 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import System.IO (Handle, hClose)
 
-#if !defined(mingw32_HOST_OS)
 import Data.Maybe (fromMaybe)
 import System.Posix.IO (closeFd, createPipe, fdToHandle)
 import System.Timeout (timeout)
-#endif
 
 import Hedgehog (MonadGen, Property, (===), forAll, property, withTests)
 import qualified Hedgehog.Gen as G
@@ -39,7 +35,6 @@ unsafeReadPassword hIn hOut maxLength = do
     readPassword hIn hOut "Password: " ba maxLength
   pure $ BS.take size bs
 
-#if !defined(mingw32_HOST_OS)
 -- | Read a password from the 'ByteString' provided.
 --
 -- Make sure the input bytes can be read using current locale.
@@ -128,6 +123,3 @@ hprop_ascii_longer = property $ do
   input <- forAll $ G.utf8 (R.singleton $ size + extra) asciiPrintable
   (_, pass) <- liftIO $ unsafeReadPasswordFrom input size
   pass === BS.take size input
-
-
-#endif

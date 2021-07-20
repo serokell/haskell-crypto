@@ -51,8 +51,28 @@ library:
         - unix
 
 tests:
-  test:
+  test-simple:
     <<: *test
+    source-dirs: test/simple
+
+    dependencies:
+      - secure-memory
+
+      - HUnit
+      - tasty
+      - tasty-hunit
+
+    build-tools:
+      - tasty-discover:tasty-discover
+
+  # password reading test that can only run on unix
+  test-pipe:
+    <<: *test
+    source-dirs: test/pipe
+
+    when:
+      - condition: os(windows)
+        buildable: False
 
     dependencies:
       - secure-memory
@@ -64,11 +84,7 @@ tests:
       - tasty-hunit
 
       - async
-
-    when:
-      - condition: "!os(windows)"
-        dependencies:
-          - unix
+      - unix
 
     build-tools:
       - tasty-discover:tasty-discover
