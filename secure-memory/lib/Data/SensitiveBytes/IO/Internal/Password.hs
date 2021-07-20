@@ -20,7 +20,6 @@ import Foreign.Ptr (Ptr)
 import System.IO (Handle, hFlush)
 
 #if defined(mingw32_HOST_OS)
-import System.Win32.Types (HANDLE)
 #else
 import Data.Coerce (coerce)
 import System.Posix.IO (handleToFd)
@@ -29,26 +28,20 @@ import qualified System.Posix.Terminal as Term
 #endif
 
 
+foreign import ccall interruptible "readline_max"
+  c_readLineMax :: CInt -> Ptr () -> CInt -> IO CInt
+
 -- | A quick wrapper around the C function that turns the Haskell IO
 -- 'Handle' into a system-dependent handle/fd.
 readLineMax :: Handle -> Ptr () -> CInt -> IO CInt
-
 #if defined(mingw32_HOST_OS)
-foreign import ccall interruptible "readline_max_windows"
-  c_readLineMax :: HANDLE -> Ptr () -> CInt -> IO CInt
-
-readLineMax hIn bufPtr maxLength =
-  withHandleToHANDLE hIn $ \winHandleIn ->
-    c_readLineMax winHandleIn bufPtr maxLength
+readLineMax _ bufPtr maxLength = do
+  c_readLineMax 0 bufPtr maxLength
 #else
-foreign import ccall interruptible "readline_max_unix"
-  c_readLineMax :: CInt -> Ptr () -> CInt -> IO CInt
-
 readLineMax hIn bufPtr maxLength = do
   fdIn <- handleToFd hIn
   c_readLineMax (coerce fdIn) bufPtr maxLength
 #endif
-
 
 
 -- | Flush stdout, disable echo, and read user input from stdin.

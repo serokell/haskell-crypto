@@ -50,7 +50,16 @@
  * in their configured system locale encoding, so their setup is messed up
  * and there is absolutely no way for us to interpret their input. Too bad.
  */
-int readline_max(FILE* fin, char *buf, int buf_size) {
+int readline_max(int fd, char *buf, int buf_size) {
+  // On Windows ignore `fd` and always read from `stdin`.
+  #if defined(_WIN32) /* windows */
+    #define READWCHAR() _getwch()
+  #else /* not windows => unix */
+    FILE* fin = fdopen(fd, "rt");
+    setvbuf(fin, 0, _IONBF, 0);  // disable buffering
+    #define READWCHAR() fgetwc(fin)
+  #endif
+
   char *p = (char*)buf;
   int  no_more_space = 0;
 
@@ -58,7 +67,7 @@ int readline_max(FILE* fin, char *buf, int buf_size) {
 
   wint_t wc;
   char encoded[MB_CUR_MAX];
-  while ((wc = fgetwc(fin)) != WEOF) {
+  while ((wc = READWCHAR()) != WEOF) {
     // Read a unicode codepoint and see if it is a line terminator
     // (note: we only accept these two, not what Unicode defines)
     if (wc == L'\n' || wc == L'\r') {
@@ -72,6 +81,7 @@ int readline_max(FILE* fin, char *buf, int buf_size) {
       // actually works there. All I know is POSIX says it has to :/.
       int size = wctomb(encoded, (wchar_t)wc);
       if (size < 0) {
+        fclose(fin);
         return -2;
       }
       if (p + size <= buf + buf_size) {
@@ -85,36 +95,10 @@ int readline_max(FILE* fin, char *buf, int buf_size) {
     }
   }
 
+  fclose(fin);
   if (errno != 0) {
     return -1;
   } else {
     return p - buf;
   }
 }
-
-
-///
-// The functions below are simple wrappers that convert
-// from the OS-specific handle/fd that we can get from Haskell
-// to FILE*.
-
-#if defined(mingw32_HOST_OS) /* windows */
-
-#include <io.h>
-
-int readline_max_windows(HANDLE hin, char *buf, int buf_size) {
-  int fd = _open_osfhandle((intptr_t)fin, _O_RDONLY);
-  FILE* fin = _fdopen(fd, "rt");
-  setvbuf(fin, 0, _IONBF, 0);
-  return readline_max(fin, buf, buf_size);
-}
-
-#else /* not windows => unix */
-
-int readline_max_unix(int fd, char *buf, int buf_size) {
-  FILE* fin = fdopen(fd, "rt");
-  setvbuf(fin, 0, _IONBF, 0);
-  return readline_max(fin, buf, buf_size);
-}
-
-#endif

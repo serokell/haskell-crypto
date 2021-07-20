@@ -46,13 +46,9 @@ library:
     - text
 
   when:
-    - condition: os(windows)
-      then:
-        dependencies:
-          - Win32
-      else:
-        dependencies:
-          - unix
+    - condition: "!os(windows)"
+      dependencies:
+        - unix
 
 tests:
   test:
