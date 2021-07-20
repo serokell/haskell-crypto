@@ -43,10 +43,14 @@
         ];
       };
 
-      inherit (nixpkgs.lib) mapAttrs mapAttrs';
+      inherit (nixpkgs.lib)
+        flip isDerivation pipe
+        concatLists filter listToAttrs
+        mapAttrs mapAttrs' mapAttrsToList nameValuePair;
+      hslib = pkgs.haskell-nix.haskellLib;
 
-      project = pkgs.haskell-nix.stackProject {
-        src = pkgs.haskell-nix.haskellLib.cleanGit {
+      closure = pkgs.haskell-nix.stackProject {
+        src = hslib.cleanGit {
           name = "haskell-crypto";
           src = ./.;
         };
@@ -54,25 +58,29 @@
           ({ pkgs, ... }: {
             packages = {
               # TODO: https://github.com/k0001/hs-libsodium/issues/2
-              libsodium.components.library.build-tools = [ project.c2hs ];
+              libsodium.components.library.build-tools = [ closure.c2hs ];
 
               # TODO: https://github.com/input-output-hk/haskell.nix/issues/626
               # (also, it gets cleaned away for some reason)
               secure-memory.cabal-generator = pkgs.lib.mkForce null;
               NaCl.cabal-generator = pkgs.lib.mkForce null;
               crypto-sodium.cabal-generator = pkgs.lib.mkForce null;
+              crypto-sodium-streamly.cabal-generator = pkgs.lib.mkForce null;
               # TODO: rename ./hpack/package.yaml back to ./hpack/common.yaml
               # (the name had to be changed as otherwise it gets cleaned in the process)
             };
           })
         ];
       };
-
-      local = {
-        inherit (project) secure-memory NaCl crypto-sodium;
-      };
+      project = hslib.selectProjectPackages closure;
+      haskell-checks = pipe project [
+        (mapAttrsToList (pname: p: mapAttrsToList (tname: nameValuePair "${pname}-${tname}") p.checks))
+        concatLists
+        (filter (pair: isDerivation pair.value))
+        listToAttrs
+      ];
     in rec {
-      packages = mapAttrs (_: p: p.components.library) local;
+      packages = mapAttrs (_: p: p.components.library) project;
 
       checks = {
         reuse = pkgs.runCommand "reuse-lint" {
@@ -80,7 +88,7 @@
         } ''reuse --root ${./.} lint > "$out"'';
       } //
       (mapAttrs' (n: p: { name = "build-" + n; value = p; }) packages) //
-      (mapAttrs' (n: p: { name = "test-" + n; value = p.checks.test; }) local);
+      (mapAttrs' (n: t: { name = "test-" + n; value = t; }) haskell-checks);
 
       devShell = pkgs.mkShell {
         buildInputs = with pkgs; [

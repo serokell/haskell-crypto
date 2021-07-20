@@ -1,10 +1,10 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 638915425fe8c7d94cb2827a80b13993e1966db0a6db61eae8fd608ba99bf9a3
+-- hash: 13a3a97e5de46e8bb94925d28a3b1a6d66c48f914b9ec27ca77171edd082a8d9
 
 name:           crypto-sodium-streamly
 version:        0.0.3.1
@@ -46,7 +46,20 @@ library
       Paths_crypto_sodium_streamly
   hs-source-dirs:
       lib
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      NamedFieldPuns
+      NumericUnderscores
+      OverloadedStrings
+      PolyKinds
+      ScopedTypeVariables
+      TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
       base >=4.10 && <4.15
@@ -54,7 +67,7 @@ library
     , crypto-sodium >=0.0.1.0 && <0.1
     , libsodium >=1.0.11 && <2
     , memory >=0.14.15 && <0.16
-    , safe-exceptions >=0.1 && <0.2
+    , safe-exceptions ==0.1.*
     , streamly ==0.7.2
     , transformers >=0.2 && <0.6
   default-language: Haskell2010
@@ -67,7 +80,20 @@ test-suite test
       Paths_crypto_sodium_streamly
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving KindSignatures LambdaCase MultiParamTypeClasses NamedFieldPuns NumericUnderscores OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      NamedFieldPuns
+      NumericUnderscores
+      OverloadedStrings
+      PolyKinds
+      ScopedTypeVariables
+      TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-tool-depends:
       tasty-discover:tasty-discover
@@ -80,7 +106,7 @@ test-suite test
     , hedgehog
     , libsodium >=1.0.11 && <2
     , memory >=0.14.15 && <0.16
-    , safe-exceptions >=0.1 && <0.2
+    , safe-exceptions ==0.1.*
     , streamly
     , tasty
     , tasty-hedgehog
