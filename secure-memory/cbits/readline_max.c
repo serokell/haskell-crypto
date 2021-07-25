@@ -62,6 +62,15 @@ int readline_max(int fd, char *buf, int buf_size) {
     #define CLOSE() fclose(fin)
   #endif
 
+  // TODO: Ok, we also need to handle SIGTSTP (and other signals) to restore
+  // terminal echo and, if our process will be resumed, forget all the input
+  // and start reading it from scratch (since the user, obviously, does not
+  // remember what they entered before pausing the process) – that is what
+  // `sudo` does. This means that we need to move the echo control and initial
+  // prompt from Haskell to C, at which point we are already looking at an
+  // entire C library :(.
+  // https://github.com/serokell/haskell-crypto/issues/27
+
   char *p = (char*)buf;
   int  no_more_space = 0;
 
