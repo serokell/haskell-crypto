@@ -84,7 +84,7 @@ tests:
       - tasty-hedgehog
       - tasty-hunit
 
-      - base16-bytestring
+      - base16 >= 0.1.1 && < 0.4
       - deepseq
 
     build-tools:

@@ -13,10 +13,11 @@ import Test.HUnit ((@?=), Assertion)
 
 import Data.ByteArray.Sized (sizedByteArray)
 import Data.ByteString (ByteString)
+import Data.ByteString.Base16 (decodeBase16)
+import Data.Either (fromRight)
 import GHC.TypeLits (type (<=), KnownNat)
 
 import qualified Data.ByteString as BS
-import qualified Data.ByteString.Base16 as B16
 import qualified Libsodium as Na
 
 import Crypto.Pwhash.Internal (Algorithm (..), Params (Params), pwhash)
@@ -34,9 +35,9 @@ pwhash_test_vector
   -> Params  -- ^ Hashing params.
   -> Assertion
 pwhash_test_vector hash passwd salt alg params = do
-  let (hash', "") = B16.decode hash
-  let (passwd', "") = B16.decode passwd
-  let (salt', "") = B16.decode salt
+  let hash' = fromRight (error "impossible") . decodeBase16 $ hash
+  let passwd' = fromRight (error "impossible") . decodeBase16 $ passwd
+  let salt' = fromRight (error "impossible") . decodeBase16 $ salt
   let Just salt'N = sizedByteArray (BS.take 16 salt')  -- Note:
     -- for some reason, the test vectors in the file are 32 bytes long,
     -- while the pwhash function needs a 16-byte salt :/

@@ -11,7 +11,8 @@ import Test.HUnit ((@?=), Assertion)
 
 import Data.ByteArray.Sized (unSizedByteArray)
 import Data.ByteString (ByteString)
-import Data.ByteString.Base16 (decode)
+import Data.ByteString.Base16 (decodeBase16)
+import Data.Either (fromRight)
 
 import qualified Data.ByteString as BS
 import qualified Libsodium as Na
@@ -66,7 +67,7 @@ exampleNonce = BS.pack $
   ]
 
 exampleStreamSha256 :: ByteString
-exampleStreamSha256 = fst . decode $
+exampleStreamSha256 = fromRight (error "impossible") . decodeBase16 $
   "662b9d0e3463029156069b12f918691a98f7dfb2ca0393c96bbfc6b1fbd630a2"
 
 unit_example_generate :: Assertion

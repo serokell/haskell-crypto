@@ -10,7 +10,8 @@ import Hedgehog ((===), Property, discard, failure, forAll, property, success)
 import Test.HUnit ((@?=), Assertion)
 
 import Data.ByteString (ByteString)
-import Data.ByteString.Base16 (decode)
+import Data.ByteString.Base16 (decodeBase16)
+import Data.Either (fromRight)
 
 import qualified Data.ByteString as BS
 
@@ -59,19 +60,19 @@ Just smallOrderP = toPoint . BS.pack $
 
 unit_alice_pk :: Assertion
 unit_alice_pk = do
-  let Just expected = toPoint . fst . decode $ "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+  let Just expected = toPoint . fromRight (error "impossible") . decodeBase16 $ "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
   alicePk @?= expected
 
 unit_bob_pk :: Assertion
 unit_bob_pk = do
-  let Just expected = toPoint . fst . decode $ "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f"
+  let Just expected = toPoint . fromRight (error "impossible") . decodeBase16 $ "de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f"
   bobPk @?= expected
 
 unit_shared_example :: Assertion
 unit_shared_example = do
   let Just aliceShared = bobPk `mult` aliceSk
   let Just bobShared = alicePk `mult` bobSk
-  let Just expected = toPoint . fst . decode $ "4a5d9d5ba4ce2de1728e3bf480350f25e07e21c947d19e3376f09b3c1e161742"
+  let Just expected = toPoint . fromRight (error "impossible") . decodeBase16 $ "4a5d9d5ba4ce2de1728e3bf480350f25e07e21c947d19e3376f09b3c1e161742"
   aliceShared @?= expected
   bobShared @?= expected
 

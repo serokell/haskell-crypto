@@ -11,7 +11,8 @@ import Hedgehog.Internal.Property (forAllT)
 import Test.HUnit ((@?=), Assertion)
 
 import Data.ByteString (ByteString)
-import Data.ByteString.Base16 (decode)
+import Data.ByteString.Base16 (decodeBase16)
+import Data.Either (fromRight)
 import Control.Monad.IO.Class (liftIO)
 
 import qualified Hedgehog.Gen as G
@@ -39,14 +40,14 @@ hprop_encode_decode = property $ do
 unit_rfc8032_test1 :: Assertion
 unit_rfc8032_test1 = do
     let
-      Just sk = Sign.toSecretKey $ fst . decode $ mconcat
+      Just sk = Sign.toSecretKey $ fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "9d61b19deffd5a60ba844af492ec2cc4"
         , "4449c5697b326919703bac031cae7f60"
         , "d75a980182b10ab7d54bfed3c964073a"
         , "0ee172f3daa62325af021a68f707511a"
         ]
       msg = ""
-      sig = fst . decode $ mconcat
+      sig = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "e5564300c360ac729086e2cc806e828a"
         , "84877f1eb8e5d974d873e06522490155"
         , "5fb8821590a33bacc61e39701cf9b46b"
@@ -57,14 +58,14 @@ unit_rfc8032_test1 = do
 unit_rfc8032_test2 :: Assertion
 unit_rfc8032_test2 = do
     let
-      Just sk = Sign.toSecretKey $ fst . decode $ mconcat
+      Just sk = Sign.toSecretKey $ fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "4ccd089b28ff96da9db6c346ec114e0f"
         , "5b8a319f35aba624da8cf6ed4fb8a6fb"
         , "3d4017c3e843895a92b70aa74d1b7ebc"
         , "9c982ccf2ec4968cc0cd55f12af4660c"
         ]
-      msg = fst . decode $ "72"
-      sig = fst . decode $ mconcat
+      msg = fromRight (error "impossible") . decodeBase16 $ "72"
+      sig = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "92a009a9f0d4cab8720e820b5f642540"
         , "a2b27b5416503f8fb3762223ebdb69da"
         , "085ac1e43e15996e458f3613d0f11d8c"
@@ -75,14 +76,14 @@ unit_rfc8032_test2 = do
 unit_rfc8032_test3 :: Assertion
 unit_rfc8032_test3 = do
     let
-      Just sk = Sign.toSecretKey $ fst . decode $ mconcat
+      Just sk = Sign.toSecretKey $ fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "c5aa8df43f9f837bedb7442f31dcb7b1"
         , "66d38535076f094b85ce3a2e0b4458f7"
         , "fc51cd8e6218a1a38da47ed00230f058"
         , "0816ed13ba3303ac5deb911548908025"
         ]
-      msg = fst . decode $ "af82"
-      sig = fst . decode $ mconcat
+      msg = fromRight (error "impossible") . decodeBase16 $ "af82"
+      sig = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "6291d657deec24024827e69c3abe01a3"
         , "0ce548a284743a445e3680d7db5ac3ac"
         , "18ff9b538d16f290ae67f760984dc659"
@@ -93,13 +94,13 @@ unit_rfc8032_test3 = do
 unit_rfc8032_test1024 :: Assertion
 unit_rfc8032_test1024 = do
     let
-      Just sk = Sign.toSecretKey $ fst . decode $ mconcat
+      Just sk = Sign.toSecretKey $ fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "f5e5767cf153319517630f226876b86c"
         , "8160cc583bc013744c6bf255f5cc0ee5"
         , "278117fc144c72340f67d0f2316e8386"
         , "ceffbf2b2428c9c51fef7c597f1d426e"
         ]
-      msg = fst . decode $ mconcat
+      msg = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "08b8b2b733424243760fe426a4b54908"
         , "632110a66c2f6591eabd3345e3e4eb98"
         , "fa6e264bf09efe12ee50f8f54e9f77b1"
@@ -165,7 +166,7 @@ unit_rfc8032_test1024 = do
         , "0618983f8741c5ef68d3a101e8a3b8ca"
         , "c60c905c15fc910840b94c00a0b9d0"
         ]
-      sig = fst . decode $ mconcat
+      sig = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "0aab4c900501b3e24d7cdf4663326a3a"
         , "87df5e4843b2cbdb67cbf6e460fec350"
         , "aa5371b1508f9f4528ecea23c436d94b"
@@ -177,19 +178,19 @@ unit_rfc8032_test1024 = do
 unit_rfc8032_test_sha_abc :: Assertion
 unit_rfc8032_test_sha_abc = do
     let
-      Just sk = Sign.toSecretKey $ fst . decode $ mconcat
+      Just sk = Sign.toSecretKey $ fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "833fe62409237b9d62ec77587520911e"
         , "9a759cec1d19755b7da901b96dca3d42"
         , "ec172b93ad5e563bf4932c70e1245034"
         , "c35467ef2efd4d64ebf819683467e2bf"
         ]
-      msg = fst . decode $ mconcat
+      msg = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "ddaf35a193617abacc417349ae204131"
         , "12e6fa4e89a97ea20a9eeee64b55d39a"
         , "2192992a274fc1a836ba3c23a3feebbd"
         , "454d4423643ce80e2a9ac94fa54ca49f"
         ]
-      sig = fst . decode $ mconcat
+      sig = fromRight (error "impossible") . decodeBase16 $ mconcat
         [ "dc2a4459e7369633a52b1bf277839a00"
         , "201009a3efbf3ecb69bea2186c26b589"
         , "09351fc9ac90b3ecfdfbc7c66431e030"

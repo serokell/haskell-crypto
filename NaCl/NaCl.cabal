@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cecf083e02c9abd0a54b983bec86fd3d59a9a21daea9a8bcf203599c48f05d86
+-- hash: d5101baba9cc61851975b9a1d5381441ab925c5edff0d4f562c96c041e7a33f8
 
 name:           NaCl
 version:        0.0.3.1
@@ -138,7 +138,7 @@ test-suite test
       HUnit
     , NaCl
     , base >=4.10 && <4.15
-    , base16-bytestring
+    , base16 >=0.1.1 && <0.4
     , bytestring >=0.9 && <0.11
     , hedgehog
     , libsodium >=1.0.11 && <2
