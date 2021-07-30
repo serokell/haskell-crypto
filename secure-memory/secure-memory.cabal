@@ -71,7 +71,7 @@ library
   build-depends:
       base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
-    , libsodium >=1.0.11 && <2
+    , libsodium >=1.0.18.2
     , memory >=0.14.15 && <0.16
     , reflection
     , safe-exceptions ==0.1.*

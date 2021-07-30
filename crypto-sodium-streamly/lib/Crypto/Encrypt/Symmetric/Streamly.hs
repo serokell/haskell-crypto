@@ -59,7 +59,7 @@ import Data.ByteArray (ByteArray, ByteArrayAccess, allocRet, length, withByteArr
 import Foreign.Marshal.Alloc (alloca, free, malloc)
 import Foreign.Ptr (nullPtr)
 import Foreign.Storable (peek)
-import Streamly.Prelude (MonadAsync, SerialT)
+import Streamly (MonadAsync, SerialT)
 
 import qualified Libsodium as Na
 import qualified Streamly.Prelude as S

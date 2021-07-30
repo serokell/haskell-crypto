@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-resolver: lts-17.2
+resolver: lts-18.4
 packages:
   - secure-memory
   - NaCl
@@ -10,16 +10,12 @@ packages:
   - crypto-sodium-streamly
 
 extra-deps:
-  #- libsodium-1.0.18.1
-  # upstream missing sodium_free
-  - git: https://github.com/serokell/hs-libsodium
-    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
+  # - libsodium-1.0.18.2
+  # This is the same as above, but from git, since hackage.nix
+  # seems to be stuck and does not include this version
+  - git: https://github.com/k0001/hs-libsodium
+    commit: 39dbda30a3fff3e456e2f695072f7ab48f0d7336
     subdirs: [libsodium]
-
-  # dev version of streamly
-  - git: https://github.com/composewell/streamly.git
-    commit: 4223969ab5e20d2f8c20b9403032b9eb56951cbb
-  - fusion-plugin-types-0.1.0@sha256:0f11bbc445ab8ae3dbbb3d5d2ea198bdb1ac020518b7f4f7579035dc89182438,1506
 
 nix:
   packages:
@@ -28,6 +24,3 @@ nix:
 
     # new streamly wants this
     # - darwin.apple_sdk.frameworks.Cocoa
-
-    # libsodium does not declare this dep
-    - haskellPackages.c2hs

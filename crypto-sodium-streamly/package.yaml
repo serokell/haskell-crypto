@@ -37,8 +37,7 @@ library:
   dependencies:
     - crypto-sodium >= 0.0.1.0 && < 0.1
     - safe-exceptions >= 0.1 && < 0.2
-    # - streamly > 0.7.2
-    - streamly == 0.7.2 # FIXME: `bracket` is fixed in master and unreleased yet
+    - streamly > 0.7.2  # `bracket` broken before
     - transformers >= 0.2 && < 0.6
 
 tests:

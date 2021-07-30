@@ -8,7 +8,7 @@ module Crypto.Streamly.Util
   ) where
 
 -- import Control.Monad.Trans.Class (lift)
-import Streamly.Prelude (MonadAsync, SerialT)
+import Streamly (MonadAsync, SerialT)
 
 import qualified Streamly.Internal.Data.SVar as SD
 import qualified Streamly.Internal.Data.Stream.StreamD as SD

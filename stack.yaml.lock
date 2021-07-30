@@ -7,37 +7,19 @@ packages:
 - completed:
     subdir: libsodium
     name: libsodium
-    version: 1.0.18.1
-    git: https://github.com/serokell/hs-libsodium
+    version: 1.0.18.2
+    git: https://github.com/k0001/hs-libsodium
     pantry-tree:
       size: 433
-      sha256: 2bb30e86893b3024debb8c036e87541b9576d8ad3b28622c16995c0306ab724f
-    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
+      sha256: 3748cf26bf166230c4dbbfbc2b75e9feb32d591af8e0a1f06dd92d52ac71879e
+    commit: 39dbda30a3fff3e456e2f695072f7ab48f0d7336
   original:
     subdir: libsodium
-    git: https://github.com/serokell/hs-libsodium
-    commit: 66aa5e6dfdd62a1ea3bc29a19f0ef9a6d8a9316e
-- completed:
-    name: streamly
-    version: 0.7.2
-    git: https://github.com/composewell/streamly.git
-    pantry-tree:
-      size: 16914
-      sha256: b40dd4e951f97f7ab6c23ece890787822fbc7b925a64ca67c02d5cf83db7646d
-    commit: 4223969ab5e20d2f8c20b9403032b9eb56951cbb
-  original:
-    git: https://github.com/composewell/streamly.git
-    commit: 4223969ab5e20d2f8c20b9403032b9eb56951cbb
-- completed:
-    hackage: fusion-plugin-types-0.1.0@sha256:0f11bbc445ab8ae3dbbb3d5d2ea198bdb1ac020518b7f4f7579035dc89182438,1506
-    pantry-tree:
-      size: 378
-      sha256: c349aa6c4e10a57c65ae83eb1082948642b66a97bf0c0b73e57e4d88da89f3cd
-  original:
-    hackage: fusion-plugin-types-0.1.0@sha256:0f11bbc445ab8ae3dbbb3d5d2ea198bdb1ac020518b7f4f7579035dc89182438,1506
+    git: https://github.com/k0001/hs-libsodium
+    commit: 39dbda30a3fff3e456e2f695072f7ab48f0d7336
 snapshots:
 - completed:
-    size: 563099
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/2.yaml
-    sha256: 92b1a17e31d0a978fca4bf270305d4d1dd8092271bf60eafbc9349c890854026
-  original: lts-17.2
+    size: 585817
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/4.yaml
+    sha256: ea3a318eafa9e9cc56bfbe46099fd0d54d32641ab7bbe1d182ed8f5de39f804c
+  original: lts-18.4
