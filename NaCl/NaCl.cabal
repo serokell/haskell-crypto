@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d5101baba9cc61851975b9a1d5381441ab925c5edff0d4f562c96c041e7a33f8
+-- hash: b82f735dd2bf01b525d0ffa58768da43579fd708ae670292a1965383e6cdf343
 
 name:           NaCl
 version:        0.0.3.1
@@ -46,8 +46,8 @@ category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
 author:         Kirill Elagin <kirelagin@serokell.io>
-maintainer:     Kirill Elagin <kirelagin@serokell.io>
-copyright:      2020 Serokell
+maintainer:     Serokell <libraries@serokell.io>
+copyright:      2021 Serokell
 license:        MPL-2.0
 license-file:   LICENSES/MPL-2.0.txt
 build-type:     Simple

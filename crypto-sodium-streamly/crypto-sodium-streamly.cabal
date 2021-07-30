@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b7b7e1c3e90b97a19d5a19273ff96c6a6e9dd6de37c5da757160e4411424c253
+-- hash: 9f5fc641acfd361d49d34bbc5796a4475a9e81b36cc950ab72688b5be60434c9
 
 name:           crypto-sodium-streamly
 version:        0.0.3.1
@@ -25,8 +25,8 @@ category:       Cryptography, Streaming
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
 author:         Kirill Elagin <kirelagin@serokell.io>
-maintainer:     Kirill Elagin <kirelagin@serokell.io>
-copyright:      2020 Serokell
+maintainer:     Serokell <libraries@serokell.io>
+copyright:      2021 Serokell
 license:        MPL-2.0
 license-file:   LICENSES/MPL-2.0.txt
 build-type:     Simple

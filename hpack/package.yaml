@@ -7,7 +7,8 @@
 
 - &author
   author: Kirill Elagin <kirelagin@serokell.io>
-  copyright: 2020 Serokell
+  maintainer: Serokell <libraries@serokell.io>
+  copyright: 2021 Serokell
   license-file: LICENSES/MPL-2.0.txt
 
   github: serokell/haskell-crypto

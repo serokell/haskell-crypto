@@ -43,13 +43,13 @@ library:
 
   dependencies:
     - libsodium >= 1.0.18.2  # sodium_free was missing before
-    - reflection
-    - text
+    - reflection >= 1.2.0.1 && < 2.2
+    - text >= 0.7 && < 1.3
 
   when:
     - condition: "!os(windows)"
       dependencies:
-        - unix
+        - unix >= 2.0 && < 2.8
 
 tests:
   test-simple:

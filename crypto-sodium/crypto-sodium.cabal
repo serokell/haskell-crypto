@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e4055eeca4150071565e98fcf54411b40ee4b782d87ad91a933be2816849d36f
+-- hash: 4ed6b6b90a8044d2bbc880668ce4bbbdb5332ce7550618fe7b307b8366db018e
 
 name:           crypto-sodium
 version:        0.0.3.1
@@ -57,8 +57,8 @@ category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
 author:         Kirill Elagin <kirelagin@serokell.io>
-maintainer:     Kirill Elagin <kirelagin@serokell.io>
-copyright:      2020 Serokell
+maintainer:     Serokell <libraries@serokell.io>
+copyright:      2021 Serokell
 license:        MPL-2.0
 license-file:   LICENSES/MPL-2.0.txt
 build-type:     Simple
