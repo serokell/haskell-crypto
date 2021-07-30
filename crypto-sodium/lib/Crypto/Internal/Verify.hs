@@ -26,8 +26,8 @@ verifyBytes32 bytes1 bytes2 =
   withByteArray bytes2 $ \ptr2 -> do
     -- TODO: I have no idea what I am doing
     --
-    -- * Sodium also checks that pointers are different?
-    -- * This kind of double comparison was added in
+    -- - Sodium also checks that pointers are different?
+    -- - This kind of double comparison was added in
     --   c5a9d46386f917aa0ff1bfb711450f9af1d79a17
     --   (why?)
     res1 <- Na.crypto_verify_32 ptr1 ptr2

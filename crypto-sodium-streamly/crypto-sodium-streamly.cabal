@@ -4,10 +4,10 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9f5fc641acfd361d49d34bbc5796a4475a9e81b36cc950ab72688b5be60434c9
+-- hash: a5c540d5ffafbbb129fc2be7cc6b29848664ca02e27b8139cd56bbd74c53d3ab
 
 name:           crypto-sodium-streamly
-version:        0.0.3.1
+version:        0.0.4.0
 synopsis:       Streaming for crypto-sodium
 description:    __Note: this package is experimental and WIP.__
                 .

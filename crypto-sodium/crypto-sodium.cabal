@@ -4,10 +4,10 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4ed6b6b90a8044d2bbc880668ce4bbbdb5332ce7550618fe7b307b8366db018e
+-- hash: 25a103374b2b14f150bf4f1ccb243ed60f601e794e2345bee0adec07b08f3a47
 
 name:           crypto-sodium
-version:        0.0.3.1
+version:        0.0.4.0
 synopsis:       Easy-and-safe-to-use high-level cryptography based on Sodium
 description:    This is a collection of high-level cryptographic primitives based on
                 <https://libsodium.io/ Sodium>, spiced up with extra type-safety
@@ -42,7 +42,7 @@ description:    This is a collection of high-level cryptographic primitives base
                 == Secret-key cryptography
                 .
                 * Authenticated symmetric-key encryption: "Crypto.Encrypt.Symmetric"
-                * Message authentication codes: "Crypto.Mac" and "Crypto.Mac.Lazy"
+                * Message authentication codes: "Crypto.Mac"
                 .
                 == Public-key cryptography
                 .
@@ -105,7 +105,7 @@ library
       TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
-      NaCl >=0.0.1.0 && <0.1
+      NaCl >=0.0.4.0 && <0.1
     , base >=4.10 && <4.15
     , bytestring >=0.9 && <0.11
     , cereal >=0.1 && <0.6
