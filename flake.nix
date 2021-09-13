@@ -5,43 +5,24 @@
 {
   description = "Easy-and-safe-to-use high-level cryptographic primitives.";
 
+  nixConfig = {
+    flake-registry = "https://github.com/serokell/flake-registry/raw/master/flake-registry.json";
+  };
+
   inputs = {
-    nixpkgs.url = "github:serokell/nixpkgs";
-
-    hackage = {
-      url = "github:input-output-hk/hackage.nix";
-      flake = false;
-    };
-    stackage = {
-      url = "github:input-output-hk/stackage.nix";
-      flake = false;
-    };
+    flake-compat.flake = false;
     haskell-nix = {
-      url = "github:input-output-hk/haskell.nix/81fb54dbfdd350b6ad8271973545f1b668975394";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hackage.follows = "hackage";
+      inputs.stackage.follows = "stackage";
     };
-
-    flake-utils.url = "github:numtide/flake-utils";
-
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
+    hackage.flake = false;
+    stackage.flake = false;
   };
 
   outputs = { self, nixpkgs, hackage, stackage, haskell-nix, flake-utils, flake-compat }:
   flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [
-          (haskell-nix.internal.overlaysOverrideable {
-            sourcesOverride = haskell-nix.internal.sources // {
-              inherit hackage stackage;
-            };
-          }).combined-eval-on-build
-        ];
-      };
+      pkgs = nixpkgs.legacyPackages.${system}.extend haskell-nix.overlay;
 
       inherit (nixpkgs.lib)
         flip isDerivation pipe
