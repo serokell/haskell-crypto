@@ -5,7 +5,7 @@
 {-# LANGUAGE ExplicitNamespaces, TypeOperators, TypeFamilies #-}
 {-# OPTIONS_GHC -Wno-redundant-constraints #-}
 
--- | Hashing
+-- | Internals of @crypto_generichash@.
 module Crypto.Hash.Internal
   ( HashBlake2b
   , blake2b
@@ -29,7 +29,7 @@ import qualified Libsodium as Na
 -- Length must be between 16 and 64 bytes.
 type HashBlake2b len a = SizedByteArray len a
 
--- | Hash a message using BLAKE2b
+-- | Hash a message using BLAKE2b.
 blake2b
   ::  forall pt key hashBytes len.
       ( ByteArrayAccess pt
