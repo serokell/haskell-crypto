@@ -41,20 +41,18 @@ blake2b
       )
   => pt  -- ^ Message to hash
   -> Maybe key -- ^ Hash key
-  -> IO (Maybe (HashBlake2b len hashBytes))
+  -> IO (HashBlake2b len hashBytes)
 blake2b msg = \case
   Nothing -> go $ \f -> f 0 nullPtr
   Just key -> go $ \f -> withByteArray key $ f (fromIntegral $ length key)
   where
     go withKey = do
-      (ret, hash) <-
+      (_ret, hash) <-
         allocRet @len Proxy $ \hashPtr ->
         withByteArray msg $ \msgPtr ->
         withKey $ \keyLen keyPtr ->
           Na.crypto_generichash_blake2b hashPtr (fromIntegral $ natVal @len Proxy)
             msgPtr (fromIntegral $ length msg)
             keyPtr keyLen
-      if ret == 0 then
-        pure $ Just hash
-      else
-        pure $ Nothing
+      -- _ret can be only 0, so we don’t check it
+      pure hash

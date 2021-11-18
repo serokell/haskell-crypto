@@ -53,5 +53,5 @@ blake2b
       )
   => pt  -- ^ Message to hash
   -> Maybe key -- ^ Hash key
-  -> Maybe (I.HashBlake2b len hashBytes)
+  -> I.HashBlake2b len hashBytes
 blake2b msg mbkey = unsafePerformIO $ I.blake2b msg mbkey

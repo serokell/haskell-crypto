@@ -2,6 +2,7 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
@@ -19,7 +20,7 @@ import Control.Monad (forM_)
 
 import qualified Libsodium as Na
 
-import Crypto.Hash
+import Crypto.Hash.Internal
 
 blake2b_test_vector
   ::  forall len. -- ^ Output length.
@@ -37,7 +38,7 @@ blake2b_test_vector msg mbkey hash = do
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
   result <- blake2b msg' mbkey'
-  result @?= Just hash'N
+  result @?= hash'N
 
 unit_blake2b512_keyed :: Assertion
 unit_blake2b512_keyed = forM_ vectors $ \(in', key, out) ->

@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d87396e4db9c98a4b82edb0eda969639f5eb1307c6ea082c27d1f24b4fee1707
+-- hash: 6e6bd70858aab29ee874f82a960802ee92efcc002f745b4536b60c2327077c00
 
 name:           crypto-sodium
 version:        0.0.4.0
@@ -53,6 +53,7 @@ description:    This is a collection of high-level cryptographic primitives base
                 .
                 * Key derivation and generation: "Crypto.Key"
                 * Cryptographically-secure random: "Crypto.Random"
+                * Hashing: "Crypto.Hash"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
