@@ -52,6 +52,7 @@ description: |
 
   * Key derivation and generation: "Crypto.Key"
   * Cryptographically-secure random: "Crypto.Random"
+  * Hashing: "Crypto.Hash"
 
 category: Cryptography
 
