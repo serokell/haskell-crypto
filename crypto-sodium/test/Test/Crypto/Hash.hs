@@ -37,7 +37,7 @@ blake2b_test_vector msg mbkey hash = do
       mbkey' = fromRight (error "impossible") . decodeBase16 <$> mbkey
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
-  result <- blake2b msg' mbkey'
+  result <- blake2b mbkey' msg'
   result @?= hash'N
 
 unit_blake2b512_keyed :: Assertion

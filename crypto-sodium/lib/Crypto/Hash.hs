@@ -51,7 +51,7 @@ blake2b
       , Na.CRYPTO_GENERICHASH_BYTES_MIN <= len
       , len <= Na.CRYPTO_GENERICHASH_BYTES_MAX
       )
-  => pt  -- ^ Message to hash
-  -> Maybe key -- ^ Hash key
+  => Maybe key -- ^ Hash key
+  -> pt  -- ^ Message to hash
   -> I.HashBlake2b len hashBytes
-blake2b msg mbkey = unsafePerformIO $ I.blake2b msg mbkey
+blake2b mbkey msg = unsafePerformIO $ I.blake2b mbkey msg

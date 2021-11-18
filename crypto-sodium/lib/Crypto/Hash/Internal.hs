@@ -39,20 +39,20 @@ blake2b
       , Na.CRYPTO_GENERICHASH_BYTES_MIN <= len
       , len <= Na.CRYPTO_GENERICHASH_BYTES_MAX
       )
-  => pt  -- ^ Message to hash
-  -> Maybe key -- ^ Hash key
+  => Maybe key -- ^ Hash key
+  -> pt  -- ^ Message to hash
   -> IO (HashBlake2b len hashBytes)
-blake2b msg = \case
-  Nothing -> go $ \f -> f 0 nullPtr
-  Just key -> go $ \f -> withByteArray key $ f (fromIntegral $ length key)
+blake2b key msg = do
+  (_ret, hash) <-
+    allocRet @len Proxy $ \hashPtr ->
+    withByteArray msg $ \msgPtr ->
+    withKey $ \keyPtr ->
+      Na.crypto_generichash_blake2b hashPtr (fromIntegral $ natVal @len Proxy)
+        msgPtr (fromIntegral $ length msg)
+        keyPtr keyLen
+  -- _ret can be only 0, so we don’t check it
+  pure hash
   where
-    go withKey = do
-      (_ret, hash) <-
-        allocRet @len Proxy $ \hashPtr ->
-        withByteArray msg $ \msgPtr ->
-        withKey $ \keyLen keyPtr ->
-          Na.crypto_generichash_blake2b hashPtr (fromIntegral $ natVal @len Proxy)
-            msgPtr (fromIntegral $ length msg)
-            keyPtr keyLen
-      -- _ret can be only 0, so we don’t check it
-      pure hash
+    (withKey, keyLen)
+      | Just key' <- key = (withByteArray key', fromIntegral $ length key')
+      | otherwise = (($ nullPtr), 0)
