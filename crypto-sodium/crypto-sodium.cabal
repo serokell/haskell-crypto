@@ -4,7 +4,7 @@ cabal-version: 1.18
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 25a103374b2b14f150bf4f1ccb243ed60f601e794e2345bee0adec07b08f3a47
+-- hash: 9aad97d67791e16bcba38fac86d5eb1d8d787befe795d1b3f69bcc8fd93ea58c
 
 name:           crypto-sodium
 version:        0.0.4.0
@@ -75,6 +75,7 @@ library
       Crypto.Encrypt.Public
       Crypto.Encrypt.Symmetric
       Crypto.Encrypt.Symmetric.Stream
+      Crypto.Hash
       Crypto.Init
       Crypto.Internal.Random
       Crypto.Internal.Verify
@@ -122,6 +123,7 @@ test-suite test
       Test.Crypto.Encrypt.Public
       Test.Crypto.Encrypt.Symmetric
       Test.Crypto.Gen
+      Test.Crypto.Hash
       Test.Crypto.Key.Derivation
       Test.Crypto.Nonce
       Test.Crypto.Pwhash
