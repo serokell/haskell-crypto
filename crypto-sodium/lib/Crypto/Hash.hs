@@ -32,18 +32,18 @@ import qualified Libsodium as Na
 -- | Hash a message using BLAKE2b.
 --
 -- @
--- hash128 = Hash.'blake2b' @16 message Nothing
--- hash256 = Hash.'blake2b' @32 message Nothing
--- hash512 = Hash.'blake2b' @64 message Nothing
--- hash128_keyed = Hash.'blake2b' @16 message (Just key)
--- hash256_keyed = Hash.'blake2b' @32 message (Just key)
--- hash512_keyed = Hash.'blake2b' @64 message (Just key)
+-- hash128 = Hash.'blake2b' @16 Nothing message
+-- hash256 = Hash.'blake2b' @32 Nothing message
+-- hash512 = Hash.'blake2b' @64 Nothing message
+-- hash128_keyed = Hash.'blake2b' @16 (Just key) message
+-- hash256_keyed = Hash.'blake2b' @32 (Just key) message
+-- hash512_keyed = Hash.'blake2b' @64 (Just key) message
 -- @
 --
+-- *   @key@ is the optional BLAKE2b key.
 -- *   @message@ is the data you are hashing.
--- *   @key@ is the BLAKE2b key.
 blake2b
-  ::  forall pt key hashBytes len.
+  ::  forall len hashBytes pt key.
       ( ByteArrayAccess pt
       , ByteArrayAccess key
       , ByteArray hashBytes

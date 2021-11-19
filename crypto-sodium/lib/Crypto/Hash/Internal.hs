@@ -31,7 +31,7 @@ type HashBlake2b len a = SizedByteArray len a
 
 -- | Hash a message using BLAKE2b.
 blake2b
-  ::  forall pt key hashBytes len.
+  ::  forall len hashBytes pt key.
       ( ByteArrayAccess pt
       , ByteArrayAccess key
       , ByteArray hashBytes
