@@ -20,7 +20,17 @@ import Control.Monad (forM_)
 
 import qualified Libsodium as Na
 
-import Crypto.Hash.Internal
+import qualified Crypto.Hash as Hash
+
+
+unit_blake2b256_unkeyed :: Assertion
+unit_blake2b256_unkeyed = do
+    let
+      msg = "testing\n" :: ByteString
+      Just hash = sizedByteArray . fromRight (error "impossible") . decodeBase16 $
+          "9ec2c90ec850ccd1b924806046eace8dd3730e631ad8eb73c28b78abba936232"
+    Hash.blake2b @32 Nothing msg @?= hash
+
 
 blake2b_test_vector
   ::  forall len. -- ^ Output length.
@@ -37,11 +47,11 @@ blake2b_test_vector msg mbkey hash = do
       mbkey' = fromRight (error "impossible") . decodeBase16 <$> mbkey
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
-  result <- blake2b mbkey' msg'
+      result = Hash.blake2b mbkey' msg'
   result @?= hash'N
 
-unit_blake2b512_keyed :: Assertion
-unit_blake2b512_keyed = forM_ vectors $ \(in', key, out) ->
+unit_blake2b512_keyed_vectors :: Assertion
+unit_blake2b512_keyed_vectors = forM_ vectors $ \(in', key, out) ->
   blake2b_test_vector @64 in' (Just key) out
 
 -- Test vectors from
