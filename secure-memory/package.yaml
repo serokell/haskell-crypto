@@ -5,7 +5,7 @@
 _common: !include "../hpack/package.yaml"
 
 name: secure-memory
-version: 0.0.0.1
+version: 0.0.0.2
 synopsis: Securely allocated and deallocated memory.
 description: |
   Securely allocated and deallocated memory.
