@@ -21,6 +21,7 @@ import Control.Monad (forM_)
 import qualified Libsodium as Na
 
 import qualified Crypto.Sodium.Hash as Hash
+import Crypto.Sodium.Key (generate)
 
 
 unit_blake2b256_unkeyed :: Assertion
@@ -30,6 +31,14 @@ unit_blake2b256_unkeyed = do
       Just hash = sizedByteArray . fromRight (error "impossible") . decodeBase16 $
           "9ec2c90ec850ccd1b924806046eace8dd3730e631ad8eb73c28b78abba936232"
     Hash.blake2b @32 msg @?= hash
+
+unit_blake2b256_generate_key :: Assertion
+unit_blake2b256_generate_key = do
+    let msg = "testing\n" :: ByteString
+    -- we just make sure that this typechecks, i.e. all type-level Nats align
+    key <- generate @32
+    let _out = Hash.blake2bWithKey @64 @ByteString key msg
+    pure ()
 
 
 blake2b_test_vector
@@ -44,7 +53,7 @@ blake2b_test_vector
   -> Assertion
 blake2b_test_vector msg key hash = do
   let hash' = fromRight (error "impossible") . decodeBase16 $ hash
-      key' = fromRight (error "impossible") . decodeBase16 $ key
+      Just key' = sizedByteArray @64 . fromRight (error "impossible") . decodeBase16 $ key
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
       result = Hash.blake2bWithKey key' msg'

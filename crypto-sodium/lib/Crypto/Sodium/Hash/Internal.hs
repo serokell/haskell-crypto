@@ -31,23 +31,26 @@ type HashBlake2b len a = SizedByteArray len a
 
 -- | Hash a message using BLAKE2b.
 blake2b
-  ::  forall len hashBytes pt key.
-      ( ByteArrayAccess pt
-      , ByteArrayAccess key
+  ::  forall outLen hashBytes pt keyBytes keyLen.
+      ( ByteArrayAccess keyBytes
+      , ByteArrayAccess pt
       , ByteArray hashBytes
-      , KnownNat len
-      , Na.CRYPTO_GENERICHASH_BYTES_MIN <= len
-      , len <= Na.CRYPTO_GENERICHASH_BYTES_MAX
+      , KnownNat keyLen
+      , Na.CRYPTO_GENERICHASH_KEYBYTES_MIN <= keyLen
+      , keyLen <= Na.CRYPTO_GENERICHASH_KEYBYTES_MAX
+      , KnownNat outLen
+      , Na.CRYPTO_GENERICHASH_BYTES_MIN <= outLen
+      , outLen <= Na.CRYPTO_GENERICHASH_BYTES_MAX
       )
-  => Maybe key -- ^ Hash key
+  => Maybe (SizedByteArray keyLen keyBytes) -- ^ Hash key
   -> pt  -- ^ Message to hash
-  -> IO (HashBlake2b len hashBytes)
+  -> IO (HashBlake2b outLen hashBytes)
 blake2b key msg = do
   (_ret, hash) <-
-    allocRet @len Proxy $ \hashPtr ->
+    allocRet @outLen Proxy $ \hashPtr ->
     withByteArray msg $ \msgPtr ->
     withKey $ \keyPtr ->
-      Na.crypto_generichash_blake2b hashPtr (fromIntegral $ natVal @len Proxy)
+      Na.crypto_generichash_blake2b hashPtr (fromIntegral $ natVal @outLen Proxy)
         msgPtr (fromIntegral $ length msg)
         keyPtr keyLen
   -- _ret can be only 0, so we don’t check it
