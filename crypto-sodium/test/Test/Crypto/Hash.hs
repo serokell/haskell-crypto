@@ -29,7 +29,7 @@ unit_blake2b256_unkeyed = do
       msg = "testing\n" :: ByteString
       Just hash = sizedByteArray . fromRight (error "impossible") . decodeBase16 $
           "9ec2c90ec850ccd1b924806046eace8dd3730e631ad8eb73c28b78abba936232"
-    Hash.blake2b @32 Nothing msg @?= hash
+    Hash.blake2b @32 msg @?= hash
 
 
 blake2b_test_vector
@@ -39,20 +39,20 @@ blake2b_test_vector
       , len <= Na.CRYPTO_GENERICHASH_BYTES_MAX
       )
   => ByteString  -- ^ Message
-  -> Maybe ByteString  -- ^ Key
+  -> ByteString  -- ^ Key
   -> ByteString  -- ^ Expected hash.
   -> Assertion
-blake2b_test_vector msg mbkey hash = do
+blake2b_test_vector msg key hash = do
   let hash' = fromRight (error "impossible") . decodeBase16 $ hash
-      mbkey' = fromRight (error "impossible") . decodeBase16 <$> mbkey
+      key' = fromRight (error "impossible") . decodeBase16 $ key
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
-      result = Hash.blake2b mbkey' msg'
+      result = Hash.blake2bWithKey key' msg'
   result @?= hash'N
 
 unit_blake2b512_keyed_vectors :: Assertion
 unit_blake2b512_keyed_vectors = forM_ vectors $ \(in', key, out) ->
-  blake2b_test_vector @64 in' (Just key) out
+  blake2b_test_vector @64 in' key out
 
 -- Test vectors from
 -- https://github.com/jedisct1/libsodium/blob/f911b56650b680ecfc5d32b11b090849fc2b5f92/test/default/generichash.c
