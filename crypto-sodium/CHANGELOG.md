@@ -11,4 +11,4 @@
 * Random nonce generation: `Crypto.Nonce`
 * Public-key signatures: `Crypto.Sign`
 * Keypair generation from seed: `Crypto.Sign` and `Crypto.Encrypt.Public`
-* Hash: `Crypto.Hash.blake2b`, `Crypto.Hash.blake2bWithKey`
+* Hash: `Crypto.Hash.blake2b`, `Crypto.Hash.blake2bWithKey`, `Crypto.Hash.sha256`, `Crypto.Hash.sha512`

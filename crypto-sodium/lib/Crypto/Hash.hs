@@ -14,17 +14,28 @@
 -- hash_blake2b256_keyed = Hash.'blake2bWithKey' @32 key message
 -- hash_blake2b256 = Hash.'blake2b' @32 message
 -- hash_blake2b512 = Hash.'blake2b' @64 message
--- @
 --
--- This is @crypto_generichash_*@ from NaCl.
+-- hash_sha256 = Hash.'sha256' message
+-- hash_sha512 = Hash.'sha512' message
+-- @
 module Crypto.Hash
-  ( I.HashBlake2b
+  (
+  -- * BLAKE2b
+    I.HashBlake2b
   , blake2b
   , blake2bWithKey
+
+  -- * SHA-2
+  , HashSha256
+  , sha256
+
+  , HashSha512
+  , sha512
   ) where
 
 import Data.ByteArray (ByteArray, ByteArrayAccess, Bytes)
 import GHC.TypeNats (KnownNat, type (<=))
+import NaCl.Hash (HashSha256, HashSha512, sha256, sha512)
 import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Crypto.Hash.Internal as I
