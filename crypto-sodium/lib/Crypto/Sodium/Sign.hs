@@ -36,6 +36,8 @@ module Crypto.Sodium.Sign
   , SecretKey
   , toSecretKey
   , keypair
+
+  , Seed
   , keypairFromSeed
   , unsafeKeypairFromSeed
 

@@ -60,7 +60,7 @@ import qualified NaCl.Secretbox as NaCl.Secretbox
 -- *   @message@ is the data you are encrypting.
 --
 -- This function adds authentication data, so if anyone modifies the cyphertext,
--- 'open' will refuse to decrypt it.
+-- 'decrypt' will refuse to decrypt it.
 encrypt
   ::  ( ByteArrayAccess keyBytes, ByteArrayAccess nonceBytes
       , ByteArrayAccess ptBytes, ByteArray ctBytes
@@ -79,7 +79,7 @@ encrypt = NaCl.Secretbox.create
 -- @
 --
 -- * @key@ and @nonce@ are the same that were used for encryption.
--- * @encrypted@ is the output of 'create'.
+-- * @encrypted@ is the output of 'encrypt'.
 --
 -- This function will return @Nothing@ if the encrypted message was tampered
 -- with after it was encrypted.

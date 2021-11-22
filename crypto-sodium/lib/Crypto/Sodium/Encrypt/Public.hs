@@ -22,7 +22,7 @@
 -- A box is an abstraction from NaCl. One way to think about it
 -- is to imagine that you are putting data into a box protected by
 -- the receiver’s public key and signed by your private key. The
--- receive will then be able to 'open' it using their private key
+-- receive will then be able to “open” it using their private key
 -- and your public key.
 --
 -- Note that this means that you need to exchange your public keys
@@ -38,6 +38,8 @@ module Crypto.Sodium.Encrypt.Public
   , SecretKey
   , toSecretKey
   , keypair
+
+  , Seed
   , keypairFromSeed
   , unsafeKeypairFromSeed
 
