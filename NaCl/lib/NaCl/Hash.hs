@@ -10,7 +10,7 @@
 -- import qualified NaCl.Hash as Hash
 --
 -- hash_sha256 = Hash.'sha256' message
--- hash_sha512 = Hash.'sha512' signed
+-- hash_sha512 = Hash.'sha512' message
 -- @
 --
 -- This is @crypto_hash_*@ from NaCl.

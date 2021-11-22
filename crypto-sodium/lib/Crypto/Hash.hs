@@ -11,9 +11,9 @@
 -- @
 -- import qualified Crypto.Hash as Hash
 --
--- hash_blake2b256_keyed = Hash.'blake2bWithKey' @32 key message
--- hash_blake2b256 = Hash.'blake2b' @32 message
--- hash_blake2b512 = Hash.'blake2b' @64 message
+-- hash_blake2b256_keyed = Hash.'blake2bWithKey' \@32 key message
+-- hash_blake2b256 = Hash.'blake2b' \@32 message
+-- hash_blake2b512 = Hash.'blake2b' \@64 message
 --
 -- hash_sha256 = Hash.'sha256' message
 -- hash_sha512 = Hash.'sha512' message
@@ -44,9 +44,9 @@ import qualified Libsodium as Na
 -- | Hash a message using BLAKE2b.
 --
 -- @
--- hash128 = Hash.'blake2b' @16 message
--- hash256 = Hash.'blake2b' @32 message
--- hash512 = Hash.'blake2b' @64 message
+-- hash128 = Hash.'blake2b' \@16 message
+-- hash256 = Hash.'blake2b' \@32 message
+-- hash512 = Hash.'blake2b' \@64 message
 -- @
 --
 -- *   @message@ is the data you are hashing.
@@ -65,9 +65,9 @@ blake2b msg = unsafePerformIO $ I.blake2b (Nothing :: Maybe Bytes) msg
 -- | Hash a message using BLAKE2b with a key.
 --
 -- @
--- hash128_keyed = Hash.'blake2bWithKey' @16 key message
--- hash256_keyed = Hash.'blake2bWithKey' @32 key message
--- hash512_keyed = Hash.'blake2bWithKey' @64 key message
+-- hash128_keyed = Hash.'blake2bWithKey' \@16 key message
+-- hash256_keyed = Hash.'blake2bWithKey' \@32 key message
+-- hash512_keyed = Hash.'blake2bWithKey' \@64 key message
 -- @
 --
 -- *   @key@ is the BLAKE2b key.
