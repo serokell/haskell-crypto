@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+
 -- SPDX-FileCopyrightText: 2021 Serokell
 --
 -- SPDX-License-Identifier: MPL-2.0
