@@ -37,10 +37,10 @@
     - TypeApplications
 
   dependencies:
-    - base >= 4.10 && < 4.15
+    - base >= 4.10 && < 4.16
     - bytestring >= 0.9 && < 0.11
     - libsodium >= 1.0.11 && < 2
-    - memory >= 0.14.15 && < 0.16
+    - memory >= 0.14.15 && < 0.17
     - safe-exceptions >= 0.1 && < 0.2
 
 - &lib

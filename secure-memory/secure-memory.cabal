@@ -69,10 +69,10 @@ library
   c-sources:
       ./cbits/readline_max.c
   build-depends:
-      base >=4.10 && <4.15
+      base >=4.10 && <4.16
     , bytestring >=0.9 && <0.11
     , libsodium >=1.0.18.2
-    , memory >=0.14.15 && <0.16
+    , memory >=0.14.15 && <0.17
     , reflection >=1.2.0.1 && <2.2
     , safe-exceptions ==0.1.*
     , text >=0.7 && <1.3
@@ -103,10 +103,10 @@ executable checkpw
       TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
-      base >=4.10 && <4.15
+      base >=4.10 && <4.16
     , bytestring >=0.9 && <0.11
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.16
+    , memory >=0.14.15 && <0.17
     , safe-exceptions ==0.1.*
     , secure-memory
   default-language: Haskell2010
@@ -139,11 +139,11 @@ test-suite test-pipe
   build-depends:
       HUnit
     , async
-    , base >=4.10 && <4.15
+    , base >=4.10 && <4.16
     , bytestring >=0.9 && <0.11
     , hedgehog
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.16
+    , memory >=0.14.15 && <0.17
     , safe-exceptions ==0.1.*
     , secure-memory
     , tasty
@@ -181,10 +181,10 @@ test-suite test-simple
       tasty-discover:tasty-discover
   build-depends:
       HUnit
-    , base >=4.10 && <4.15
+    , base >=4.10 && <4.16
     , bytestring >=0.9 && <0.11
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.16
+    , memory >=0.14.15 && <0.17
     , safe-exceptions ==0.1.*
     , secure-memory
     , tasty

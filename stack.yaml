@@ -10,12 +10,16 @@ packages:
   - crypto-sodium-streamly
 
 extra-deps:
-  # - libsodium-1.0.18.2
-  # This is the same as above, but from git, since hackage.nix
-  # seems to be stuck and does not include this version
-  - git: https://github.com/k0001/hs-libsodium
-    commit: 39dbda30a3fff3e456e2f695072f7ab48f0d7336
-    subdirs: [libsodium]
+  - libsodium-1.0.18.2
+
+  # Required for GHC >= 9
+  - basement-0.0.12
+  - memory-0.16.0
+  - streamly-0.8.0
+
+  # Required for GHC >= 9.2
+  #- basement-???
+  #- hashable-1.3.5.0
 
 nix:
   packages:

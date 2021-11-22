@@ -44,7 +44,7 @@
               };
             })
           ];
-          ghcVersions = [ "884" "8107" ];
+          ghcVersions = [ "884" "8107" "901" ];
         };
 
       in flake

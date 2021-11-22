@@ -113,12 +113,14 @@ allocate
   :: forall s m. (MonadIO m, WithSecureMemory)
   => Int  -- ^ Size of the array (in bytes).
   -> m (SensitiveBytes s)
-allocate size = requiringSecureMemory . liftIO $ do
-  res <- sodium_malloc (fromIntegral size)
-  if res == nullPtr then
-    throwIO SodiumMallocFailed
-  else
-    pure $ SensitiveBytes size size res
+allocate size = requiringSecureMemory (liftIO act)
+  where
+    act = do
+      res <- sodium_malloc (fromIntegral size)
+      if res == nullPtr then
+        throwIO SodiumMallocFailed
+      else
+        pure $ SensitiveBytes size size res
 
 -- | Free bytes previously allocated in a protected memory region.
 free
