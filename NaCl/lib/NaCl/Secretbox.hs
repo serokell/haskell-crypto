@@ -51,7 +51,7 @@ import qualified NaCl.Secretbox.Internal as I
 --     you want to have an intermediate key that you will encrypt and share
 --     later.
 --
---     The @Crypto.Key@ module in
+--     The @Crypto.Sodium.Key@ module in
 --     <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
 --     has functions to help in either case.
 --
@@ -63,7 +63,7 @@ import qualified NaCl.Secretbox.Internal as I
 --
 --     2. /Random/. You generate a random nonce every time you encrypt a message.
 --     Since the nonce is large enough, the chances of you using the same
---     nonce twice are negligible. For useful helpers, see @Crypto.Random@,
+--     nonce twice are negligible. For useful helpers, see @Crypto.Sodium.Random@,
 --     in <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>.
 --
 --     In either case, you need to be able to provide the same nonce when decrypting,

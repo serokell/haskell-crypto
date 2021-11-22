@@ -3,8 +3,6 @@ cabal-version: 1.18
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 6e6bd70858aab29ee874f82a960802ee92efcc002f745b4536b60c2327077c00
 
 name:           crypto-sodium
 version:        0.0.4.0
@@ -37,23 +35,23 @@ description:    This is a collection of high-level cryptographic primitives base
                 .
                 == Library initialisation
                 .
-                * "Crypto.Init"
+                * "Crypto.Sodium.Init"
                 .
                 == Secret-key cryptography
                 .
-                * Authenticated symmetric-key encryption: "Crypto.Encrypt.Symmetric"
-                * Message authentication codes: "Crypto.Mac"
+                * Authenticated symmetric-key encryption: "Crypto.Sodium.Encrypt.Symmetric"
+                * Message authentication codes: "Crypto.Sodium.Mac"
                 .
                 == Public-key cryptography
                 .
-                * Authenticated public-key encryption: "Crypto.Encrypt.Public"
-                * Public-key signatures: "Crypto.Sign"
+                * Authenticated public-key encryption: "Crypto.Sodium.Encrypt.Public"
+                * Public-key signatures: "Crypto.Sodium.Sign"
                 .
                 == Additional primitives
                 .
-                * Key derivation and generation: "Crypto.Key"
-                * Cryptographically-secure random: "Crypto.Random"
-                * Hashing: "Crypto.Hash"
+                * Key derivation and generation: "Crypto.Sodium.Key"
+                * Cryptographically-secure random: "Crypto.Sodium.Random"
+                * Hashing: "Crypto.Sodium.Hash"
 category:       Cryptography
 homepage:       https://github.com/serokell/haskell-crypto#readme
 bug-reports:    https://github.com/serokell/haskell-crypto/issues
@@ -73,21 +71,21 @@ source-repository head
 
 library
   exposed-modules:
-      Crypto.Encrypt.Public
-      Crypto.Encrypt.Symmetric
-      Crypto.Encrypt.Symmetric.Stream
-      Crypto.Hash
-      Crypto.Hash.Internal
-      Crypto.Init
-      Crypto.Internal.Random
-      Crypto.Internal.Verify
-      Crypto.Key
-      Crypto.Key.Internal
-      Crypto.Mac
-      Crypto.Nonce
-      Crypto.Pwhash.Internal
-      Crypto.Random
-      Crypto.Sign
+      Crypto.Sodium.Encrypt.Public
+      Crypto.Sodium.Encrypt.Symmetric
+      Crypto.Sodium.Encrypt.Symmetric.Stream
+      Crypto.Sodium.Hash
+      Crypto.Sodium.Hash.Internal
+      Crypto.Sodium.Init
+      Crypto.Sodium.Internal.Random
+      Crypto.Sodium.Internal.Verify
+      Crypto.Sodium.Key
+      Crypto.Sodium.Key.Internal
+      Crypto.Sodium.Mac
+      Crypto.Sodium.Nonce
+      Crypto.Sodium.Pwhash.Internal
+      Crypto.Sodium.Random
+      Crypto.Sodium.Sign
   other-modules:
       Paths_crypto_sodium
   hs-source-dirs:
@@ -122,15 +120,15 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
-      Test.Crypto.Encrypt.Public
-      Test.Crypto.Encrypt.Symmetric
-      Test.Crypto.Gen
-      Test.Crypto.Hash
-      Test.Crypto.Key.Derivation
-      Test.Crypto.Nonce
-      Test.Crypto.Pwhash
-      Test.Crypto.Random
-      Test.Crypto.Sign
+      Test.Crypto.Sodium.Encrypt.Public
+      Test.Crypto.Sodium.Encrypt.Symmetric
+      Test.Crypto.Sodium.Gen
+      Test.Crypto.Sodium.Hash
+      Test.Crypto.Sodium.Key.Derivation
+      Test.Crypto.Sodium.Nonce
+      Test.Crypto.Sodium.Pwhash
+      Test.Crypto.Sodium.Random
+      Test.Crypto.Sodium.Sign
       Paths_crypto_sodium
   hs-source-dirs:
       test

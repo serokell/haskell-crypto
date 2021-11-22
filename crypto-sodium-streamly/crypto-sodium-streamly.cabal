@@ -3,8 +3,6 @@ cabal-version: 1.18
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: a5c540d5ffafbbb129fc2be7cc6b29848664ca02e27b8139cd56bbd74c53d3ab
 
 name:           crypto-sodium-streamly
 version:        0.0.4.0
@@ -40,8 +38,8 @@ source-repository head
 
 library
   exposed-modules:
-      Crypto.Encrypt.Symmetric.Streamly
-      Crypto.Streamly.Util
+      Crypto.Sodium.Encrypt.Symmetric.Streamly
+      Crypto.Sodium.Streamly.Util
   other-modules:
       Paths_crypto_sodium_streamly
   hs-source-dirs:
@@ -76,7 +74,7 @@ test-suite test
   type: exitcode-stdio-1.0
   main-is: Test.hs
   other-modules:
-      Test.Crypto.Encrypt.Symmetric.Streamly
+      Test.Crypto.Sodium.Encrypt.Symmetric.Streamly
       Paths_crypto_sodium_streamly
   hs-source-dirs:
       test

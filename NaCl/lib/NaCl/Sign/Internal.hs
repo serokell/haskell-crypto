@@ -53,7 +53,7 @@ toPublicKey = sizedByteArray
 -- Note: this function is not thread-safe (since the underlying
 -- C function is not thread-safe both in Sodium and in NaCl)!
 -- Either make sure there are no concurrent calls or see
--- @Crypto.Init@ in
+-- @Crypto.Sodium.Init@ in
 -- <https://hackage.haskell.org/package/crypto-sodium crypto-sodium>
 -- to learn how to make this function thread-safe.
 keypair :: IO (PublicKey ByteString, SecretKey ScrubbedBytes)

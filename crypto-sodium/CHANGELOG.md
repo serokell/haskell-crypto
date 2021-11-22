@@ -5,10 +5,10 @@
 ### Added
 
 * `sodiumInit`
-* Random bytes generation: `Crypto.Random`
-* Key derivation: `Crypto.Key.derive` and `Crypto.Key.rederive`
-* MAC: `Crypto.Mac`, `Crypto.Mac.Lazy`
-* Random nonce generation: `Crypto.Nonce`
-* Public-key signatures: `Crypto.Sign`
-* Keypair generation from seed: `Crypto.Sign` and `Crypto.Encrypt.Public`
-* Hash: `Crypto.Hash.blake2b`, `Crypto.Hash.blake2bWithKey`, `Crypto.Hash.sha256`, `Crypto.Hash.sha512`
+* Random bytes generation: `Crypto.Sodium.Random`
+* Key derivation: `Crypto.Sodium.Key.derive` and `Crypto.Sodium.Key.rederive`
+* MAC: `Crypto.Sodium.Mac`, `Crypto.Sodium.Mac.Lazy`
+* Random nonce generation: `Crypto.Sodium.Nonce`
+* Public-key signatures: `Crypto.Sodium.Sign`
+* Keypair generation from seed: `Crypto.Sodium.Sign` and `Crypto.Sodium.Encrypt.Public`
+* Hash: `Crypto.Sodium.Hash.blake2b`, `Crypto.Sodium.Hash.blake2bWithKey`, `Crypto.Sodium.Hash.sha256`, `Crypto.Sodium.Hash.sha512`

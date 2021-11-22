@@ -36,23 +36,23 @@ description: |
 
   == Library initialisation
 
-  * "Crypto.Init"
+  * "Crypto.Sodium.Init"
 
   == Secret-key cryptography
 
-  * Authenticated symmetric-key encryption: "Crypto.Encrypt.Symmetric"
-  * Message authentication codes: "Crypto.Mac"
+  * Authenticated symmetric-key encryption: "Crypto.Sodium.Encrypt.Symmetric"
+  * Message authentication codes: "Crypto.Sodium.Mac"
 
   == Public-key cryptography
 
-  * Authenticated public-key encryption: "Crypto.Encrypt.Public"
-  * Public-key signatures: "Crypto.Sign"
+  * Authenticated public-key encryption: "Crypto.Sodium.Encrypt.Public"
+  * Public-key signatures: "Crypto.Sodium.Sign"
 
   == Additional primitives
 
-  * Key derivation and generation: "Crypto.Key"
-  * Cryptographically-secure random: "Crypto.Random"
-  * Hashing: "Crypto.Hash"
+  * Key derivation and generation: "Crypto.Sodium.Key"
+  * Cryptographically-secure random: "Crypto.Sodium.Random"
+  * Hashing: "Crypto.Sodium.Hash"
 
 category: Cryptography
 

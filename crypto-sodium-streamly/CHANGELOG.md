@@ -4,4 +4,4 @@
 
 ### Added
 
-* Symmetric encryption: `Crypto.Encryption.Symmetric.Streamly`
+* Symmetric encryption: `Crypto.Sodium.Encryption.Symmetric.Streamly`

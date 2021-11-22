@@ -3,8 +3,6 @@ cabal-version: 1.18
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 96801ddcac1bde4bd9ab56c0f221a68ee0d9ccdfe421b3c1c2aeaa46a72b99ba
 
 name:           NaCl
 version:        0.0.4.0
