@@ -88,7 +88,6 @@ blake2bWithKey
       , ByteArrayAccess pt
       , ByteArray hashBytes
       , KnownNat keyLen
-      , Na.CRYPTO_GENERICHASH_KEYBYTES_MIN <= keyLen
       , keyLen <= Na.CRYPTO_GENERICHASH_KEYBYTES_MAX
       , KnownNat outLen
       , Na.CRYPTO_GENERICHASH_BYTES_MIN <= outLen

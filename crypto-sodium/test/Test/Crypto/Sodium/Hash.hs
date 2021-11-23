@@ -9,9 +9,13 @@
 
 module Test.Crypto.Sodium.Hash where
 
+import Hedgehog (Property, (===), forAll, property)
+import qualified Hedgehog.Gen as G
+import qualified Hedgehog.Range as R
 import Test.HUnit ((@?=), Assertion)
 
-import Data.ByteArray.Sized (sizedByteArray)
+import Data.ByteArray (Bytes)
+import Data.ByteArray.Sized (SizedByteArray, empty, sizedByteArray)
 import Data.ByteString (ByteString)
 import Data.ByteString.Base16 (decodeBase16)
 import Data.Either (fromRight)
@@ -32,13 +36,19 @@ unit_blake2b256_unkeyed = do
           "9ec2c90ec850ccd1b924806046eace8dd3730e631ad8eb73c28b78abba936232"
     Hash.blake2b @32 msg @?= hash
 
-unit_blake2b256_generate_key :: Assertion
-unit_blake2b256_generate_key = do
+unit_blake2b512_generate_key :: Assertion
+unit_blake2b512_generate_key = do
     let msg = "testing\n" :: ByteString
     -- we just make sure that this typechecks, i.e. all type-level Nats align
     key <- generate @32
     let _out = Hash.blake2bWithKey @64 @ByteString key msg
     pure ()
+
+hprop_blake2b256_empty_key :: Property
+hprop_blake2b256_empty_key = property $ do
+    let key = empty :: SizedByteArray 0 Bytes
+    msg <- forAll $ G.bytes (R.linear 0 1_000)
+    Hash.blake2bWithKey key msg === Hash.blake2b @32 @Bytes msg
 
 
 blake2b_test_vector
