@@ -63,7 +63,7 @@ blake2b
   -> I.HashBlake2b len hashBytes
 blake2b msg = unsafePerformIO $ I.blake2b noKey msg
   where
-    noKey :: Maybe (SizedByteArray Na.CRYPTO_GENERICHASH_KEYBYTES Bytes)
+    noKey :: Maybe (SizedByteArray 0 Bytes)
     noKey = Nothing
 
 -- | Hash a message using BLAKE2b with a key.
