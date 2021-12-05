@@ -30,10 +30,11 @@ import qualified Data.ByteString.Unsafe as BS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import GHC.Exts (Addr#)
-import Language.Haskell.TH (Exp, Q, TExp, Type)
+import Language.Haskell.TH (Exp, Q, Type)
 import qualified Language.Haskell.TH.Lib as TH
 import Language.Haskell.TH.Quote (QuasiQuoter (..))
-import qualified Language.Haskell.TH.Syntax as TH
+import Language.Haskell.TH.Syntax.Compat (SpliceQ)
+import qualified Language.Haskell.TH.Syntax.Compat as TH
 import System.IO.Unsafe (unsafeDupablePerformIO)
 
 import qualified Crypto.Sodium.Nonce
@@ -56,7 +57,7 @@ utf8 :: QuasiQuoter
 utf8 = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
   where
     quoteExp :: String -> Q Exp
-    quoteExp str = [e|unsafeSizedByteArray $(TH.unType <$> bsExpr) :: $tSized|]
+    quoteExp str = [e|unsafeSizedByteArray $(TH.unTypeSplice bsSplice) :: $tSized|]
       where
         bs :: ByteString
         bs = T.encodeUtf8 $ T.pack str
@@ -64,11 +65,11 @@ utf8 = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
         len :: Int
         len = BS.length bs
 
-        cstrExpr :: Q (TExp Addr#)
-        cstrExpr = TH.unsafeTExpCoerce . TH.litE . TH.stringPrimL . BS.unpack $ bs
+        cstrSplice :: SpliceQ Addr#
+        cstrSplice = TH.unsafeSpliceCoerce . TH.litE . TH.stringPrimL . BS.unpack $ bs
 
-        bsExpr :: Q (TExp ByteString)
-        bsExpr = [e||unsafeDupablePerformIO $ BS.unsafePackAddressLen len $$cstrExpr||]
+        bsSplice :: SpliceQ ByteString
+        bsSplice = [e||unsafeDupablePerformIO $ BS.unsafePackAddressLen len $$cstrSplice||]
 
         tSized :: Q Type
         tSized = [t|SizedByteArray $(TH.litT . TH.numTyLit . fromIntegral $ len) ByteString|]
