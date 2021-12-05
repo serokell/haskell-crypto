@@ -36,7 +36,7 @@ import qualified Language.Haskell.TH.Syntax as TH
 import qualified Crypto.Sodium.Nonce
 
 
--- | Make a /sized/ 'ByteString' from a type-level string literal.
+-- | Quasi-quoter to construct a /sized/ 'ByteString' literal.
 --
 -- @
 -- {-# LANGUAGE QuasiQuotes #-}
