@@ -2,6 +2,7 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
+{-# LANGUAGE MagicHash #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 -- | This module gives different ways of obtaining salts.
@@ -25,13 +26,15 @@ module Crypto.Sodium.Salt
 import Data.ByteArray.Sized (SizedByteArray, unsafeSizedByteArray)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
-import qualified Data.ByteString.Internal as BS
+import qualified Data.ByteString.Unsafe as BS
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import Language.Haskell.TH (Exp, Q)
+import GHC.Exts (Addr#)
+import Language.Haskell.TH (Exp, Q, TExp, Type)
 import qualified Language.Haskell.TH.Lib as TH
 import Language.Haskell.TH.Quote (QuasiQuoter (..))
 import qualified Language.Haskell.TH.Syntax as TH
+import System.IO.Unsafe (unsafeDupablePerformIO)
 
 import qualified Crypto.Sodium.Nonce
 
@@ -53,18 +56,22 @@ utf8 :: QuasiQuoter
 utf8 = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
   where
     quoteExp :: String -> Q Exp
-    quoteExp str =
-        let
-          valExpr = [e|BS.packBytes $(TH.lift $ BS.unpackBytes bs)|]
-
-          len = BS.length bs
-          t = [t|SizedByteArray $(TH.litT . TH.numTyLit . fromIntegral $ len) ByteString|]
-        in
-          -- This is really safe because, well, we compute the length.
-          [e|unsafeSizedByteArray $(valExpr) :: $(t)|]
+    quoteExp str = [e|unsafeSizedByteArray $(TH.unType <$> bsExpr) :: $tSized|]
       where
         bs :: ByteString
         bs = T.encodeUtf8 $ T.pack str
+
+        len :: Int
+        len = BS.length bs
+
+        cstrExpr :: Q (TExp Addr#)
+        cstrExpr = TH.unsafeTExpCoerce . TH.litE . TH.stringPrimL . BS.unpack $ bs
+
+        bsExpr :: Q (TExp ByteString)
+        bsExpr = [e||unsafeDupablePerformIO $ BS.unsafePackAddressLen len $$cstrExpr||]
+
+        tSized :: Q Type
+        tSized = [t|SizedByteArray $(TH.litT . TH.numTyLit . fromIntegral $ len) ByteString|]
 
     err :: String -> Q a
     err _ = fail "A `utf8` quasi-quotation can only be used as an expression"
