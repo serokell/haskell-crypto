@@ -12,12 +12,26 @@ packages:
   original:
     hackage: libsodium-1.0.18.2
 - completed:
+    hackage: streamly-0.8.0@sha256:0513eff994ebac2438d5ef58041fe70e0610ecd213c588fb8be3b6b72f9d61b9,20201
+    pantry-tree:
+      size: 21676
+      sha256: c82bec3985b471396a52a018d9da898ce183283843f11400f0c69a8bd5a85aca
+  original:
+    hackage: streamly-0.8.0
+- completed:
     hackage: basement-0.0.12@sha256:cbb9187d3575b78ee1165b7a49a0e8570ee563820330a944a67cd09e1cfe23bf,5516
     pantry-tree:
       size: 5859
       sha256: 6462393c9058b93baea2c8ffb4a7e1d68c2aee14746ef0081dbb485a2faef71b
   original:
     hackage: basement-0.0.12
+- completed:
+    hackage: hashable-1.3.5.0@sha256:47d1232d9788bb909cfbd80618de18dcdfb925609593e202912bd5841db138c1,4193
+    pantry-tree:
+      size: 1248
+      sha256: adde5ecc080faa094750544837937cf876e65bf5bf28d81db22e7401faa46bf3
+  original:
+    hackage: hashable-1.3.5.0
 - completed:
     hackage: memory-0.16.0@sha256:3bf01f8267c0ee1745a1c0c4aa0dc311709801e950d605d90b5d1a26e2773e49,4895
     pantry-tree:
@@ -26,12 +40,12 @@ packages:
   original:
     hackage: memory-0.16.0
 - completed:
-    hackage: streamly-0.8.0@sha256:0513eff994ebac2438d5ef58041fe70e0610ecd213c588fb8be3b6b72f9d61b9,20201
+    hackage: random-1.2.1@sha256:8bee24dc0c985a90ee78d94c61f8aed21c49633686f0f1c14c5078d818ee43a2,6598
     pantry-tree:
-      size: 21676
-      sha256: c82bec3985b471396a52a018d9da898ce183283843f11400f0c69a8bd5a85aca
+      size: 1528
+      sha256: 8bdc994ce41f43624ab42302a881fe5a0f81d965f5d238841e24943664681a06
   original:
-    hackage: streamly-0.8.0
+    hackage: random-1.2.1
 snapshots:
 - completed:
     size: 586296
