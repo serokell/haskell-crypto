@@ -48,6 +48,13 @@
                     hash = "sha256-++TS1n8Z2vCPiJYumyZXYhyVnvYKRkvDPSaGPD58i3c=";
                   })
                 ];
+                memory.patches = [
+                  # GHC 9.2 compatibility
+                  (pkgs.fetchurl {
+                    url = "https://gitlab.haskell.org/ghc/head.hackage/-/raw/9110e6972b5daf085e19cad41f97920d3ddac499/patches/memory-0.16.0.patch";
+                    hash = "sha256-h/7uUa+dTCJviTYyRN3BqvwnXI7TSYi3rRdJ32jIl6M=";
+                  })
+                ];
               };
             })
           ];
