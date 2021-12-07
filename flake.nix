@@ -41,6 +41,13 @@
                 crypto-sodium-streamly.cabal-generator = lib.mkForce null;
                 # TODO: rename ./hpack/package.yaml back to ./hpack/common.yaml
                 # (the name had to be changed as otherwise it gets cleaned in the process)
+                basement.patches = [
+                  # GHC 9.2 compatibility
+                  (pkgs.fetchurl {
+                    url = "https://gitlab.haskell.org/ghc/head.hackage/-/raw/dfd024c9a336c752288ec35879017a43bd7e85a0/patches/basement-0.0.12.patch";
+                    hash = "sha256-++TS1n8Z2vCPiJYumyZXYhyVnvYKRkvDPSaGPD58i3c=";
+                  })
+                ];
               };
             })
           ];
