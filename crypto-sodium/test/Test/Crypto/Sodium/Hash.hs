@@ -4,14 +4,19 @@
 
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Test.Crypto.Sodium.Hash where
 
+import Hedgehog (Property, (===), forAll, property)
+import qualified Hedgehog.Gen as G
+import qualified Hedgehog.Range as R
 import Test.HUnit ((@?=), Assertion)
 
-import Data.ByteArray.Sized (sizedByteArray)
+import Data.ByteArray (Bytes)
+import Data.ByteArray.Sized (SizedByteArray, empty, sizedByteArray)
 import Data.ByteString (ByteString)
 import Data.ByteString.Base16 (decodeBase16)
 import Data.Either (fromRight)
@@ -21,6 +26,8 @@ import Control.Monad (forM_)
 import qualified Libsodium as Na
 
 import qualified Crypto.Sodium.Hash as Hash
+import Crypto.Sodium.Key (generate)
+import Crypto.Sodium.Salt (utf8)
 
 
 unit_blake2b256_unkeyed :: Assertion
@@ -30,6 +37,29 @@ unit_blake2b256_unkeyed = do
       Just hash = sizedByteArray . fromRight (error "impossible") . decodeBase16 $
           "9ec2c90ec850ccd1b924806046eace8dd3730e631ad8eb73c28b78abba936232"
     Hash.blake2b @32 msg @?= hash
+
+unit_blake2b512_generate_key :: Assertion
+unit_blake2b512_generate_key = do
+    let msg = "testing\n" :: ByteString
+    -- we just make sure that this typechecks, i.e. all type-level Nats align
+    key <- generate @32
+    let _out = Hash.blake2bWithKey @64 @ByteString key msg
+    pure ()
+
+unit_blake2b256_utf8_key :: Assertion
+unit_blake2b256_utf8_key = do
+    let
+      msg = "testing\n" :: ByteString
+      key = [utf8|hello|]
+      Just hash = sizedByteArray . fromRight (error "impossible") . decodeBase16 $
+          "649859ec1dd0ef538faae58eef9e2c701dc881ac5a1d6641113fad96e2fc1725"
+    Hash.blake2bWithKey @32 @ByteString key msg @?= hash
+
+hprop_blake2b256_empty_key :: Property
+hprop_blake2b256_empty_key = property $ do
+    let key = empty :: SizedByteArray 0 Bytes
+    msg <- forAll $ G.bytes (R.linear 0 1_000)
+    Hash.blake2bWithKey key msg === Hash.blake2b @32 @Bytes msg
 
 
 blake2b_test_vector
@@ -44,7 +74,7 @@ blake2b_test_vector
   -> Assertion
 blake2b_test_vector msg key hash = do
   let hash' = fromRight (error "impossible") . decodeBase16 $ hash
-      key' = fromRight (error "impossible") . decodeBase16 $ key
+      Just key' = sizedByteArray @64 . fromRight (error "impossible") . decodeBase16 $ key
       msg' = fromRight (error "impossible") . decodeBase16 $ msg
       Just hash'N = sizedByteArray @len hash'
       result = Hash.blake2bWithKey key' msg'
