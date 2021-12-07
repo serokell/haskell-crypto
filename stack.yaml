@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-resolver: lts-18.4
+resolver: lts-18.18
 packages:
   - secure-memory
   - NaCl
