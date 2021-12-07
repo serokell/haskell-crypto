@@ -11,7 +11,7 @@ import Data.ByteString (ByteString)
 
 import Test.HUnit ((@?=), Assertion)
 
-import Crypto.Sodium.Salt (utf8)
+import Crypto.Sodium.Salt (utf8, bytes)
 
 
 unit_ascii_literal :: Assertion
@@ -28,3 +28,8 @@ unit_space_literal :: Assertion
 unit_space_literal = do
     let lit = [utf8|hello world|] :: SizedByteArray 11 ByteString
     unSizedByteArray lit @?= "hello world"
+
+unit_raw_byte_literal :: Assertion
+unit_raw_byte_literal = do
+    let lit = [bytes|z\x00\xff\SOH\1\&2|] :: SizedByteArray 6 ByteString
+    unSizedByteArray lit @?= "z\x00\xff\SOH\1\&2"
