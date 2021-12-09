@@ -45,41 +45,50 @@ import Text.Read.Lex (lexChar)
 import qualified Crypto.Sodium.Nonce
 
 
--- | Quasi-quoter to construct a /sized/ 'ByteString' literal.
+-- | Quasi-quoter to construct a /sized/ 'ByteString' from string literal
+-- encoded using UTF-8.
 --
 -- @
 -- {-# LANGUAGE QuasiQuotes #-}
 --
 -- {- ... -}
 --
--- let salt = [utf8|hello world|] :: 'SizedByteArray' 11 ByteString
+-- let salt1 = [utf8|hello world|] :: 'SizedByteArray' 11 ByteString
+-- let salt2 = [utf8|ĝis\x0021\r\n|] :: 'SizedByteArray' 7 ByteString
 -- @
 --
 -- This uses Template Haskell to compute the length of the UTF-8 encoding
--- of the string you provide. Note that the string will be taken as is,
--- with all whitespace preserved, for example @[utf8| x |]@ will have length 3.
+-- of the string you provide.
+--
+-- The string literal is treated similar to how a Haskell compiler treats
+-- string literals in source code – this means you can use escape sequences
+-- as in the example above.
+--
+-- Note that the string will be taken as is, with all whitespace preserved,
+-- for example @[utf8| x |]@ will have length 3.
 utf8 :: QuasiQuoter
-utf8 = mkQuoter "utf8" (pure . T.encodeUtf8 . T.pack)
+utf8 = mkQuoter "utf8" (pure . T.encodeUtf8 . T.pack <=< parseEscapes)
 
--- | Quasi-quoter to construct a /sized/ 'ByteString' literal. This quoter
--- will parse Haskell character escapes, and interpret the quoted string as
--- a sequence of bytes, rather than text.
+-- | Quasi-quoter to construct a /sized/ 'ByteString' from literal bytes.
 --
 -- @
 -- {-# LANGUAGE QuasiQuotes #-}
 --
 -- {- ... -}
 --
--- let salt = [bytes|\xff\x00\xde|] :: 'SizedByteArray' 3 ByteString
+-- let salt = [bytes|hi\n\x00|] :: 'SizedByteArray' 4 ByteString
 -- @
 --
 -- This uses Template Haskell to compute the length of the raw byte
--- string you provide. Note that the string will be taken as is,
--- with all whitespace preserved, for example @[bytes| x |]@ will have length 3.
+-- string you provide.
 --
--- The conversion rules are exactly the same as @OverloadedString@ rules for
--- 'ByteString'. In particular, characters that are more than one byte wide
--- will be silently truncated to one byte.
+-- The bytes literal is treated similar to how a Haskell compiler treats
+-- string literals in source code – this means you can use escape sequences
+-- as in example above. Characters that do not fit into one byte will cause
+-- a compilation error – use 'utf8' instead.
+--
+-- Note that the bytes will be taken as is, with all whitespace preserved,
+-- for example @[bytes| x |]@ will have length 3.
 bytes :: QuasiQuoter
 bytes = mkQuoter "bytes" (toBytes <=< parseEscapes)
   where
@@ -87,10 +96,6 @@ bytes = mkQuoter "bytes" (toBytes <=< parseEscapes)
     charToByte c =
       let msg = "Character does not fit into a byte: '" <> [c] <> "' (" <> show c <> ")"
       in maybe (fail msg) pure $ toIntegralSized (fromEnum c)
-    parseEscapes str = case reverse (readP_to_S (many lexChar) str) of
-      (result, ""):_ -> pure result
-      (_, rest):_ -> fail $ "Failed to parse raw bytes: " <> rest
-      [] -> fail $ "Failed to parse raw bytes (no parse): " <> str
 
 -- | A helper function to construct a quasi-quoter making a sized byte array
 -- given a conversion from 'String' to 'ByteString'.
@@ -120,3 +125,16 @@ mkQuoter name convert = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
     quotePat = err
     quoteType = err
     quoteDec = err
+
+-- | Parse a Haskell string literal with escapes.
+--
+-- Given a string similar to what a Haskell compiler can see between double quotes,
+-- process escape sequences according to the Haskell standard and return
+-- the resulting string.
+--
+-- This function can fail if there are invalid escape sequences.
+parseEscapes :: MonadFail m => String -> m String
+parseEscapes str = case reverse (readP_to_S (many lexChar) str) of
+  (result, ""):_ -> pure result
+  (_, rest):_ -> fail $ "Failed to parse raw bytes: " <> rest
+  [] -> fail $ "Failed to parse raw bytes (no parse): " <> str
