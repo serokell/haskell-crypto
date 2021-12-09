@@ -30,6 +30,7 @@ import Data.ByteArray.Sized (SizedByteArray, unsafeSizedByteArray)
 import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
+import Data.Maybe (listToMaybe)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import GHC.Exts (Addr#)
@@ -39,7 +40,7 @@ import Language.Haskell.TH.Quote (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax.Compat (SpliceQ)
 import qualified Language.Haskell.TH.Syntax.Compat as TH
 import System.IO.Unsafe (unsafeDupablePerformIO)
-import Text.ParserCombinators.ReadP (readP_to_S, many)
+import Text.ParserCombinators.ReadP (eof, readP_to_S, many)
 import Text.Read.Lex (lexChar)
 
 import qualified Crypto.Sodium.Nonce
@@ -134,7 +135,6 @@ mkQuoter name convert = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
 --
 -- This function can fail if there are invalid escape sequences.
 parseEscapes :: MonadFail m => String -> m String
-parseEscapes str = case reverse (readP_to_S (many lexChar) str) of
-  (result, ""):_ -> pure result
-  (_, rest):_ -> fail $ "Failed to parse raw bytes: " <> rest
-  [] -> fail $ "Failed to parse raw bytes (no parse): " <> str
+parseEscapes str = case listToMaybe (readP_to_S (many lexChar <* eof) str) of
+  Just (result, "") -> pure result
+  _ -> fail $ "Failed to parse raw bytes (no parse): " <> str
