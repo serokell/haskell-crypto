@@ -9,9 +9,45 @@ module Test.Crypto.Sodium.Salt where
 import Data.ByteArray.Sized (SizedByteArray, unSizedByteArray)
 import Data.ByteString (ByteString)
 
+import Hedgehog (Property, (===), evalMaybe, failure, forAll, property)
+import qualified Hedgehog.Gen as G
+import qualified Hedgehog.Range as R
 import Test.HUnit ((@?=), Assertion)
 
 import Crypto.Sodium.Salt (utf8, bytes)
+import Crypto.Sodium.Salt.Internal (parseEscapes)
+
+
+hprop_parseEscapes_latin1 :: Property
+hprop_parseEscapes_latin1 = property $ do
+    str <- forAll $ G.string (R.linear 0 100) notBackslash
+    result <- evalMaybe $ parseEscapes str
+    result === str
+  where
+    -- latin1 (including non-printable garbage) but not backslash
+    notBackslash = G.filter (/= '\\') G.latin1
+
+hprop_parseEscapes_shown_ascii :: Property
+hprop_parseEscapes_shown_ascii = property $ do
+    str <- forAll $ G.string (R.linear 0 100) G.ascii
+    -- show and drop the quotation marks around the result
+    result <- evalMaybe $ parseEscapes (init . tail . show $ str)
+    result === str
+
+hprop_parseEscapes_shown_bytes :: Property
+hprop_parseEscapes_shown_bytes = property $ do
+    bs <- forAll $ G.bytes (R.linear 0 100)
+    -- show and drop the quotation marks around the result
+    result <- evalMaybe $ parseEscapes (init . tail . show $ bs)
+    show result === show bs
+
+hprop_parseEscapes_bad_escape_fail :: Property
+hprop_parseEscapes_bad_escape_fail = property $ do
+    str1 <- forAll $ G.string (R.linear 0 10) G.alphaNum
+    str2 <- forAll $ G.string (R.linear 0 10) G.alphaNum
+    case parseEscapes (str1 ++ "\\z" ++ str2) of
+      Just _ -> failure
+      Nothing -> pure ()
 
 
 unit_utf8_ascii_literal :: Assertion

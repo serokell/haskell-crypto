@@ -30,7 +30,6 @@ import Data.ByteArray.Sized (SizedByteArray, unsafeSizedByteArray)
 import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
-import Data.Maybe (listToMaybe)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import GHC.Exts (Addr#)
@@ -40,10 +39,9 @@ import Language.Haskell.TH.Quote (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax.Compat (SpliceQ)
 import qualified Language.Haskell.TH.Syntax.Compat as TH
 import System.IO.Unsafe (unsafeDupablePerformIO)
-import Text.ParserCombinators.ReadP (eof, readP_to_S, many)
-import Text.Read.Lex (lexChar)
 
 import qualified Crypto.Sodium.Nonce
+import Crypto.Sodium.Salt.Internal (parseEscapes)
 
 
 -- | Quasi-quoter to construct a /sized/ 'ByteString' from string literal
@@ -126,15 +124,3 @@ mkQuoter name convert = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
     quotePat = err
     quoteType = err
     quoteDec = err
-
--- | Parse a Haskell string literal with escapes.
---
--- Given a string similar to what a Haskell compiler can see between double quotes,
--- process escape sequences according to the Haskell standard and return
--- the resulting string.
---
--- This function can fail if there are invalid escape sequences.
-parseEscapes :: MonadFail m => String -> m String
-parseEscapes str = case listToMaybe (readP_to_S (many lexChar <* eof) str) of
-  Just (result, "") -> pure result
-  _ -> fail $ "Failed to parse raw bytes (no parse): " <> str
