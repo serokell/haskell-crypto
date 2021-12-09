@@ -18,13 +18,16 @@ module Crypto.Sodium.Salt
   (
   -- * Literals
     utf8
+  , bytes
 
   -- * Random salt generation
   , Crypto.Sodium.Nonce.generate
   ) where
 
+import Control.Monad ((<=<))
+import Data.Bits (toIntegralSized)
 import Data.ByteArray.Sized (SizedByteArray, unsafeSizedByteArray)
-import Data.ByteString (ByteString)
+import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
 import qualified Data.Text as T
@@ -38,44 +41,86 @@ import qualified Language.Haskell.TH.Syntax.Compat as TH
 import System.IO.Unsafe (unsafeDupablePerformIO)
 
 import qualified Crypto.Sodium.Nonce
+import Crypto.Sodium.Salt.Internal (parseEscapes)
 
 
--- | Quasi-quoter to construct a /sized/ 'ByteString' literal.
+-- | Quasi-quoter to construct a /sized/ 'ByteString' from string literal
+-- encoded using UTF-8.
 --
 -- @
 -- {-# LANGUAGE QuasiQuotes #-}
 --
 -- {- ... -}
 --
--- let salt = [utf8|hello world|] :: 'SizedByteArray' 11 ByteString
+-- let salt1 = [utf8|hello world|] :: 'SizedByteArray' 11 ByteString
+-- let salt2 = [utf8|ĝis\x0021\r\n|] :: 'SizedByteArray' 7 ByteString
 -- @
 --
 -- This uses Template Haskell to compute the length of the UTF-8 encoding
--- of the string you provide. Note that the string will be taken as is,
--- with all whitespace preserved, for example @[utf8| x |]@ will have length 3.
+-- of the string you provide.
+--
+-- The string literal is treated similar to how a Haskell compiler treats
+-- string literals in source code – this means you can use escape sequences
+-- as in the example above.
+--
+-- Note that the string will be taken as is, with all whitespace preserved,
+-- for example @[utf8| x |]@ will have length 3.
 utf8 :: QuasiQuoter
-utf8 = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
+utf8 = mkQuoter "utf8" (pure . T.encodeUtf8 . T.pack <=< parseEscapes)
+
+-- | Quasi-quoter to construct a /sized/ 'ByteString' from literal bytes.
+--
+-- @
+-- {-# LANGUAGE QuasiQuotes #-}
+--
+-- {- ... -}
+--
+-- let salt = [bytes|hi\n\x00|] :: 'SizedByteArray' 4 ByteString
+-- @
+--
+-- This uses Template Haskell to compute the length of the raw byte
+-- string you provide.
+--
+-- The bytes literal is treated similar to how a Haskell compiler treats
+-- string literals in source code – this means you can use escape sequences
+-- as in example above. Characters that do not fit into one byte will cause
+-- a compilation error – use 'utf8' instead.
+--
+-- Note that the bytes will be taken as is, with all whitespace preserved,
+-- for example @[bytes| x |]@ will have length 3.
+bytes :: QuasiQuoter
+bytes = mkQuoter "bytes" (toBytes <=< parseEscapes)
+  where
+    toBytes = fmap pack . traverse charToByte
+    charToByte c =
+      let msg = "Character does not fit into a byte: '" <> [c] <> "' (" <> show c <> ")"
+      in maybe (fail msg) pure $ toIntegralSized (fromEnum c)
+
+-- | A helper function to construct a quasi-quoter making a sized byte array
+-- given a conversion from 'String' to 'ByteString'.
+mkQuoter :: String -> (String -> Q ByteString) -> QuasiQuoter
+mkQuoter name convert = QuasiQuoter { quoteExp, quotePat, quoteType, quoteDec }
   where
     quoteExp :: String -> Q Exp
-    quoteExp str = [e|unsafeSizedByteArray $(TH.unTypeSplice bsSplice) :: $tSized|]
-      where
-        bs :: ByteString
-        bs = T.encodeUtf8 $ T.pack str
+    quoteExp str = do
+      bs <- convert str
+      let len = BS.length bs
+          tSized = mkTSized len
+          bsSplice = mkBsSplice len bs
+      [e|unsafeSizedByteArray $(TH.unTypeSplice bsSplice) :: $tSized|]
 
-        len :: Int
-        len = BS.length bs
+    mkBsSplice :: Int -> ByteString -> SpliceQ ByteString
+    mkBsSplice len bs =
+      let cstrSplice :: SpliceQ Addr#
+          cstrSplice = TH.unsafeSpliceCoerce . TH.litE . TH.stringPrimL . BS.unpack $ bs
+      in [e||unsafeDupablePerformIO $ BS.unsafePackAddressLen len $$cstrSplice||]
 
-        cstrSplice :: SpliceQ Addr#
-        cstrSplice = TH.unsafeSpliceCoerce . TH.litE . TH.stringPrimL . BS.unpack $ bs
-
-        bsSplice :: SpliceQ ByteString
-        bsSplice = [e||unsafeDupablePerformIO $ BS.unsafePackAddressLen len $$cstrSplice||]
-
-        tSized :: Q Type
-        tSized = [t|SizedByteArray $(TH.litT . TH.numTyLit . fromIntegral $ len) ByteString|]
+    mkTSized :: Int -> Q Type
+    mkTSized len = [t|SizedByteArray $(TH.litT . TH.numTyLit . fromIntegral $ len) ByteString|]
 
     err :: String -> Q a
-    err _ = fail "A `utf8` quasi-quotation can only be used as an expression"
+    err _ = fail $ "A `" <> name <> "` quasi-quotation can only be used as an expression"
+
     quotePat = err
     quoteType = err
     quoteDec = err

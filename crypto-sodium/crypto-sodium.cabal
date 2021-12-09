@@ -86,6 +86,7 @@ library
       Crypto.Sodium.Pwhash.Internal
       Crypto.Sodium.Random
       Crypto.Sodium.Salt
+      Crypto.Sodium.Salt.Internal
       Crypto.Sodium.Sign
   other-modules:
       Paths_crypto_sodium
