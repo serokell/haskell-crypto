@@ -11,12 +11,7 @@
 
   inputs = {
     nixpkgs.url = "github:serokell/nixpkgs";
-    haskell-nix = {
-      inputs.hackage.follows = "hackage";
-      inputs.stackage.follows = "stackage";
-    };
-    hackage.flake = false;
-    stackage.flake = false;
+    haskell-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, haskell-nix, flake-utils, serokell-nix, ... }:
