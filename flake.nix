@@ -14,22 +14,20 @@
     haskell-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, haskell-nix, flake-utils, serokell-nix, ... }:
+  outputs = { nixpkgs, haskell-nix, flake-utils, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
         overlays = [ haskell-nix.overlay ];
         pkgs = import nixpkgs { inherit system overlays; };
         hn = pkgs.haskell-nix;
 
-        flake = serokell-nix.lib.haskell.makeFlake hn hn.stackProject {
+        prj = hn.stackProject {
           src = hn.haskellLib.cleanGit {
             name = "haskell-crypto";
             src = ./.;
           };
           ignorePackageYaml = true;
-          ghcVersions = [ "902" "928" "945" ];
         };
-
-      in flake
+      in { inherit (prj.flake') packages apps checks; }
   );
 }
