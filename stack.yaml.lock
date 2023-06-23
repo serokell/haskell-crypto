@@ -5,36 +5,36 @@
 
 packages:
 - completed:
-    hackage: libsodium-1.0.18.2@sha256:f15b874e74e0cf33ab1343310f5392f1f33c406bec5252098d7dd6153e797fb1,1052
+    hackage: libsodium-1.0.18.3@sha256:b3cb12d2b37dabbd4870f76a58da17c7b0e5f5e3db6b3a158fefec2836c86b0f,1555
     pantry-tree:
-      size: 387
-      sha256: dcb484e5255ec64013d0c7dd9c0dec62f79b094e1634d15ed142958dda90bb91
+      sha256: 9bee713855d307c1fb701c747df3f6404e56898d39a6a9f301c6549426add266
+      size: 493
   original:
-    hackage: libsodium-1.0.18.2
+    hackage: libsodium-1.0.18.3
 - completed:
-    hackage: basement-0.0.12@sha256:cbb9187d3575b78ee1165b7a49a0e8570ee563820330a944a67cd09e1cfe23bf,5516
+    hackage: basement-0.0.16@sha256:e9458cbe67f396fb81900ec65852a582a2b7febd09b17a85adee576c8d7cc321,5404
     pantry-tree:
-      size: 5859
-      sha256: 6462393c9058b93baea2c8ffb4a7e1d68c2aee14746ef0081dbb485a2faef71b
+      sha256: 868afcc62edd1c3af6405ee0a5d1bcc0cdc0919114e26299c7fd63706c750973
+      size: 5799
   original:
-    hackage: basement-0.0.12
+    hackage: basement-0.0.16
 - completed:
-    hackage: memory-0.16.0@sha256:3bf01f8267c0ee1745a1c0c4aa0dc311709801e950d605d90b5d1a26e2773e49,4895
+    hackage: memory-0.18.0@sha256:e12bde756b01c1a28c62e46f0f8433c4890898051a786794a7d88907ca14abca,4468
     pantry-tree:
+      sha256: 55d15393452ad50b1f8dbe3ff2c4961a3cde9381f2c348f904449a3339c6951d
       size: 2436
-      sha256: 9bd98c34cb359b7f8cdc3ad900ec903461b4d785de7c03575f809980acc84073
   original:
-    hackage: memory-0.16.0
+    hackage: memory-0.18.0
 - completed:
-    hackage: streamly-0.8.0@sha256:0513eff994ebac2438d5ef58041fe70e0610ecd213c588fb8be3b6b72f9d61b9,20201
+    hackage: streamly-0.9.0@sha256:8aedb49557487a3f642f6e4cc55830dc0832928f298e016e82e92e68da07f43f,19866
     pantry-tree:
-      size: 21676
-      sha256: c82bec3985b471396a52a018d9da898ce183283843f11400f0c69a8bd5a85aca
+      sha256: 7cf40022cbcf5e4aa34d33a9d44416adc08a81fb7bf15496f5025b26b5520069
+      size: 21867
   original:
-    hackage: streamly-0.8.0
+    hackage: streamly-0.9.0
 snapshots:
 - completed:
-    size: 586296
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/18.yaml
-    sha256: 63539429076b7ebbab6daa7656cfb079393bf644971156dc349d7c0453694ac2
-  original: lts-18.18
+    sha256: 1867d84255dff8c87373f5dd03e5a5cb1c10a99587e26c8793e750c54e83ffdc
+    size: 639139
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/21/0.yaml
+  original: lts-21.0

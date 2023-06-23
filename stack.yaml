@@ -2,19 +2,19 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 
-resolver: lts-18.18
+resolver: lts-21.0
 packages:
   - secure-memory
   - NaCl
   - crypto-sodium
 
 extra-deps:
-  - libsodium-1.0.18.2
+  - libsodium-1.0.18.3
 
   # Required for GHC >= 9
-  - basement-0.0.12
-  - memory-0.16.0
-  - streamly-0.8.0
+  - basement-0.0.16
+  - memory-0.18.0
+  - streamly-0.9.0
 
   # Required for GHC >= 9.2
   #- basement-???
