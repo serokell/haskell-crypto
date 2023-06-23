@@ -2,13 +2,12 @@
 --
 -- SPDX-License-Identifier: MPL-2.0
 
-{-# LANGUAGE ConstraintKinds, RankNTypes #-}
+{-# LANGUAGE ConstraintKinds, TypeFamilies, ExistentialQuantification, RankNTypes #-}
 
 -- | The sensitive data type internals.
 module Data.SensitiveBytes.Internal
   ( withSecureMemory
   , WithSecureMemory
-  , SodiumInitialised
   , SecureMemoryInitException
 
   , SensitiveBytes (..)
@@ -24,17 +23,14 @@ module Data.SensitiveBytes.Internal
 import Control.Exception.Safe (Exception, MonadMask, bracket, throwIO)
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import Data.ByteArray (ByteArrayAccess (length, withByteArray))
-import Data.Reflection (Given, give, given)
+import Data.Kind (Constraint)
 import Foreign.Ptr (Ptr, castPtr, nullPtr)
 import Libsodium (sodium_free, sodium_init, sodium_malloc, sodium_memzero)
-
-
--- | A trivial proof that @sodium_init@ has been called.
-data SodiumInitialised = SodiumInitialised
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | A constraint for functions that require access to secure memory.
 -- The only way to satisfy it is to call 'withSecureMemory'.
-type WithSecureMemory = Given SodiumInitialised
+type family WithSecureMemory :: Constraint where
 
 
 -- | This function performs the initialisation steps
@@ -69,7 +65,8 @@ withSecureMemory act = do
     _ ->
       -- sodium_init failed, not good
       throwIO SodiumInitFailed
-  give SodiumInitialised act
+  case unsafeCoerce (Dict @()) :: Dict WithSecureMemory of
+    Dict -> act
 
 -- | Exception thrown by 'withSecureMemory'.
 data SecureMemoryInitException
@@ -113,14 +110,11 @@ allocate
   :: forall s m. (MonadIO m, WithSecureMemory)
   => Int  -- ^ Size of the array (in bytes).
   -> m (SensitiveBytes s)
-allocate size = requiringSecureMemory (liftIO act)
-  where
-    act = do
-      res <- sodium_malloc (fromIntegral size)
-      if res == nullPtr then
-        throwIO SodiumMallocFailed
-      else
-        pure $ SensitiveBytes size size res
+allocate size = requiringSecureMemory $ liftIO $ do
+  res <- sodium_malloc (fromIntegral size)
+  if res == nullPtr
+    then throwIO SodiumMallocFailed
+    else pure $ SensitiveBytes size size res
 
 -- | Free bytes previously allocated in a protected memory region.
 free
@@ -211,5 +205,10 @@ instance Exception SensitiveBytesAllocException
 --
 -- It is a complete no-op and exists only to silence the unused constraint
 -- warning. Hopefully, it will get optimised away every time.
-requiringSecureMemory :: r -> (WithSecureMemory => r)
-requiringSecureMemory act = (\_ -> act) (given :: SodiumInitialised)
+requiringSecureMemory :: WithSecureMemory => r -> r
+requiringSecureMemory act = act
+  where _ = Dict @WithSecureMemory
+{-# INLINE requiringSecureMemory #-}
+
+-- | We don't need to depend on @constraints@ for a single trivial type.
+data Dict c = c => Dict
