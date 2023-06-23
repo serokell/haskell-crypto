@@ -7,7 +7,6 @@ packages:
   - secure-memory
   - NaCl
   - crypto-sodium
-  - crypto-sodium-streamly
 
 extra-deps:
   - libsodium-1.0.18.2
