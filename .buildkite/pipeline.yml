@@ -1,0 +1,2 @@
+steps:
+  - command: "nix -L flake check"

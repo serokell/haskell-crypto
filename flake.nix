@@ -19,10 +19,11 @@
     stackage.flake = false;
   };
 
-  outputs = { self, nixpkgs, hackage, stackage, haskell-nix, flake-utils, serokell-nix }:
+  outputs = { nixpkgs, haskell-nix, flake-utils, serokell-nix, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
       let
-        pkgs = nixpkgs.legacyPackages.${system}.extend haskell-nix.overlay;
+        overlays = [ haskell-nix.overlay ];
+        pkgs = import nixpkgs { inherit system overlays; };
         hn = pkgs.haskell-nix;
 
         flake = serokell-nix.lib.haskell.makeFlake hn hn.stackProject {
@@ -30,21 +31,8 @@
             name = "haskell-crypto";
             src = ./.;
           };
-          modules = [
-            ({ lib, ... }: {
-              packages = {
-                # TODO: https://github.com/input-output-hk/haskell.nix/issues/626
-                # (also, it gets cleaned away for some reason)
-                secure-memory.cabal-generator = lib.mkForce null;
-                NaCl.cabal-generator = lib.mkForce null;
-                crypto-sodium.cabal-generator = lib.mkForce null;
-                crypto-sodium-streamly.cabal-generator = lib.mkForce null;
-                # TODO: rename ./hpack/package.yaml back to ./hpack/common.yaml
-                # (the name had to be changed as otherwise it gets cleaned in the process)
-              };
-            })
-          ];
-          ghcVersions = [ "8107" "901" ];
+          ignorePackageYaml = true;
+          ghcVersions = [ "902" "928" "945" ];
         };
 
       in flake
