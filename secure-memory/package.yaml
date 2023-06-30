@@ -43,8 +43,7 @@ library:
 
   dependencies:
     - libsodium >= 1.0.18.2  # sodium_free was missing before
-    - reflection >= 1.2.0.1 && < 2.2
-    - text >= 0.7 && < 1.3
+    - text >= 0.7 && < 1.3 || >= 2.0 && < 2.1
 
   when:
     - condition: "!os(windows)"

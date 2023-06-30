@@ -1,6 +1,6 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 
@@ -69,17 +69,16 @@ library
   c-sources:
       ./cbits/readline_max.c
   build-depends:
-      base >=4.10 && <4.16
-    , bytestring >=0.9 && <0.11
+      base >=4.10 && <4.18
+    , bytestring >=0.9 && <0.12
     , libsodium >=1.0.18.2
-    , memory >=0.14.15 && <0.17
-    , reflection >=1.2.0.1 && <2.2
+    , memory >=0.14.15 && <0.19
     , safe-exceptions ==0.1.*
-    , text >=0.7 && <1.3
+    , text >=0.7 && <1.3 || >=2.0 && <2.1
+  default-language: Haskell2010
   if !os(windows)
     build-depends:
         unix >=2.0 && <2.8
-  default-language: Haskell2010
 
 executable checkpw
   main-is: Main.hs
@@ -103,10 +102,10 @@ executable checkpw
       TypeApplications
   ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   build-depends:
-      base >=4.10 && <4.16
-    , bytestring >=0.9 && <0.11
+      base >=4.10 && <4.18
+    , bytestring >=0.9 && <0.12
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.17
+    , memory >=0.14.15 && <0.19
     , safe-exceptions ==0.1.*
     , secure-memory
   default-language: Haskell2010
@@ -139,20 +138,20 @@ test-suite test-pipe
   build-depends:
       HUnit
     , async
-    , base >=4.10 && <4.16
-    , bytestring >=0.9 && <0.11
+    , base >=4.10 && <4.18
+    , bytestring >=0.9 && <0.12
     , hedgehog
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.17
+    , memory >=0.14.15 && <0.19
     , safe-exceptions ==0.1.*
     , secure-memory
     , tasty
     , tasty-hedgehog
     , tasty-hunit
     , unix
+  default-language: Haskell2010
   if os(windows)
     buildable: False
-  default-language: Haskell2010
 
 test-suite test-simple
   type: exitcode-stdio-1.0
@@ -181,10 +180,10 @@ test-suite test-simple
       tasty-discover:tasty-discover
   build-depends:
       HUnit
-    , base >=4.10 && <4.16
-    , bytestring >=0.9 && <0.11
+    , base >=4.10 && <4.18
+    , bytestring >=0.9 && <0.12
     , libsodium >=1.0.11 && <2
-    , memory >=0.14.15 && <0.17
+    , memory >=0.14.15 && <0.19
     , safe-exceptions ==0.1.*
     , secure-memory
     , tasty
