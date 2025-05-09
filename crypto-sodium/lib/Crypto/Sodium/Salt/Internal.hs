@@ -7,8 +7,10 @@ module Crypto.Sodium.Salt.Internal
   ( parseEscapes
   ) where
 
+import Control.Monad (liftM2)
+import Data.Char (isSpace)
 import Data.Maybe (listToMaybe)
-import Text.ParserCombinators.ReadP (eof, readP_to_S, many)
+import Text.ParserCombinators.ReadP (ReadP, readP_to_S, (<++))
 import Text.Read.Lex (lexChar)
 
 -- | Parse a Haskell string literal with escapes.
@@ -19,6 +21,16 @@ import Text.Read.Lex (lexChar)
 --
 -- This function can fail if there are invalid escape sequences.
 parseEscapes :: MonadFail m => String -> m String
-parseEscapes str = case listToMaybe (readP_to_S (many lexChar <* eof) str) of
+parseEscapes str = case listToMaybe (readP_to_S (many' lexChar) str) of
   Just (result, "") -> pure result
-  _ -> fail $ "Failed to parse raw bytes (no parse): " <> str
+  Just (_, rest) -> fail $ case rest of
+      '\\':rest' -> "Failed to parse character escape '\\"
+        <> takeWhile (\c -> not (isSpace c) && c /= '\\') rest' <> "'"
+      -- the next case shouldn't happen since 'lexChar' can only fail on escapes
+      _ -> "Failed to parse string with escapes"
+    <> " at input position " <> show (length str - length rest)
+  -- the last case shouldn't happen since parser will happily parse zero characters
+  _ -> fail $ "Failed to parse string with escapes: " <> str
+
+many' :: ReadP a -> ReadP [a]
+many' p = liftM2 (:) p (many' p) <++ pure []
