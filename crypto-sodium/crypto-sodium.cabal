@@ -134,6 +134,7 @@ test-suite test
       Test.Crypto.Sodium.Pwhash
       Test.Crypto.Sodium.Random
       Test.Crypto.Sodium.Salt
+      Test.Crypto.Sodium.Salt.Internal
       Test.Crypto.Sodium.Sign
       Paths_crypto_sodium
   hs-source-dirs:
